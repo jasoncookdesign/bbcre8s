@@ -1,0 +1,24 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import AudienceFit from "@components/sections/AudienceFit.astro";
+import TrustLayer from "@components/sections/TrustLayer.astro";
+import UseCasePreviewGrid from "@components/sections/UseCasePreviewGrid.astro";
+import HeroVideo from "@components/sections/HeroVideo.astro";
+import FeaturedWorkGrid from "@components/sections/FeaturedWorkGrid.astro";
+import ServicesSnapshot from "@components/sections/ServicesSnapshot.astro";
+import CTAHire from "@components/sections/CTAHire.astro";
+---
+
+<BaseLayout
+  title="bbcre8s UGC | Video-First UGC Portfolio"
+  description="Premium, conversion-aware UGC for Shopify brands, Amazon sellers, SaaS teams, and modern product businesses."
+  pathname={Astro.url.pathname}
+>
+  <HeroVideo />
+  <FeaturedWorkGrid />
+  <AudienceFit />
+  <UseCasePreviewGrid />
+  <ServicesSnapshot />
+  <TrustLayer />
+  <CTAHire />
+</BaseLayout>

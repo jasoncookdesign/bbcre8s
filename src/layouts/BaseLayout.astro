@@ -1,0 +1,86 @@
+---
+import "@styles/global.css";
+import SiteHeader from "@components/nav/SiteHeader.astro";
+import SiteFooter from "@components/nav/SiteFooter.astro";
+import StickyHireBar from "@components/ui/StickyHireBar.astro";
+import { siteConfig, withBase } from "@content/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  pathname: string;
+}
+
+const {
+  title = siteConfig.title,
+  description = siteConfig.metaDescription,
+  image = siteConfig.socialPreviewImage,
+  pathname
+} = Astro.props;
+
+const canonicalUrl = new URL(withBase(pathname), siteConfig.siteUrl).toString();
+const socialImageUrl = new URL(withBase(image), siteConfig.siteUrl).toString();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f7f3eb" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://player.vimeo.com" />
+    <link rel="dns-prefetch" href="https://www.youtube-nocookie.com" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteConfig.siteName} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:alt" content={siteConfig.socialPreviewAlt} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <meta name="twitter:image:alt" content={siteConfig.socialPreviewAlt} />
+  </head>
+  <body>
+    <div class="page-shell">
+      <a href="#main-content" class="skip-link">Skip to content</a>
+      <SiteHeader pathname={pathname} />
+      <main id="main-content" class="shell-main">
+        <div class="page-stack">
+          <slot />
+        </div>
+      </main>
+      <SiteFooter />
+      <StickyHireBar />
+    </div>
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: 0.75rem;
+    z-index: 60;
+    padding: 0.7rem 1rem;
+    border-radius: 999px;
+    background: var(--surface-ink);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-140%);
+    transition: transform var(--transition-base);
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+</style>

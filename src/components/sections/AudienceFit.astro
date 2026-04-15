@@ -1,0 +1,38 @@
+---
+import SectionHeader from "@components/ui/SectionHeader.astro";
+import SurfaceCard from "@components/ui/SurfaceCard.astro";
+import { audienceFitItems } from "@content/home";
+---
+
+<section class="section section-tight">
+  <div class="container">
+    <SectionHeader
+      eyebrow="Who This Is For"
+      title="Built for teams that need social-native product selling."
+      text="A focused fit section keeps qualification quick without turning the homepage into a long brand story."
+    />
+    <div class="grid grid-2 fit-grid">
+      {
+        audienceFitItems.map((item) => (
+          <SurfaceCard class="fit-card">
+            <p class="eyebrow">Audience Fit</p>
+            <h3>{item.title}</h3>
+            <p>{item.detail}</p>
+          </SurfaceCard>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .fit-grid {
+    gap: 1rem;
+  }
+
+  .fit-card {
+    padding: clamp(1rem, 2.4vw, 1.2rem);
+    display: grid;
+    gap: 0.55rem;
+  }
+</style>

@@ -1,0 +1,69 @@
+---
+import ButtonLink from "@components/ui/ButtonLink.astro";
+import SectionHeader from "@components/ui/SectionHeader.astro";
+import SurfaceCard from "@components/ui/SurfaceCard.astro";
+import { getVisibleServicePackages } from "@content/services";
+
+const servicePackages = getVisibleServicePackages();
+---
+
+<section class="section">
+  <div class="container">
+    <SectionHeader
+      eyebrow="Service Packages"
+      title="Clear offers for quick decisions."
+      text="Simple package framing keeps the focus on output, turnaround, and where each offer fits."
+    >
+      <Fragment slot="actions">
+        <ButtonLink href="/services" variant="secondary">View Services</ButtonLink>
+      </Fragment>
+    </SectionHeader>
+    <div class="grid grid-3 packages">
+      {
+        servicePackages.map((pkg) => (
+          <SurfaceCard class="package">
+            <div class="meta">
+              <strong>{pkg.tier}</strong>
+              {pkg.callout ? <span>{pkg.callout}</span> : null}
+            </div>
+            <h3>{pkg.headline}</h3>
+            <p>{pkg.bestFor}</p>
+            <p class="turnaround">Turnaround: {pkg.turnaround}</p>
+          </SurfaceCard>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .packages {
+    margin-top: 0;
+  }
+
+  .package {
+    padding: clamp(1rem, 2.8vw, 1.3rem);
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .meta span {
+    background: var(--surface-strong);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    padding: 0.28rem 0.55rem;
+    font-weight: 700;
+  }
+
+  .turnaround {
+    color: var(--ink);
+    font-weight: 600;
+  }
+</style>

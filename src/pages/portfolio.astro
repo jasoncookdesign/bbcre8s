@@ -1,0 +1,725 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import PortfolioGalleryTile from "@components/portfolio/PortfolioGalleryTile.astro";
+import CTARow from "@components/ui/CTARow.astro";
+import FilterChips from "@components/ui/FilterChips.astro";
+import SectionHeader from "@components/ui/SectionHeader.astro";
+import SurfaceCard from "@components/ui/SurfaceCard.astro";
+import { siteConfig } from "@content/site";
+import {
+  getPortfolioMediaPresentation,
+  getPortfolioPoster,
+  getPortfolioUseCaseGroups,
+  getRelatedPortfolioItems,
+  type PortfolioItem
+} from "@content/portfolio";
+
+const groups = getPortfolioUseCaseGroups();
+
+type PortfolioDetailRecord = {
+  id: string;
+  title: string;
+  duration?: string;
+  useCase: string;
+  description: string;
+  goal?: string;
+  style?: string;
+  industryTag?: string;
+  platformTag?: string;
+  status: string;
+  poster: string;
+  mediaKind: "video" | "embed" | "poster";
+  externalHref?: string;
+  videoUrl?: string;
+  embedUrl?: string;
+  featured: boolean;
+  related: Array<{
+    id: string;
+    title: string;
+    useCase: string;
+    poster: string;
+  }>;
+};
+
+const detailItems: PortfolioDetailRecord[] = groups.flatMap((group) =>
+  group.items.map((item) => {
+    const media = getPortfolioMediaPresentation(item);
+
+    return {
+      id: item.id,
+      title: item.title,
+      duration: item.duration,
+      useCase: item.useCase,
+      description: item.description,
+      goal: item.goal,
+      style: item.style,
+      industryTag: item.industryTag,
+      platformTag: item.platformTag,
+      status: item.status,
+      poster: media.poster,
+      mediaKind: media.kind,
+      externalHref: media.href,
+      videoUrl: media.videoUrl,
+      embedUrl: media.embedUrl,
+      featured: Boolean(item.featured && item.status === "ready"),
+      related: getRelatedPortfolioItems(item, 3).map((relatedItem) => ({
+        id: relatedItem.id,
+        title: relatedItem.title,
+        useCase: relatedItem.useCase,
+        poster: getPortfolioPoster(relatedItem)
+      }))
+    };
+  })
+);
+
+const readyClipCount = detailItems.filter((item) => item.status === "ready").length;
+const previewClipCount = detailItems.filter((item) => item.status !== "ready").length;
+
+function getGalleryClass(itemCount: number) {
+  if (itemCount <= 2) {
+    return "portfolio-gallery is-editorial";
+  }
+
+  if (itemCount <= 6) {
+    return "portfolio-gallery is-balanced";
+  }
+
+  return "portfolio-gallery is-modular";
+}
+
+function getTileSize(item: PortfolioItem, itemCount: number, index: number) {
+  if (itemCount <= 2) {
+    return index === 0 ? "feature" : "standard";
+  }
+
+  if (itemCount <= 6) {
+    if (index === 0 || item.featured) {
+      return "feature";
+    }
+
+    return "standard";
+  }
+
+  return index === 0 && item.featured ? "feature" : "compact";
+}
+
+function getTileSpanClass(itemCount: number, index: number, item: PortfolioItem) {
+  if (itemCount <= 2) {
+    return index === 0 ? "tile-span-wide" : "tile-span-narrow";
+  }
+
+  if (itemCount <= 6) {
+    if (index === 0 || item.featured) {
+      return "tile-span-wide";
+    }
+
+    return index === 1 ? "tile-span-narrow" : "tile-span-regular";
+  }
+
+  return index === 0 && item.featured ? "tile-span-wide" : "tile-span-compact";
+}
+---
+
+<BaseLayout
+  title="Portfolio | bbcre8s UGC"
+  description="Browse paid ads, product demos, lifestyle integrations, and tech walkthroughs in one curated UGC portfolio."
+  pathname={Astro.url.pathname}
+>
+  <section class="section portfolio-hero">
+    <div class="container stack-lg portfolio-hero-inner">
+      <div class="stack-md">
+        <p class="eyebrow">Portfolio</p>
+        <h1>Curated UGC built for platform-native conversion.</h1>
+        <p class="lead">
+          Every piece here is organized by buyer-facing use case so it is easier to scan what kind of content solves what kind of need.
+        </p>
+      </div>
+      <div class="portfolio-hero-meta">
+        <FilterChips
+          items={groups.map((group, index) => ({ label: group.label, href: `#${group.anchorId}`, active: index === 0 }))}
+        />
+        <div class="portfolio-meta-pills">
+          <span class="stat-pill">{detailItems.length} public clips</span>
+          <span class="stat-pill">{readyClipCount} ready</span>
+          <span class="stat-pill">{previewClipCount} preview-state</span>
+        </div>
+      </div>
+      <CTARow
+        items={[
+          { label: siteConfig.primaryCta.label, href: siteConfig.primaryCta.href, external: true },
+          { label: siteConfig.secondaryCta.label, href: siteConfig.secondaryCta.href, external: true, variant: "secondary" }
+        ]}
+      />
+    </div>
+  </section>
+
+  {
+    groups.length > 0 ? (
+      groups.map((group) => (
+        <section class="section portfolio-group" id={group.anchorId}>
+          <div class="container">
+            <SectionHeader title={group.label} text={group.summary} compact={true}>
+              <Fragment slot="actions">
+                <span class="group-count">{group.items.length} clips</span>
+              </Fragment>
+            </SectionHeader>
+          </div>
+          <div class="container">
+            <div class={getGalleryClass(group.items.length)}>
+              {
+                group.items.map((item, index) => (
+                  <div class={getTileSpanClass(group.items.length, index, item)}>
+                    <PortfolioGalleryTile item={item} size={getTileSize(item, group.items.length, index)} />
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </section>
+      ))
+    ) : (
+      <section class="section portfolio-group">
+        <div class="container">
+          <SurfaceCard class="portfolio-empty">
+            <p class="eyebrow">Portfolio state</p>
+            <h2>No public clips have been added yet.</h2>
+            <p>
+              Add a public placeholder, draft, or ready item in the content file and the grouped gallery will appear automatically.
+            </p>
+          </SurfaceCard>
+        </div>
+      </section>
+    )
+  }
+
+  <dialog class="portfolio-dialog" id="portfolio-dialog" aria-labelledby="portfolio-dialog-title">
+    <div class="portfolio-dialog-shell">
+      <button type="button" class="dialog-close" data-portfolio-close aria-label="Close portfolio detail">Close</button>
+      <div class="portfolio-dialog-media">
+        <div class="portfolio-dialog-video" id="portfolio-dialog-video"></div>
+      </div>
+      <div class="portfolio-dialog-copy">
+        <div class="portfolio-dialog-stack">
+          <div class="portfolio-dialog-head">
+            <p class="eyebrow" id="portfolio-dialog-usecase"></p>
+            <h2 id="portfolio-dialog-title"></h2>
+            <p class="portfolio-dialog-duration" id="portfolio-dialog-duration"></p>
+          </div>
+          <div class="portfolio-dialog-tags" id="portfolio-dialog-tags"></div>
+          <p class="lead portfolio-dialog-description" id="portfolio-dialog-description"></p>
+          <div class="portfolio-dialog-detail-grid">
+            <div class="dialog-detail-block">
+              <p class="eyebrow">Goal</p>
+              <p id="portfolio-dialog-goal"></p>
+            </div>
+            <div class="dialog-detail-block">
+              <p class="eyebrow">Style</p>
+              <p id="portfolio-dialog-style"></p>
+            </div>
+          </div>
+          <CTARow
+            items={[
+              { label: siteConfig.primaryCta.label, href: siteConfig.primaryCta.href, external: true },
+              { label: siteConfig.secondaryCta.label, href: siteConfig.secondaryCta.href, external: true, variant: "secondary" }
+            ]}
+          />
+        </div>
+        <div class="portfolio-related">
+          <div class="portfolio-related-head">
+            <p class="eyebrow">Related Work</p>
+            <p>Keep browsing without leaving the page.</p>
+          </div>
+          <div class="portfolio-related-grid" id="portfolio-dialog-related"></div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <script is:inline type="application/json" id="portfolio-detail-data" set:html={JSON.stringify(detailItems)}></script>
+
+  <script is:inline>
+    const dialog = document.getElementById("portfolio-dialog");
+    const dataNode = document.getElementById("portfolio-detail-data");
+
+    if (dialog instanceof HTMLDialogElement && dataNode?.textContent) {
+      const items = JSON.parse(dataNode.textContent);
+      const itemMap = new Map(items.map((item) => [item.id, item]));
+      const titleNode = document.getElementById("portfolio-dialog-title");
+      const useCaseNode = document.getElementById("portfolio-dialog-usecase");
+      const durationNode = document.getElementById("portfolio-dialog-duration");
+      const descriptionNode = document.getElementById("portfolio-dialog-description");
+      const goalNode = document.getElementById("portfolio-dialog-goal");
+      const styleNode = document.getElementById("portfolio-dialog-style");
+      const tagsNode = document.getElementById("portfolio-dialog-tags");
+      const videoNode = document.getElementById("portfolio-dialog-video");
+      const relatedNode = document.getElementById("portfolio-dialog-related");
+
+      const renderTags = (item) => {
+        if (!tagsNode) return;
+
+        const statusTag = item.status === "ready" ? null : item.status === "draft" ? "Draft" : "Placeholder";
+        const tags = [item.useCase, item.industryTag, item.platformTag, item.featured ? "Featured" : null, statusTag].filter(Boolean);
+        tagsNode.innerHTML = tags
+          .map((tag) => `<span class="dialog-tag">${tag}</span>`)
+          .join("");
+      };
+
+      const renderVideo = (item) => {
+        if (!videoNode) return;
+
+        if (item.mediaKind === "video" && item.videoUrl) {
+          videoNode.innerHTML = `<video controls playsinline preload="metadata" poster="${item.poster}"><source src="${item.videoUrl}" /></video>`;
+          return;
+        }
+
+        if (item.mediaKind === "embed" && item.embedUrl) {
+          videoNode.innerHTML = `<iframe src="${item.embedUrl}" title="${item.title}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+          return;
+        }
+
+        if (item.externalHref) {
+          videoNode.innerHTML = `
+            <a href="${item.externalHref}" target="_blank" rel="noreferrer" class="dialog-video-fallback">
+              <img src="${item.poster}" alt="${item.title}" />
+              <span>${item.status === "ready" ? "Watch clip" : "Open preview"}</span>
+            </a>
+          `;
+          return;
+        }
+
+        videoNode.innerHTML = `
+          <div class="dialog-video-fallback">
+            <img src="${item.poster}" alt="${item.title}" />
+            <span>Poster preview only</span>
+          </div>
+        `;
+      };
+
+      const renderRelated = (item) => {
+        if (!relatedNode) return;
+
+        relatedNode.innerHTML = item.related
+          .map(
+            (relatedItem) => `
+              <button type="button" class="related-card" data-portfolio-open="${relatedItem.id}">
+                <img src="${relatedItem.poster}" alt="${relatedItem.title}" loading="lazy" />
+                <span class="related-copy">
+                  <strong>${relatedItem.title}</strong>
+                  <span>${relatedItem.useCase}</span>
+                </span>
+              </button>
+            `
+          )
+          .join("");
+      };
+
+      const openItem = (id) => {
+        const item = itemMap.get(id);
+
+        if (!item) return;
+
+        if (titleNode) titleNode.textContent = item.title;
+        if (useCaseNode) useCaseNode.textContent = item.useCase;
+        if (durationNode) durationNode.textContent = item.duration ?? "Duration pending";
+        if (descriptionNode) descriptionNode.textContent = item.description;
+        if (goalNode) {
+          goalNode.textContent =
+            item.goal ??
+            (item.status === "ready"
+              ? "Designed to communicate fit quickly and keep the clip easy to scan."
+              : "Currently in preview state while final production goals are being prepared.");
+        }
+        if (styleNode) {
+          styleNode.textContent =
+            item.style ??
+            (item.status === "ready"
+              ? "Polished, platform-native delivery with controlled pacing."
+              : "Placeholder entry kept visible for layout and workflow validation.");
+        }
+
+        renderTags(item);
+        renderVideo(item);
+        renderRelated(item);
+
+        if (!dialog.open) {
+          dialog.showModal();
+        }
+      };
+
+      document.addEventListener("click", (event) => {
+        const openTrigger = event.target instanceof Element ? event.target.closest("[data-portfolio-open]") : null;
+        const closeTrigger = event.target instanceof Element ? event.target.closest("[data-portfolio-close]") : null;
+
+        if (openTrigger instanceof HTMLElement) {
+          const id = openTrigger.dataset.portfolioOpen;
+          if (id) {
+            openItem(id);
+          }
+        }
+
+        if (closeTrigger && dialog.open) {
+          dialog.close();
+        }
+      });
+
+      dialog.addEventListener("click", (event) => {
+        const bounds = dialog.getBoundingClientRect();
+        const isBackdropClick =
+          event.clientX < bounds.left ||
+          event.clientX > bounds.right ||
+          event.clientY < bounds.top ||
+          event.clientY > bounds.bottom;
+
+        if (isBackdropClick) {
+          dialog.close();
+        }
+      });
+    }
+  </script>
+</BaseLayout>
+
+<style>
+  .portfolio-hero {
+    padding-top: clamp(2rem, 5vw, 3rem);
+  }
+
+  .portfolio-hero-inner {
+    padding: clamp(1.1rem, 3vw, 1.8rem);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(180deg, rgba(255, 251, 245, 0.9), rgba(255, 245, 232, 0.82));
+    border: 1px solid rgba(84, 60, 43, 0.08);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .portfolio-hero-meta {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .portfolio-meta-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .group-count {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.1rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(84, 60, 43, 0.08);
+    font-weight: 700;
+    color: var(--surface-ink);
+  }
+
+  .portfolio-group {
+    scroll-margin-top: calc(var(--header-height) + 1.5rem);
+  }
+
+  .portfolio-empty {
+    padding: clamp(1rem, 2.8vw, 1.35rem);
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .portfolio-gallery {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .is-editorial,
+  .is-balanced {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .is-modular {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+
+  .tile-span-wide {
+    grid-column: span 7;
+  }
+
+  .tile-span-narrow {
+    grid-column: span 5;
+  }
+
+  .tile-span-regular {
+    grid-column: span 4;
+  }
+
+  .tile-span-compact {
+    grid-column: span 1;
+  }
+
+  .portfolio-dialog {
+    width: min(100% - 1rem, 72rem);
+    max-height: min(92dvh, 56rem);
+    padding: 0;
+    border: 0;
+    border-radius: calc(var(--radius-xl) + 0.2rem);
+    background: transparent;
+    box-shadow: 0 32px 100px rgba(20, 15, 11, 0.24);
+  }
+
+  .portfolio-dialog::backdrop {
+    background: rgba(20, 15, 11, 0.46);
+    backdrop-filter: blur(4px);
+  }
+
+  .portfolio-dialog-shell {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    min-height: 36rem;
+    overflow: hidden;
+    background: linear-gradient(180deg, rgba(255, 251, 245, 0.98), rgba(255, 245, 232, 0.96));
+    border: 1px solid rgba(84, 60, 43, 0.08);
+    border-radius: calc(var(--radius-xl) + 0.2rem);
+  }
+
+  .dialog-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 2;
+    border: 0;
+    border-radius: 999px;
+    padding: 0.55rem 0.8rem;
+    background: rgba(32, 24, 18, 0.86);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .portfolio-dialog-media {
+    background: rgba(32, 24, 18, 0.04);
+    padding: 1rem;
+  }
+
+  .portfolio-dialog-video,
+  .portfolio-dialog-video iframe,
+  .portfolio-dialog-video video,
+  .dialog-video-fallback {
+    width: 100%;
+    height: 100%;
+    min-height: 28rem;
+    border: 0;
+    border-radius: var(--radius-lg);
+  }
+
+  .portfolio-dialog-video video {
+    display: block;
+    object-fit: cover;
+    background: rgba(18, 14, 11, 0.82);
+  }
+
+  .dialog-video-fallback {
+    position: relative;
+    display: flex;
+    align-items: end;
+    justify-content: start;
+    overflow: hidden;
+    text-decoration: none;
+    background: rgba(32, 24, 18, 0.12);
+  }
+
+  .dialog-video-fallback img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .dialog-video-fallback span {
+    position: relative;
+    margin: 1rem;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.2rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(255, 247, 240, 0.94);
+    color: var(--surface-ink);
+    font-weight: 700;
+  }
+
+  .portfolio-dialog-copy {
+    display: grid;
+    gap: 1rem;
+    padding: clamp(1rem, 2.5vw, 1.4rem);
+    padding-bottom: calc(clamp(1rem, 2.5vw, 1.4rem) + env(safe-area-inset-bottom));
+    overflow: auto;
+  }
+
+  .portfolio-dialog-stack {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .portfolio-dialog-head {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .portfolio-dialog-duration {
+    color: var(--surface-ink);
+    font-weight: 700;
+  }
+
+  .portfolio-dialog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .dialog-tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2rem;
+    padding: 0.32rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid rgba(84, 60, 43, 0.08);
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--surface-ink);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .portfolio-dialog-description {
+    max-width: none;
+  }
+
+  .portfolio-dialog-detail-grid {
+    display: grid;
+    gap: 0.9rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dialog-detail-block {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.9rem;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(84, 60, 43, 0.06);
+  }
+
+  .portfolio-related {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .portfolio-related-head {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .portfolio-related-grid {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .related-card {
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1fr);
+    gap: 0.8rem;
+    align-items: center;
+    width: 100%;
+    padding: 0.55rem;
+    border: 1px solid rgba(84, 60, 43, 0.08);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.72);
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .related-card img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: calc(var(--radius-md) - 0.25rem);
+  }
+
+  .related-copy {
+    display: grid;
+    gap: 0.22rem;
+  }
+
+  .related-copy strong {
+    color: var(--surface-ink);
+  }
+
+  .related-copy span {
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+
+  @media (max-width: 47.99rem) {
+    .portfolio-hero {
+      padding-top: 1rem;
+    }
+
+    .portfolio-hero-meta {
+      gap: 0.75rem;
+    }
+
+    .portfolio-gallery {
+      gap: 0.85rem;
+    }
+
+    .is-editorial,
+    .is-balanced {
+      grid-template-columns: 1fr;
+    }
+
+    .tile-span-wide,
+    .tile-span-narrow,
+    .tile-span-regular,
+    .tile-span-compact {
+      grid-column: auto;
+    }
+
+    .portfolio-dialog {
+      width: 100%;
+      max-height: 100dvh;
+      margin: auto 0 0;
+      border-radius: 1.25rem 1.25rem 0 0;
+    }
+
+    .portfolio-dialog-shell {
+      grid-template-columns: 1fr;
+      min-height: auto;
+      max-height: 88dvh;
+      border-radius: 1.25rem 1.25rem 0 0;
+    }
+
+    .dialog-close {
+      top: 0.75rem;
+      right: 0.75rem;
+    }
+
+    .portfolio-dialog-media {
+      padding: 0.85rem 0.85rem 0;
+    }
+
+    .portfolio-dialog-video,
+    .portfolio-dialog-video iframe,
+    .portfolio-dialog-video video,
+    .dialog-video-fallback {
+      min-height: 18rem;
+    }
+
+    .portfolio-dialog-copy {
+      gap: 0.85rem;
+    }
+
+    .portfolio-dialog-detail-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

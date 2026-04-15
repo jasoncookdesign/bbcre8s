@@ -1,0 +1,105 @@
+---
+import SectionHeader from "@components/ui/SectionHeader.astro";
+import SurfaceCard from "@components/ui/SurfaceCard.astro";
+import { getReadyTestimonials, getTrustFallbackSignals, getVisibleTrustMetrics } from "@content/trust";
+
+const trustMetrics = getVisibleTrustMetrics();
+const testimonialItems = getReadyTestimonials();
+const fallbackSignals = getTrustFallbackSignals();
+---
+
+<section class="section section-tight">
+  <div class="container">
+    <SectionHeader
+      eyebrow="Trust Layer"
+      title="Fast proof points that support the hiring decision."
+      text={
+        testimonialItems.length > 0
+          ? "Clear delivery signals, verified feedback, and a focused workflow help keep the evaluation process simple."
+          : "Until verified testimonials are marked ready, the section leans on positioning, niche fit, and process clarity instead of fake social proof."
+      }
+    />
+    <div class="grid trust-grid">
+      <div class="grid metrics-grid">
+        {
+          trustMetrics.map((metric) => (
+            <SurfaceCard class="metric-card">
+              <p class="eyebrow">Proof Point</p>
+              <h3>{metric.label}</h3>
+              <p>{metric.value}</p>
+            </SurfaceCard>
+          ))
+        }
+      </div>
+      <div class="grid testimonial-grid">
+        {
+          testimonialItems.length > 0
+            ? testimonialItems.map((item) => (
+                <SurfaceCard class="testimonial-card" tone="strong">
+                  <p class="stars" aria-label={`${item.rating ?? 5} star rating`}>{"★".repeat(item.rating ?? 5)}</p>
+                  <p class="quote">“{item.quote}”</p>
+                  <p class="attribution">{item.attribution}</p>
+                  <p class="context">{item.context}</p>
+                </SurfaceCard>
+              ))
+            : fallbackSignals.map((signal) => (
+                <SurfaceCard class="testimonial-card fallback-card" tone="strong">
+                  <p class="eyebrow">Fallback signal</p>
+                  <h3>{signal.title}</h3>
+                  <p class="context">{signal.detail}</p>
+                </SurfaceCard>
+              ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .trust-grid {
+    gap: 1rem;
+  }
+
+  .metrics-grid,
+  .testimonial-grid {
+    gap: 1rem;
+  }
+
+  .metric-card,
+  .testimonial-card {
+    padding: clamp(1rem, 2.6vw, 1.25rem);
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .stars {
+    color: var(--accent-strong);
+    letter-spacing: 0.08em;
+    font-weight: 800;
+  }
+
+  .quote {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .attribution {
+    color: var(--surface-ink);
+    font-weight: 700;
+  }
+
+  .context {
+    color: var(--ink-faint);
+    font-size: 0.92rem;
+  }
+
+  .fallback-card h3 {
+    color: var(--surface-ink);
+  }
+
+  @media (min-width: 50rem) {
+    .trust-grid {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    }
+  }
+</style>

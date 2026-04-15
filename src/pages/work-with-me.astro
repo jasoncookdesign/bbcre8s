@@ -1,0 +1,220 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import CTAHire from "@components/sections/CTAHire.astro";
+import ButtonLink from "@components/ui/ButtonLink.astro";
+import CTARow from "@components/ui/CTARow.astro";
+import SurfaceCard from "@components/ui/SurfaceCard.astro";
+import { siteConfig } from "@content/site";
+
+const intakeConfig = siteConfig.intakeFallback;
+const hasExternalForm = intakeConfig.status === "ready" && Boolean(intakeConfig.externalFormUrl);
+const hasMailtoFallback = Boolean(intakeConfig.email);
+const hasDirectFallback = hasExternalForm || hasMailtoFallback;
+---
+
+<BaseLayout
+  title="Work With Me | bbcre8s UGC"
+  description="Hire through Fiverr or Upwork with the clearest direct path for product-focused UGC projects."
+  pathname={Astro.url.pathname}
+>
+  <section class="section">
+    <div class="container stack-lg">
+      <div class="stack-md">
+        <p class="eyebrow">Work With Me</p>
+        <h1>The clearest path is to hire through Fiverr or Upwork.</h1>
+        <p class="lead">
+          Pick the platform that fits your workflow, send a short brief, and I will reply with fit, direction, and next steps.
+        </p>
+      </div>
+
+      <div class="grid grid-2 platform-grid">
+        {
+          siteConfig.offsitePlatforms.map((platform, index) => (
+            <SurfaceCard class="platform-card" tone="strong">
+              <p class="eyebrow">Preferred Platform</p>
+              <h2>{platform.ctaLabel}</h2>
+              <p>{platform.description}</p>
+              <ButtonLink
+                href={platform.href}
+                external={true}
+                variant={index === 0 ? "primary" : "secondary"}
+                fullWidth={true}
+              >
+                {platform.ctaLabel}
+              </ButtonLink>
+            </SurfaceCard>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-panel">
+    <div class="container grid grid-2">
+      <SurfaceCard class="intake-card">
+        <p class="eyebrow">Direct Intake Fallback</p>
+        <h2>Need a zero-backend option?</h2>
+        <p>
+          This form either opens a configured intake link or generates a pre-filled email draft. If neither is configured yet, the page stays stable and tells you what is missing.
+        </p>
+
+        <form
+          id="intake-fallback-form"
+          class="intake-form"
+          data-external-form-url={hasExternalForm ? intakeConfig.externalFormUrl : ""}
+          data-intake-email={intakeConfig.email ?? ""}
+          data-intake-subject={intakeConfig.subject}
+        >
+          <label class="form-field">
+            <span>Name</span>
+            <input type="text" name="name" autocomplete="name" required />
+          </label>
+          <label class="form-field">
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="email" required />
+          </label>
+          <label class="form-field field-wide">
+            <span>Project description</span>
+            <textarea name="project" rows="5" required placeholder="What you need, what you sell, and what success looks like."></textarea>
+          </label>
+          <button class="intake-submit" type="submit" disabled={!hasDirectFallback}>
+            {hasExternalForm ? "Open Intake Form" : hasMailtoFallback ? "Create Email Draft" : "Direct Intake Not Yet Configured"}
+          </button>
+          <p class="form-note" id="intake-fallback-status">
+            {
+              hasExternalForm
+                ? "Your answers will be passed into the configured form link."
+                : hasMailtoFallback
+                  ? "Submitting opens your email app with the brief pre-filled."
+                  : "Add a contact email or form URL in the site config to enable this direct path."
+            }
+          </p>
+        </form>
+      </SurfaceCard>
+
+      <SurfaceCard class="support-card" tone="strong">
+        <p class="eyebrow">Optional Support</p>
+        <h2>Need a quick intro call?</h2>
+        <p>
+          Mention it in your Fiverr or Upwork message first. If a short fit-check call makes sense after the brief, I can share availability without adding friction up front.
+        </p>
+        <CTARow
+          items={[
+            { label: siteConfig.primaryCta.label, href: siteConfig.primaryCta.href, external: true },
+            { label: "View Portfolio", href: "/portfolio", variant: "secondary" }
+          ]}
+        />
+      </SurfaceCard>
+    </div>
+  </section>
+
+  <script is:inline>
+    const intakeForm = document.getElementById("intake-fallback-form");
+    const statusNode = document.getElementById("intake-fallback-status");
+
+    if (intakeForm instanceof HTMLFormElement) {
+      intakeForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(intakeForm);
+        const name = String(formData.get("name") ?? "").trim();
+        const email = String(formData.get("email") ?? "").trim();
+        const project = String(formData.get("project") ?? "").trim();
+
+        const externalFormUrl = intakeForm.dataset.externalFormUrl ?? "";
+        const intakeEmail = intakeForm.dataset.intakeEmail ?? "";
+        const subjectBase = intakeForm.dataset.intakeSubject ?? "UGC project inquiry";
+
+        if (externalFormUrl) {
+          const url = new URL(externalFormUrl, window.location.href);
+          url.searchParams.set("name", name);
+          url.searchParams.set("email", email);
+          url.searchParams.set("project", project);
+          window.location.href = url.toString();
+          return;
+        }
+
+        if (intakeEmail) {
+          const body = [
+            `Name: ${name}`,
+            `Email: ${email}`,
+            "",
+            "Project description:",
+            project
+          ].join("\n");
+
+          window.location.href = `mailto:${intakeEmail}?subject=${encodeURIComponent(subjectBase)}&body=${encodeURIComponent(body)}`;
+          return;
+        }
+
+        if (statusNode) {
+          statusNode.textContent =
+            "Direct intake is not configured yet. Use Fiverr or Upwork for now, or add an email/form URL in the site config.";
+        }
+      });
+    }
+  </script>
+
+  <CTAHire />
+</BaseLayout>
+
+<style>
+  .platform-grid {
+    gap: 1rem;
+  }
+
+  .platform-card,
+  .intake-card,
+  .support-card {
+    padding: clamp(1rem, 2.8vw, 1.3rem);
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .intake-form {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .form-field {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .form-field span {
+    color: var(--surface-ink);
+    font-weight: 700;
+  }
+
+  .form-field input,
+  .form-field textarea {
+    width: 100%;
+    border: 1px solid rgba(84, 60, 43, 0.12);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.8);
+    padding: 0.8rem 0.9rem;
+    font: inherit;
+    color: var(--ink);
+  }
+
+  .intake-submit {
+    min-height: 2.75rem;
+    border: 0;
+    border-radius: 999px;
+    padding: 0.7rem 1rem;
+    background: linear-gradient(135deg, var(--accent) 0%, #ff8444 100%);
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .intake-submit:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .form-note {
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+</style>

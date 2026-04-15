@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title desc">
+  <title id="title">About Headshot Placeholder</title>
+  <desc id="desc">Placeholder image for creator headshot.</desc>
+  <rect width="1080" height="1350" fill="#f9eddc" />
+  <circle cx="540" cy="520" r="210" fill="#f4c79b" />
+  <rect x="300" y="760" width="480" height="420" rx="170" fill="#f0b988" />
+  <text x="540" y="1240" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" fill="#714b31">Headshot Placeholder</text>
+</svg>

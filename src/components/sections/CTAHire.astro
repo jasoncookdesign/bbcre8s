@@ -1,0 +1,32 @@
+---
+import CTARow from "@components/ui/CTARow.astro";
+import SurfaceCard from "@components/ui/SurfaceCard.astro";
+import { siteConfig } from "@content/site";
+---
+
+<section class="section">
+  <SurfaceCard class="container cta" tone="strong">
+    <div>
+      <p class="eyebrow">Work With Me</p>
+      <h2>Ready to book UGC for your next campaign?</h2>
+      <p class="lead">
+        Choose your preferred platform and message me with your product, timeline, and goals.
+      </p>
+    </div>
+    <CTARow
+      items={[
+        { label: siteConfig.primaryCta.label, href: siteConfig.primaryCta.href, external: true },
+        { label: siteConfig.secondaryCta.label, href: siteConfig.secondaryCta.href, external: true, variant: "secondary" },
+        { label: "View Portfolio", href: "/portfolio", variant: "ghost" }
+      ]}
+    />
+  </SurfaceCard>
+</section>
+
+<style>
+  .cta {
+    padding: clamp(1.2rem, 3vw, 2rem);
+    display: grid;
+    gap: var(--space-3);
+  }
+</style>

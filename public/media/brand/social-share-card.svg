@@ -1,0 +1,22 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" rx="32" fill="#F7F3EB"/>
+  <rect x="28" y="28" width="1144" height="574" rx="28" fill="#FFF8F1" stroke="#E6D8C8"/>
+  <circle cx="1080" cy="92" r="120" fill="#FFE5C1" fill-opacity="0.95"/>
+  <circle cx="140" cy="88" r="96" fill="#F2662F" fill-opacity="0.12"/>
+  <rect x="72" y="104" width="148" height="38" rx="19" fill="#FFE5C1"/>
+  <text x="94" y="129" fill="#2B201A" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" letter-spacing="1.5">bbcre8s UGC</text>
+  <text x="72" y="228" fill="#201812" font-family="Arial, Helvetica, sans-serif" font-size="60" font-weight="800">Premium,</text>
+  <text x="72" y="296" fill="#201812" font-family="Arial, Helvetica, sans-serif" font-size="60" font-weight="800">video-first UGC</text>
+  <text x="72" y="364" fill="#201812" font-family="Arial, Helvetica, sans-serif" font-size="60" font-weight="800">for modern brands</text>
+  <text x="72" y="432" fill="#63574D" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="500">Portfolio • Services • Hiring via Fiverr and Upwork</text>
+  <rect x="72" y="484" width="208" height="52" rx="26" fill="#F2662F"/>
+  <text x="112" y="517" fill="#FFF8F2" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">View Portfolio</text>
+  <g opacity="0.95">
+    <rect x="760" y="126" width="320" height="380" rx="28" fill="#2B201A"/>
+    <rect x="784" y="154" width="272" height="332" rx="22" fill="#FFF8F1"/>
+    <rect x="814" y="186" width="212" height="220" rx="18" fill="#FFE5C1"/>
+    <polygon points="910,250 910,342 986,296" fill="#F2662F"/>
+    <rect x="828" y="426" width="120" height="24" rx="12" fill="#F2662F" fill-opacity="0.22"/>
+    <rect x="828" y="460" width="170" height="16" rx="8" fill="#D8C6B4"/>
+  </g>
+</svg>

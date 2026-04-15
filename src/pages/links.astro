@@ -1,0 +1,162 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import ButtonLink from "@components/ui/ButtonLink.astro";
+import CTARow from "@components/ui/CTARow.astro";
+import SurfaceCard from "@components/ui/SurfaceCard.astro";
+import { getVisibleFutureHubLinks, getVisibleSocialLinks, siteConfig } from "@content/site";
+
+const socialLinks = getVisibleSocialLinks();
+const futureLinks = getVisibleFutureHubLinks();
+const hasSupportLinks = socialLinks.length > 0 || futureLinks.length > 0;
+---
+
+<BaseLayout
+  title="Link Hub | bbcre8s UGC"
+  description="Quick access to hiring platforms and portfolio viewing from one simple page."
+  pathname={Astro.url.pathname}
+>
+  <section class="section">
+    <div class="container-narrow stack-lg">
+      <SurfaceCard class="site-panel stack-lg" tone="strong">
+        <div class="stack-md">
+          <p class="eyebrow">Link Hub</p>
+          <h1>Quick destinations for direct traffic and fast next steps.</h1>
+          <p class="lead">
+            Use this page for simple portfolio viewing and direct access to hiring platforms.
+          </p>
+        </div>
+        <CTARow
+          items={[
+            { label: siteConfig.primaryCta.label, href: siteConfig.primaryCta.href, external: true },
+            { label: siteConfig.secondaryCta.label, href: siteConfig.secondaryCta.href, external: true, variant: "secondary" },
+            { label: "View Portfolio", href: "/portfolio", variant: "ghost" }
+          ]}
+        />
+      </SurfaceCard>
+
+      <div class="grid link-hub-grid">
+        {
+          siteConfig.offsitePlatforms.map((platform, index) => (
+            <SurfaceCard class="hub-card" tone={index === 0 ? "strong" : "default"}>
+              <p class="eyebrow">Primary Destination</p>
+              <h2>{platform.label}</h2>
+              <p>{platform.description}</p>
+              <ButtonLink href={platform.href} external={true} fullWidth={true} variant={index === 0 ? "primary" : "secondary"}>
+                {platform.ctaLabel}
+              </ButtonLink>
+            </SurfaceCard>
+          ))
+        }
+      </div>
+
+      {
+        hasSupportLinks ? (
+          <div class="grid grid-2 support-grid">
+            {
+              socialLinks.length > 0 ? (
+                <SurfaceCard class="hub-block">
+                  <div class="stack-sm">
+                    <p class="eyebrow">Social Profiles</p>
+                    <h2>Additional destinations</h2>
+                    <p>These links support discovery without distracting from the main hiring path.</p>
+                  </div>
+                  <div class="hub-list">
+                    {
+                      socialLinks.map((link) => (
+                        <div class="hub-list-item">
+                          <div>
+                            <strong>{link.label}</strong>
+                            <p>{link.description}</p>
+                          </div>
+                          <ButtonLink href={link.href!} external={true} size="sm" variant="secondary">Open</ButtonLink>
+                        </div>
+                      ))
+                    }
+                  </div>
+                </SurfaceCard>
+              ) : null
+            }
+
+            {
+              futureLinks.length > 0 ? (
+                <SurfaceCard class="hub-block">
+                  <div class="stack-sm">
+                    <p class="eyebrow">Additional Links</p>
+                    <h2>Supporting destinations</h2>
+                    <p>Use these for campaign-specific sharing or supporting materials when needed.</p>
+                  </div>
+                  <div class="hub-list">
+                    {
+                      futureLinks.map((link) => (
+                        <div class="hub-list-item">
+                          <div>
+                            <strong>{link.label}</strong>
+                            <p>{link.description}</p>
+                          </div>
+                          <span class="hub-status">{link.status}</span>
+                        </div>
+                      ))
+                    }
+                  </div>
+                </SurfaceCard>
+              ) : null
+            }
+          </div>
+        ) : null
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .link-hub-grid,
+  .support-grid {
+    gap: 1rem;
+  }
+
+  .hub-card,
+  .hub-block {
+    padding: clamp(1rem, 2.8vw, 1.3rem);
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .hub-list {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .hub-list-item {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding: 0.85rem 0.9rem;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(84, 60, 43, 0.08);
+  }
+
+  .hub-list-item strong {
+    color: var(--surface-ink);
+  }
+
+  .hub-status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    background: var(--surface-strong);
+    color: var(--surface-ink);
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 40rem) {
+    .hub-list-item {
+      flex-direction: column;
+    }
+  }
+</style>

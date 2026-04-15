@@ -1,0 +1,27 @@
+---
+import ButtonLink from "@components/ui/ButtonLink.astro";
+
+interface CtaLink {
+  label: string;
+  href: string;
+  external?: boolean;
+  variant?: "primary" | "secondary" | "ghost";
+}
+
+interface Props {
+  items: CtaLink[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<div class:list={["cta-row", className]}>
+  {
+    items.map((item) => (
+      <ButtonLink href={item.href} external={item.external} variant={item.variant ?? "primary"}>
+        {item.label}
+      </ButtonLink>
+    ))
+  }
+</div>

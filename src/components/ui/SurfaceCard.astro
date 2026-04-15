@@ -1,0 +1,12 @@
+---
+interface Props {
+  class?: string;
+  tone?: "default" | "strong";
+}
+
+const { class: className, tone = "default" } = Astro.props;
+---
+
+<div class:list={["card", tone === "strong" && "card-strong", className]}>
+  <slot />
+</div>
