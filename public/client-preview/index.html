@@ -1,148 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <title>bbcre8s — Design Mockups (Client Review)</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FFFFFF">
+<title>bbcre8s — Design Preview (Client Review)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFFFF;--bg-strong:#F2F2F2;--accent:#D9A5B3;--accent-strong:#C48F9C;--accent-blush:#F5E5EA;
+  --accent-blue:#A8C6DF;--nb-charcoal:#333333;--ink:#333333;--ink-soft:#555555;--ink-faint:#888888;--ink-on-dark:#FFFFFF;
+  --font-display:"Space Grotesk","Archivo Black","Helvetica Neue",sans-serif;--font-body:"Manrope","Helvetica Neue","Segoe UI",sans-serif;
+  --text-h1:clamp(2.25rem,5vw,3.25rem);--text-h3:1.35rem;--text-h4:1.125rem;--text-body:1rem;--text-small:0.875rem;--text-micro:0.75rem;
+  --space-2:0.75rem;--space-3:1rem;--space-4:1.5rem;--space-5:2rem;--space-6:3rem;--space-7:4rem;--radius-sm:4px;
+  --shadow-hard:6px 6px 0 var(--nb-charcoal);--shadow-hard-sm:4px 4px 0 var(--nb-charcoal);--shadow-hard-rose:6px 6px 0 var(--accent);
+  --border-neo:2.5px solid var(--nb-charcoal);--border-neo-thick:3.5px solid var(--nb-charcoal);--border-neo-accent:2.5px solid var(--accent);
+  --transition:150ms ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-body);color:var(--ink);background:var(--accent-blush);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:60rem;margin:0 auto;padding:var(--space-7) var(--space-4) var(--space-6);}
 
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: 1rem;
-      line-height: 1.6;
-      color: #222;
-      background: #f9f9f9;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem;
-    }
+.eyebrow{display:inline-flex;align-items:center;padding:0.3rem 0.8rem;border:var(--border-neo-accent);box-shadow:3px 3px 0 var(--accent);
+  font-size:var(--text-micro);font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--nb-charcoal);background:var(--bg);margin-bottom:var(--space-4);}
+.logo{font-family:var(--font-display);font-size:var(--text-h1);font-weight:700;letter-spacing:-0.02em;line-height:1;color:var(--nb-charcoal);}
+.logo span{color:var(--accent-strong);}
+.intro{font-family:var(--font-body);font-size:clamp(1rem,1.4vw,1.125rem);color:var(--ink-soft);max-width:42rem;margin-top:var(--space-3);}
 
-    .container {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      padding: 2.5rem 2rem;
-      max-width: 480px;
-      width: 100%;
-    }
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-4);margin-top:var(--space-6);}
+@media(max-width:640px){.grid{grid-template-columns:1fr;}}
 
-    h1 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.5rem;
-      color: #111;
-    }
+.card{display:flex;flex-direction:column;gap:0.35rem;padding:var(--space-4) var(--space-4) var(--space-5);background:var(--bg);
+  border:var(--border-neo);box-shadow:var(--shadow-hard);transition:transform var(--transition),box-shadow var(--transition);}
+.card:hover,.card:focus{outline:none;transform:translate(-4px,-4px);box-shadow:10px 10px 0 var(--accent);}
+@media(prefers-reduced-motion:reduce){.card:hover,.card:focus{transform:none;box-shadow:var(--shadow-hard-rose);}}
+.card-label{font-family:var(--font-body);font-size:var(--text-micro);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent-strong);}
+.card-title{font-family:var(--font-display);font-size:var(--text-h3);font-weight:700;color:var(--nb-charcoal);}
+.card-desc{font-family:var(--font-body);font-size:var(--text-small);color:var(--ink-soft);margin-top:0.15rem;}
+.card-go{margin-top:auto;padding-top:var(--space-3);font-family:var(--font-body);font-size:var(--text-micro);font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;color:var(--nb-charcoal);}
+.card.is-primary{background:var(--accent);}
+.card.is-primary:hover,.card.is-primary:focus{box-shadow:10px 10px 0 var(--nb-charcoal);}
 
-    .note {
-      font-size: 0.875rem;
-      color: #666;
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid #eee;
-    }
-
-    .links {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .link-card {
-      display: block;
-      padding: 1rem 1.25rem;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      text-decoration: none;
-      color: #111;
-      background: #fafafa;
-      transition: background 0.15s, border-color 0.15s;
-    }
-
-    .link-card:hover,
-    .link-card:focus {
-      background: #f0f0f0;
-      border-color: #aaa;
-      outline: none;
-    }
-
-    .link-card-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #888;
-      margin-bottom: 0.2rem;
-    }
-
-    .link-card-title {
-      font-size: 0.9375rem;
-      font-weight: 500;
-      color: #111;
-    }
-
-    .link-card-arrow {
-      font-size: 0.8125rem;
-      color: #aaa;
-      margin-top: 0.25rem;
-    }
-
-    .footer-note {
-      margin-top: 1.75rem;
-      font-size: 0.8125rem;
-      color: #999;
-      padding-top: 1.25rem;
-      border-top: 1px solid #eee;
-    }
-  </style>
+.foot{margin-top:var(--space-6);padding-top:var(--space-4);border-top:2.5px solid var(--nb-charcoal);
+  font-family:var(--font-body);font-size:var(--text-small);color:var(--ink-soft);}
+:focus-visible{outline:3px solid var(--accent-blue);outline-offset:3px;}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>bbcre8s &mdash; Design Mockups</h1>
-    <p class="note">Client review, 2026. Open each treatment in its own tab to compare side by side.</p>
+<main class="wrap">
 
-    <div class="links">
-      <a
-        class="link-card"
-        href="minimalist/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <div class="link-card-label">Treatment A</div>
-        <div class="link-card-title">Minimalist</div>
-        <div class="link-card-arrow">Opens in new tab &rarr;</div>
-      </a>
+  <span class="eyebrow">Client review site</span>
+  <h1 class="logo">bb<span>cre8s</span> — Design Preview</h1>
+  <p class="intro">Your new one-page site, plus the supporting pages that live around it. Each card opens a page in a new tab — explore them in any order. Everything here is a draft for your review, not the live site.</p>
 
-      <a
-        class="link-card"
-        href="neo-brutalist/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <div class="link-card-label">Treatment B</div>
-        <div class="link-card-title">Neo-Brutalist</div>
-        <div class="link-card-arrow">Opens in new tab &rarr;</div>
-      </a>
+  <div class="grid">
 
-      <a
-        class="link-card"
-        href="treatment-c/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <div class="link-card-label">Treatment C</div>
-        <div class="link-card-title">Editorial Bento</div>
-        <div class="link-card-arrow">Opens in new tab &rarr;</div>
-      </a>
-    </div>
+    <a class="card is-primary" href="site/index.html" target="_blank" rel="noopener noreferrer">
+      <span class="card-label">Main site</span>
+      <span class="card-title">Home page</span>
+      <span class="card-desc">The full single-page site — hero reel, featured work, services, process, booking, and contact, all on one scroll.</span>
+      <span class="card-go">Open page ↗</span>
+    </a>
 
-    <p class="footer-note">
-      These are draft mockups for review purposes only &mdash; not the live site.
-    </p>
+    <a class="card" href="site/links.html" target="_blank" rel="noopener noreferrer">
+      <span class="card-label">Link in bio</span>
+      <span class="card-title">Links page</span>
+      <span class="card-desc">A mobile-first link page for your Instagram bio — one tap to your work, booking, email, and socials.</span>
+      <span class="card-go">Open page ↗</span>
+    </a>
+
+    <a class="card" href="site/form-errors.html" target="_blank" rel="noopener noreferrer">
+      <span class="card-label">Contact form</span>
+      <span class="card-title">Form error states</span>
+      <span class="card-desc">How the contact form gently guides someone when a field is missed — clear, on-brand messages under each field.</span>
+      <span class="card-go">Open page ↗</span>
+    </a>
+
+    <a class="card" href="site/thank-you.html" target="_blank" rel="noopener noreferrer">
+      <span class="card-label">After submitting</span>
+      <span class="card-title">Message sent</span>
+      <span class="card-desc">The friendly confirmation a visitor sees right after sending the contact form.</span>
+      <span class="card-go">Open page ↗</span>
+    </a>
+
+    <a class="card" href="site/privacy.html" target="_blank" rel="noopener noreferrer">
+      <span class="card-label">Legal</span>
+      <span class="card-title">Privacy policy</span>
+      <span class="card-desc">Covers the contact form, booking, and analytics. The wording is placeholder text, to be finalized before launch.</span>
+      <span class="card-go">Open page ↗</span>
+    </a>
+
+    <a class="card" href="site/404.html" target="_blank" rel="noopener noreferrer">
+      <span class="card-label">Error page</span>
+      <span class="card-title">Page not found (404)</span>
+      <span class="card-desc">The on-brand page that catches a mistyped or broken link and points the visitor back to your site.</span>
+      <span class="card-go">Open page ↗</span>
+    </a>
+
+    <a class="card" href="site/500.html" target="_blank" rel="noopener noreferrer">
+      <span class="card-label">Error page</span>
+      <span class="card-title">Server error (500)</span>
+      <span class="card-desc">The fallback page shown in the rare case something goes wrong on the server.</span>
+      <span class="card-go">Open page ↗</span>
+    </a>
+
   </div>
+
+  <p class="foot">Draft mockups for review only — not the live site. Design direction: Treatment B (Neo-Brutalist).</p>
+
+</main>
 </body>
 </html>
