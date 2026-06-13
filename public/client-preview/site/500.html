@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="robots" content="noindex">
+<title>500 — Something Went Wrong · bbcre8s [DESIGN COMP — Treatment B]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Shared Treatment B tokens (subset) ── */
+:root {
+  --bg:#FFFFFF; --bg-strong:#F2F2F2;
+  --accent:#D9A5B3; --accent-strong:#C48F9C; --accent-blush:#F5E5EA;
+  --accent-blue:#A8C6DF; --accent-blue-tint:#D6E8F2;
+  --nb-charcoal:#333333; --ink:#333333; --ink-soft:#555555; --ink-faint:#888888;
+  --ink-on-dark:#FFFFFF;
+  --font-display:"Space Grotesk","Archivo Black","Helvetica Neue",sans-serif;
+  --font-body:"Manrope","Helvetica Neue","Segoe UI",sans-serif;
+  --text-display:clamp(3.5rem,8vw,6rem); --text-h1:clamp(2.25rem,5vw,3.5rem);
+  --text-h2:clamp(1.75rem,3vw,2.25rem); --text-h3:1.5rem; --text-h4:1.125rem;
+  --text-body:1rem; --text-small:0.875rem; --text-micro:0.75rem;
+  --space-1:0.5rem; --space-2:0.75rem; --space-3:1rem; --space-4:1.5rem;
+  --space-5:2rem; --space-6:3rem; --space-7:4rem; --space-8:5.5rem;
+  --radius-sm:4px;
+  --shadow-hard:6px 6px 0 var(--nb-charcoal); --shadow-hard-sm:4px 4px 0 var(--nb-charcoal);
+  --shadow-hard-rose:6px 6px 0 var(--accent); --shadow-hard-blue:6px 6px 0 var(--accent-blue);
+  --shadow-hard-lg:8px 8px 0 var(--nb-charcoal);
+  --border-neo:2.5px solid var(--nb-charcoal); --border-neo-thick:3.5px solid var(--nb-charcoal);
+  --border-neo-accent:2.5px solid var(--accent);
+  --content-max:72rem; --header-height:4.75rem; --transition:150ms ease;
+
+  /* per-page accent — 500 uses powder blue to read distinctly from 404 */
+  --page-accent: var(--accent-blue);
+  --page-shadow: var(--shadow-hard-blue);
+  --page-bg: var(--bg);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-body);font-size:var(--text-body);color:var(--ink);background:var(--page-bg);line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;}
+a{color:inherit;text-decoration:none;}
+.container{width:100%;max-width:var(--content-max);margin:0 auto;padding:0 var(--space-5);}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:var(--space-2);font-family:var(--font-body);font-size:var(--text-small);font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:0.9rem 1.85rem;border-radius:var(--radius-sm);cursor:pointer;transition:transform var(--transition),box-shadow var(--transition),background var(--transition);border:none;}
+.btn-primary{background:var(--accent);color:var(--nb-charcoal);border:var(--border-neo);box-shadow:var(--shadow-hard-sm);}
+.btn-primary:hover{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--nb-charcoal);}
+.btn-outline{background:var(--bg);color:var(--nb-charcoal);border:var(--border-neo);box-shadow:var(--shadow-hard-sm);}
+.btn-outline:hover{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--nb-charcoal);}
+@media (prefers-reduced-motion:reduce){.btn:hover{transform:none;box-shadow:var(--shadow-hard-sm);}}
+
+/* Nav */
+.site-nav{height:var(--header-height);display:flex;align-items:center;background:#fff;border-bottom:var(--border-neo-thick);position:sticky;top:0;z-index:50;}
+.site-nav .container{display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:var(--font-display);font-size:1.4rem;font-weight:700;color:var(--ink);letter-spacing:-0.02em;}
+.nav-logo span{color:var(--accent-strong);}
+.nav-links{display:flex;gap:var(--space-4);list-style:none;}
+.nav-links a{font-family:var(--font-body);font-size:var(--text-small);font-weight:600;color:var(--ink-soft);}
+.nav-links a:hover{color:var(--ink);}
+@media (max-width:680px){.nav-links{display:none;}}
+
+/* Error block */
+.error-wrap{flex:1;display:flex;align-items:center;padding:var(--space-8) 0;}
+.error-inner{position:relative;max-width:46rem;}
+.error-code{font-family:var(--font-display);font-weight:700;font-size:clamp(5.5rem,20vw,11rem);line-height:0.9;letter-spacing:-0.04em;color:var(--nb-charcoal);display:inline-block;background:var(--page-bg);}
+.error-code .accent{color:var(--page-accent);}
+.error-label{display:inline-flex;align-items:center;padding:0.3rem 0.75rem;border:2.5px solid var(--page-accent);box-shadow:3px 3px 0 var(--page-accent);font-family:var(--font-body);font-size:var(--text-micro);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--nb-charcoal);margin-bottom:var(--space-4);background:var(--bg);}
+.error-headline{font-family:var(--font-display);font-size:var(--text-h1);font-weight:700;line-height:1.05;letter-spacing:-0.02em;color:var(--nb-charcoal);margin:var(--space-3) 0;}
+.error-body{font-size:clamp(1rem,1.4vw,1.125rem);color:var(--ink-soft);max-width:34rem;margin-bottom:var(--space-5);}
+.error-actions{display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:center;}
+.error-quicklinks{margin-top:var(--space-6);display:flex;flex-wrap:wrap;gap:var(--space-2);}
+.quicklink{display:inline-flex;align-items:center;padding:0.4rem 0.9rem;border:var(--border-neo);box-shadow:var(--shadow-hard-sm);background:var(--bg);font-family:var(--font-body);font-size:var(--text-micro);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-soft);transition:transform var(--transition),box-shadow var(--transition),color var(--transition);}
+.quicklink:hover{color:var(--nb-charcoal);box-shadow:4px 4px 0 var(--page-accent);border-color:var(--page-accent);}
+.error-sticker{position:absolute;top:-1.5rem;right:0;transform:rotate(-7deg);padding:0.6rem 1rem;background:var(--page-accent);color:var(--nb-charcoal);border:var(--border-neo);box-shadow:var(--shadow-hard-sm);font-family:var(--font-display);font-weight:700;font-size:1.1rem;letter-spacing:0.04em;}
+@media (max-width:680px){.error-sticker{position:static;display:inline-block;transform:rotate(-4deg);margin-bottom:var(--space-3);font-size:0.95rem;padding:0.45rem 0.85rem;}.error-inner{padding-top:var(--space-2);}}
+
+/* Footer */
+.site-footer{background:var(--nb-charcoal);padding:var(--space-7) 0 var(--space-5);border-top:3.5px solid var(--accent);color:var(--ink-on-dark);}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:var(--space-6);padding-bottom:var(--space-5);}
+.footer-brand-col{max-width:22rem;}
+.footer-logo{font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--ink-on-dark);letter-spacing:-0.02em;}
+.footer-logo span{color:var(--accent);}
+.footer-tag{font-family:var(--font-body);font-size:var(--text-small);color:rgba(255,255,255,0.62);margin:var(--space-2) 0 var(--space-3);line-height:1.55;}
+.footer-email{display:inline-block;font-family:var(--font-display);font-weight:700;font-size:var(--text-h4);color:var(--ink-on-dark);border-bottom:2.5px solid var(--accent);padding-bottom:0.15rem;}
+.footer-email:hover{color:var(--accent);}
+.footer-col-title{font-family:var(--font-body);font-size:var(--text-micro);font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:var(--space-3);}
+.footer-nav{list-style:none;display:flex;flex-direction:column;gap:var(--space-2);}
+.footer-nav a{font-family:var(--font-body);font-size:var(--text-small);font-weight:500;color:rgba(255,255,255,0.78);transition:color var(--transition);}
+.footer-nav a:hover{color:var(--accent);}
+.footer-social{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-2);}
+.social-chip{display:inline-flex;align-items:center;padding:0.4rem 0.85rem;border:2.5px solid rgba(255,255,255,0.55);box-shadow:4px 4px 0 rgba(255,255,255,0.18);font-family:var(--font-body);font-size:var(--text-micro);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-on-dark);background:transparent;transition:transform var(--transition),box-shadow var(--transition),background var(--transition);}
+.social-chip:hover{background:var(--accent);color:var(--nb-charcoal);border-color:var(--accent);transform:translate(4px,4px);box-shadow:1px 1px 0 var(--accent);}
+.footer-bottom{border-top:2.5px solid rgba(255,255,255,0.18);padding-top:var(--space-4);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-3);}
+.footer-copy{font-family:var(--font-body);font-size:var(--text-micro);color:rgba(255,255,255,0.45);}
+.footer-legal{display:flex;flex-wrap:wrap;gap:var(--space-4);}
+.footer-legal a{font-family:var(--font-body);font-size:var(--text-micro);font-weight:600;color:rgba(255,255,255,0.70);}
+.footer-legal a:hover{color:var(--accent);}
+@media (max-width:760px){.footer-top{grid-template-columns:1fr 1fr;}.footer-brand-col{grid-column:1/-1;max-width:none;}}
+@media (max-width:480px){.footer-top{grid-template-columns:1fr;}.footer-bottom{flex-direction:column;align-items:flex-start;}}
+:focus-visible{outline:3px solid var(--accent-blue);outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<nav class="site-nav" aria-label="Site navigation">
+  <div class="container">
+    <a href="index.html" class="nav-logo">bb<span>cre8s</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#portfolio">Portfolio</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <a href="index.html" class="btn btn-primary">Back to Site</a>
+  </div>
+</nav>
+
+<main class="error-wrap">
+  <div class="container">
+    <div class="error-inner">
+      <span class="error-sticker" aria-hidden="true">UH OH</span>
+      <span class="error-label">Error 500</span>
+      <div class="error-code"><span class="accent">5</span>0<span class="accent">0</span></div>
+      <h1 class="error-headline">Something broke on our end.</h1>
+      <p class="error-body">That's on us, not you. The page hit an unexpected snag. Give it a moment and try again — and if it keeps happening, reach out and Bella will sort it out.</p>
+      <div class="error-actions">
+        <a href="#" onclick="location.reload();return false;" class="btn btn-primary">Try Again</a>
+        <a href="index.html" class="btn btn-outline">Back to Home</a>
+      </div>
+      <div class="error-quicklinks" aria-label="Jump to a section">
+        <a class="quicklink" href="index.html#portfolio">Portfolio</a>
+        <a class="quicklink" href="index.html#services">Services</a>
+        <a class="quicklink" href="index.html#process">Process</a>
+        <a class="quicklink" href="index.html#contact">Contact</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer" aria-label="Site footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand-col">
+        <span class="footer-logo">bb<span>cre8s</span></span>
+        <p class="footer-tag">Video-first UGC and event content for brands that want to connect, engage, and convert &mdash; backed by 10+ years of real event production.</p>
+        <a class="footer-email" href="mailto:info@bbcre8s.com">info@bbcre8s.com</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Explore</p>
+        <ul class="footer-nav">
+          <li><a href="index.html#portfolio">Portfolio</a></li>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#process">Process</a></li>
+          <li><a href="index.html#contact">Work With Me</a></li>
+          <li><a href="links.html">Links</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Follow</p>
+        <div class="footer-social">
+          <a class="social-chip" href="#" aria-label="Instagram (placeholder)">Instagram</a>
+          <a class="social-chip" href="#" aria-label="TikTok (placeholder)">TikTok</a>
+          <a class="social-chip" href="#" aria-label="YouTube (placeholder)">YouTube</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 Bella B Creates. All rights reserved.</p>
+      <nav class="footer-legal" aria-label="Legal">
+        <a href="privacy.html">Privacy Policy</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>
