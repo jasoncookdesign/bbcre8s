@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F2F2F2">
+<title>bbcre8s — Bella B Creates [DESIGN COMP — Treatment C]</title>
+
+<!-- Google Fonts: Playfair Display (display) + DM Sans (body/UI) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS — INI-059 Treatment C
+   Brand palette: LOCKED (unchanged from v0.2 spec)
+   Type + base surface: Treatment C delta
+   ============================================================ */
+:root {
+  /* === BRAND PALETTE — LOCKED === */
+  --bg:               #F2F2F2;       /* Treatment C: grey page base; cards sit on white */
+  --bg-card:          #FFFFFF;       /* Card surface — lifts against page base */
+  --bg-strong:        #F2F2F2;       /* Secondary surface / alternating sections */
+  --surface:          rgba(255,255,255,0.94);
+  --surface-strong:   #F5E5EA;
+  --surface-ink:      #333333;
+  --ink:              #333333;
+  --ink-soft:         #555555;
+  --ink-faint:        #888888;
+  --accent:           #D9A5B3;       /* Dusty Rose — primary accent */
+  --accent-strong:    #C48F9C;       /* Accent hover / active */
+  --accent-contrast:  #FFFFFF;
+  --accent-blush:     #F5E5EA;       /* Blush Pink — soft surface */
+  --accent-blue:      #A8C6DF;       /* Powder Blue — sparing third accent */
+  --surface-dark:     #333333;       /* Dark sections: stats band, contact, footer */
+  --ink-on-dark:      #FFFFFF;
+  --ink-soft-on-dark: rgba(255,255,255,0.70);
+  --border:           rgba(51,51,51,0.10);
+  --border-strong:    rgba(51,51,51,0.20);
+  --success:          #1d7f5f;
+
+  /* === TREATMENT C TYPE DELTA === */
+  /* Playfair Display (editorial serif) for display + headings */
+  /* DM Sans (geometric humanist) for body + UI — skill's Google-Fonts alt for Satoshi */
+  --font-display: "Playfair Display", "Georgia", serif;
+  --font-body:    "DM Sans", "Helvetica Neue", "Segoe UI", sans-serif;
+
+  /* Type scale — same as v0.2 */
+  --text-display: clamp(2.6rem, 5.5vw, 4.25rem);
+  --text-h1:      clamp(1.875rem, 3.8vw, 2.875rem);
+  --text-h2:      clamp(1.5rem, 2.5vw, 2rem);
+  --text-h3:      1.375rem;
+  --text-h4:      1.125rem;
+  --text-body:    1rem;
+  --text-small:   0.875rem;
+  --text-micro:   0.75rem;
+
+  /* Spacing (unchanged) */
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+  --space-7: 4rem;
+  --space-8: 5.5rem;
+
+  /* === TREATMENT C RADIUS DELTA — bento grammar === */
+  --radius-sm:   0.5rem;
+  --radius-md:   1.25rem;  /* Cards: 20px, slightly larger than v0.2's 0.9rem */
+  --radius-lg:   1.75rem;
+  --radius-xl:   2rem;
+  --radius-bento: 1.5rem;  /* Standard bento card radius */
+
+  /* Shadows — tighter/crisper than v0.2 for bento feel */
+  --shadow-soft:   0 4px 16px rgba(51,51,51,0.06);
+  --shadow-lifted: 0 12px 40px rgba(51,51,51,0.10);
+  --shadow-accent: 0 4px 20px rgba(217,165,179,0.30);
+  --shadow-card:   0 2px 8px rgba(51,51,51,0.05), 0 8px 24px rgba(51,51,51,0.06);
+
+  /* Layout */
+  --content-max:     72rem;
+  --content-narrow:  54rem;
+  --header-height:   4.75rem;
+
+  /* Transition — 200ms for bento scale to feel settled */
+  --transition: 200ms ease;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+
+/* ============================================================
+   REDUCED MOTION — skill checklist requirement
+   No looping decorative animations; suppress scale/translate
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   FOCUS STATES — visible, accessible (powder blue)
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+.container {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+
+.container--narrow {
+  max-width: var(--content-narrow);
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+
+/* Bento card base */
+.bento-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-bento);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.bento-card--featured {
+  border-top: 3px solid var(--accent);
+}
+
+/* Section labels */
+.section-label {
+  font-family: var(--font-body);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-2);
+  display: block;
+}
+
+/* Section headings use Playfair Display */
+.section-heading {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: var(--space-3);
+}
+
+.section-body {
+  font-size: var(--text-body);
+  color: var(--ink-soft);
+  max-width: 38rem;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.875rem 1.875rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: var(--shadow-accent);
+}
+
+.btn-primary:hover {
+  background: var(--accent-strong);
+  box-shadow: 0 6px 28px rgba(217,165,179,0.45);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-on-dark);
+  border: 1.5px solid rgba(255,255,255,0.40);
+}
+
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(255,255,255,0.70);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--border-strong);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+/* ============================================================
+   NAV — frosted white card on grey page base
+   ============================================================ */
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--header-height);
+  background: var(--surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+}
+
+.site-nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.nav-logo span { color: var(--accent); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: var(--text-small);
+  font-weight: 500;
+  color: var(--ink-soft);
+  transition: color var(--transition);
+}
+
+.nav-links a:hover { color: var(--ink); }
+
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-cta .btn-outline { display: none; }
+}
+
+/* ============================================================
+   §1 HERO — split bento layout
+   Left: headline stack, CTAs, showreel
+   Right: video poster card (bento tile)
+   ============================================================ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-top: var(--header-height);
+  background: var(--surface-dark);
+}
+
+/* Gradient placeholder — production: replaced by MP4 autoplay + poster */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg,
+      #1a0f14 0%,
+      #2d1520 30%,
+      #1e1218 55%,
+      #28171e 80%,
+      #1a0f14 100%
+    );
+  background-size: cover;
+  background-position: center;
+}
+
+/* Subtle texture overlay */
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: var(--space-8) 0;
+}
+
+/* Bento split at desktop */
+.hero-bento-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.hero-text-col {
+  /* left column */
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-4);
+}
+
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 2rem;
+  height: 1.5px;
+  background: var(--accent);
+}
+
+/* Playfair Display serif headline — Treatment C signature */
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  font-weight: 700;
+  color: var(--ink-on-dark);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-3);
+}
+
+.hero-subheadline {
+  font-family: var(--font-body);
+  font-size: clamp(0.9375rem, 1.6vw, 1.125rem);
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-3);
+}
+
+.hero-body {
+  font-size: clamp(0.9375rem, 1.4vw, 1.0625rem);
+  color: rgba(255,255,255,0.80);
+  max-width: 30rem;
+  margin-bottom: var(--space-5);
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-5);
+}
+
+/* Showreel sits below CTAs in the left column */
+.hero-showreel-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  transition: opacity var(--transition);
+  text-decoration: none;
+}
+
+.hero-showreel-inline:hover { opacity: 0.85; }
+
+.play-ring-lg {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.40);
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--transition), background var(--transition);
+  flex-shrink: 0;
+}
+
+.hero-showreel-inline:hover .play-ring-lg {
+  border-color: rgba(255,255,255,0.70);
+  background: rgba(255,255,255,0.14);
+}
+
+.showreel-label {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.65);
+}
+
+/* Right column — bento video card */
+.hero-video-col {
+  /* right column */
+}
+
+.hero-video-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  aspect-ratio: 9/11;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CSS placeholder media — production: replaced with <video poster> */
+.hero-video-placeholder {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(217,165,179,0.18) 0%,
+    rgba(168,198,223,0.10) 40%,
+    rgba(40,23,30,0.30) 100%
+  );
+}
+
+.hero-video-overlay-text {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: var(--space-5);
+}
+
+.hero-video-caption {
+  font-family: var(--font-body);
+  font-size: var(--text-micro);
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.40);
+  margin-top: var(--space-3);
+}
+
+.hero-play-btn {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  cursor: pointer;
+  transition: transform var(--transition), background var(--transition);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+
+.hero-play-btn:hover {
+  transform: scale(1.06);
+  background: var(--accent-blush);
+}
+
+/* Mobile: stack video card above text */
+@media (max-width: 900px) {
+  .hero-bento-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+  .hero-video-col { order: -1; }
+  .hero-video-card { aspect-ratio: 16/9; max-height: 280px; }
+  .hero-headline { font-size: clamp(2rem, 6vw, 3rem); }
+}
+
+@media (max-width: 480px) {
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+}
+
+/* ============================================================
+   §2 STATS BAND — two-register bento layout
+   ============================================================ */
+.stats-band {
+  background: var(--surface-dark);
+  padding: var(--space-7) 0;
+}
+
+/* Register 1 — contextual/bio stats */
+.stats-register {
+  margin-bottom: var(--space-5);
+}
+
+.stats-register-label {
+  font-family: var(--font-body);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.30);
+  margin-bottom: var(--space-4);
+  text-align: center;
+}
+
+.stats-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.10);
+  margin: var(--space-5) 0;
+}
+
+/* Bio-level stats: bento asymmetric — two wider + two narrower */
+.stats-grid-bio {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1.8fr 1.2fr;
+  gap: var(--space-4);
+}
+
+/* Metric-level stats: equal 4-up */
+.stats-grid-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.stat-item {
+  text-align: center;
+  padding: var(--space-4) var(--space-3);
+  position: relative;
+}
+
+.stat-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  right: 0;
+  height: 60%;
+  width: 1px;
+  background: rgba(255,255,255,0.10);
+}
+
+/* Bio stats: DM Sans, moderate size */
+.stat-value {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  font-weight: 600;
+  color: var(--ink-on-dark);
+  line-height: 1.3;
+  margin-bottom: var(--space-1);
+}
+
+/* Metric values: Playfair Display serif — editorial authority */
+.stat-value--metric {
+  font-family: var(--font-display);
+  font-size: clamp(1.625rem, 3vw, 2.375rem);
+  font-weight: 700;
+  font-style: italic;
+  color: var(--accent);
+  line-height: 1.1;
+  margin-bottom: var(--space-1);
+}
+
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--text-micro);
+  color: var(--ink-soft-on-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .stats-grid-bio {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .stats-grid-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .stat-item::after { display: none; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid-bio { grid-template-columns: 1fr; }
+  .stats-grid-metrics { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   §3 FEATURED PORTFOLIO — bento grid with varied tile spans
+   ============================================================ */
+.portfolio-section {
+  padding: var(--space-8) 0;
+  background: var(--bg);
+}
+
+.portfolio-header {
+  margin-bottom: var(--space-6);
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-6);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 1.2rem;
+  border-radius: var(--radius-xl);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1.5px solid var(--border-strong);
+  background: var(--bg-card);
+  color: var(--ink-soft);
+  transition: all var(--transition);
+  font-family: var(--font-body);
+}
+
+.chip:hover {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+.chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/* Bento portfolio grid */
+.portfolio-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 200px;
+  gap: var(--space-3);
+}
+
+/* Tile sizing: first two tiles span 3 cols (landscape hero tiles) */
+.portfolio-tile {
+  border-radius: var(--radius-bento);
+  overflow: hidden;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition), transform var(--transition);
+  cursor: pointer;
+  grid-column: span 2;
+  grid-row: span 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.portfolio-tile:hover {
+  box-shadow: var(--shadow-lifted);
+  transform: scale(1.015);
+}
+
+/* Featured tiles (first 2): wider span */
+.portfolio-tile--wide {
+  grid-column: span 3;
+  grid-row: span 1;
+}
+
+.tile-thumb {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.tile-thumb-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tile-play-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.20);
+  transition: transform var(--transition), background var(--transition);
+  position: relative;
+  z-index: 1;
+}
+
+.portfolio-tile:hover .tile-play-icon {
+  transform: scale(1.10);
+  background: var(--accent);
+}
+
+/* Category chip overlaid on image — bottom-left */
+.tile-category-overlay {
+  position: absolute;
+  bottom: var(--space-2);
+  left: var(--space-2);
+  z-index: 2;
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: white;
+  background: rgba(51,51,51,0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  line-height: 1.4;
+}
+
+.tile-caption-bar {
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  background: var(--bg-card);
+  flex-shrink: 0;
+}
+
+.tile-caption {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: var(--ink-soft);
+  line-height: 1.45;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Gradient palettes for placeholder thumbnails */
+.thumb-travel    { background: linear-gradient(135deg, #6B9BAF 0%, #4A7B95 50%, #8FBBCC 100%); }
+.thumb-events    { background: linear-gradient(135deg, #8B6D7F 0%, #6B4D5F 50%, #B08090 100%); }
+.thumb-lifestyle { background: linear-gradient(135deg, #7A9B8A 0%, #5A7B6A 50%, #9DBDAD 100%); }
+.thumb-wellness  { background: linear-gradient(135deg, #A07885 0%, #805868 50%, #C09898 100%); }
+.thumb-tech      { background: linear-gradient(135deg, #5B7A9A 0%, #3B5A7A 50%, #7B9ABA 100%); }
+
+/* Responsive bento grid collapse */
+@media (max-width: 960px) {
+  .portfolio-bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 180px;
+  }
+  .portfolio-tile { grid-column: span 1; }
+  .portfolio-tile--wide { grid-column: span 2; }
+}
+
+@media (max-width: 540px) {
+  .portfolio-bento-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 200px;
+  }
+  .portfolio-tile { grid-column: span 1; }
+  .portfolio-tile--wide { grid-column: span 1; }
+}
+
+/* ============================================================
+   §4 BRAND LOGOS — bento card islands
+   ============================================================ */
+.brand-logos-section {
+  padding: var(--space-7) 0;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand-logos-header {
+  text-align: center;
+  margin-bottom: var(--space-5);
+}
+
+.brand-logos-subtext {
+  font-size: var(--text-small);
+  color: var(--ink-faint);
+  text-align: center;
+  margin-top: var(--space-2);
+  font-family: var(--font-body);
+}
+
+/* Logo strip: each logo in its own bento card */
+.logo-bento-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.logo-bento-item {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 7rem;
+  opacity: 0.50;
+  transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+  cursor: default;
+}
+
+.logo-bento-item:hover {
+  opacity: 0.85;
+  transform: scale(1.015);
+  box-shadow: var(--shadow-lifted);
+}
+
+.logo-placeholder {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   §5 TESTIMONIALS — bento cards with rose left accent
+   ============================================================ */
+.testimonials-section {
+  padding: var(--space-8) 0;
+  background: var(--accent-blush);
+}
+
+.testimonials-header {
+  text-align: center;
+  margin-bottom: var(--space-7);
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5);
+  align-items: stretch;
+}
+
+.testimonial-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-bento);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  /* Bento Treatment C accent: left border in Dusty Rose */
+  border-left: 4px solid var(--accent);
+}
+
+.quote-mark {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  line-height: 0.8;
+  color: var(--accent);
+  opacity: 0.25;
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-5);
+  user-select: none;
+  pointer-events: none;
+}
+
+.quote-text {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  color: var(--ink);
+  line-height: 1.75;
+  margin-top: var(--space-5);
+  font-style: normal;
+  position: relative;
+  z-index: 1;
+}
+
+.quote-attribution {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.attribution-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: white;
+  flex-shrink: 0;
+}
+
+.attribution-name {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-small);
+  color: var(--ink);
+}
+
+.attribution-title {
+  font-family: var(--font-body);
+  font-size: var(--text-micro);
+  color: var(--ink-faint);
+}
+
+@media (max-width: 700px) {
+  .testimonials-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   §6 SERVICES — bento cards with varied treatment
+   ============================================================ */
+.services-section {
+  padding: var(--space-8) 0;
+  background: var(--bg);
+}
+
+.services-header {
+  margin-bottom: var(--space-6);
+}
+
+.services-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.service-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-bento);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-card);
+  border: 1px solid transparent;
+  transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.service-card:hover {
+  box-shadow: var(--shadow-lifted);
+  border-color: var(--accent);
+  transform: scale(1.015);
+}
+
+/* Monthly Retainers card — spanning 2 cols, distinguished */
+.service-card--featured {
+  grid-column: span 2;
+  border-top: 3px solid var(--accent);
+  background: var(--bg-strong);
+  display: flex;
+  gap: var(--space-5);
+  align-items: center;
+}
+
+.service-icon-badge {
+  width: 3rem;
+  height: 3rem;
+  min-width: 3rem;
+  border-radius: var(--radius-sm);
+  background: var(--accent-blush);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.service-card--featured .service-icon-badge {
+  margin-bottom: 0;
+}
+
+.service-name {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+
+.service-desc {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+@media (max-width: 900px) {
+  .services-bento-grid { grid-template-columns: repeat(2, 1fr); }
+  .service-card--featured { grid-column: span 2; }
+}
+
+@media (max-width: 540px) {
+  .services-bento-grid { grid-template-columns: 1fr; }
+  .service-card--featured { grid-column: span 1; flex-direction: column; }
+}
+
+/* ============================================================
+   §7 PROCESS — bento horizontal steps with powder blue accents
+   ============================================================ */
+.process-section {
+  padding: var(--space-8) 0;
+  background: var(--bg-strong);
+}
+
+.process-header {
+  text-align: center;
+  margin-bottom: var(--space-7);
+}
+
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-3);
+  position: relative;
+}
+
+/* Connecting line between steps */
+.process-steps::before {
+  content: '';
+  position: absolute;
+  top: 2.25rem;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(to right,
+    transparent,
+    var(--accent-blue) 15%,
+    var(--accent-blue) 85%,
+    transparent
+  );
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.process-step {
+  background: var(--bg-card);
+  border-radius: var(--radius-bento);
+  padding: var(--space-4) var(--space-3) var(--space-5);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--shadow-card);
+  /* Powder Blue left accent — sparing third accent, signals methodology */
+  border-top: 3px solid var(--accent-blue);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.process-step:hover {
+  box-shadow: var(--shadow-lifted);
+  transform: translateY(-2px);
+}
+
+.step-number {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--accent);
+  opacity: 0.25;
+  line-height: 1;
+  margin-bottom: var(--space-3);
+  user-select: none;
+}
+
+.step-name {
+  font-family: var(--font-display);
+  font-size: var(--text-h4);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+
+.step-desc {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .process-steps {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+  .process-steps::before { display: none; }
+  .process-step:nth-child(5) {
+    grid-column: 1 / -1;
+    max-width: 24rem;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 540px) {
+  .process-steps { grid-template-columns: 1fr; }
+  .process-step:nth-child(5) { grid-column: auto; max-width: none; }
+}
+
+/* ============================================================
+   §8 CONTACT — dark section with bento split
+   Left: headline + alt contact
+   Right: form in white bento card
+   ============================================================ */
+.contact-section {
+  padding: var(--space-8) 0;
+  background: var(--surface-dark);
+}
+
+.contact-bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: var(--space-7);
+  align-items: start;
+}
+
+.contact-left {
+  padding-top: var(--space-5);
+}
+
+.contact-heading {
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  font-weight: 700;
+  font-style: italic;
+  color: var(--ink-on-dark);
+  margin-bottom: var(--space-4);
+  line-height: 1.2;
+}
+
+.contact-body {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  color: var(--ink-soft-on-dark);
+  margin-bottom: var(--space-6);
+  line-height: 1.7;
+}
+
+.contact-alt {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: var(--ink-soft-on-dark);
+}
+
+.contact-alt a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: color var(--transition);
+}
+
+.contact-alt a:hover { color: #E8BCCA; }
+
+.contact-tagline {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-style: italic;
+  color: rgba(255,255,255,0.25);
+  margin-top: var(--space-7);
+  line-height: 1.5;
+}
+
+/* Form in white bento card */
+.contact-form-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-lifted);
+}
+
+.form-card-heading {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: var(--space-5);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+/* Form inputs — light surface (inside white card) */
+.form-input {
+  width: 100%;
+  padding: 0.875rem 1.125rem;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border-strong);
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: var(--ink-faint);
+}
+
+.form-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(217,165,179,0.20);
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 6.5rem;
+  line-height: 1.65;
+}
+
+/* Contact section: mobile stacks */
+@media (max-width: 768px) {
+  .contact-bento-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+  .contact-left { padding-top: 0; }
+  .contact-tagline { margin-top: var(--space-4); }
+}
+
+@media (max-width: 540px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  background: #222222;
+  padding: var(--space-6) 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.70);
+}
+
+.footer-logo span { color: var(--accent); }
+
+.footer-links {
+  display: flex;
+  gap: var(--space-4);
+  list-style: none;
+}
+
+.footer-links a {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: rgba(255,255,255,0.40);
+  transition: color var(--transition);
+}
+
+.footer-links a:hover { color: rgba(255,255,255,0.70); }
+
+.footer-copy {
+  font-family: var(--font-body);
+  font-size: var(--text-micro);
+  color: rgba(255,255,255,0.25);
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .footer-inner { flex-direction: column; text-align: center; }
+  .footer-copy { text-align: center; }
+  .footer-links { justify-content: center; }
+}
+
+/* ============================================================
+   DRAFT RIBBON
+   ============================================================ */
+.draft-ribbon {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: #1a1a1a;
+  border-top: 2px solid var(--accent);
+  padding: 0.6rem var(--space-5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.draft-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: white;
+}
+
+.draft-note {
+  font-family: var(--font-body);
+  font-size: var(--text-micro);
+  color: rgba(255,255,255,0.55);
+}
+
+/* Prevent ribbon from covering footer content */
+body { padding-bottom: 3rem; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav class="site-nav" aria-label="Site navigation">
+  <div class="container">
+    <a href="#" class="nav-logo">bb<span>cre8s</span></a>
+    <ul class="nav-links">
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#portfolio" class="btn btn-outline">View Work</a>
+      <a href="#contact" class="btn btn-primary">Book Project</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ============================================================
+     §1 HERO — bento split layout
+     ============================================================ -->
+<section class="hero" id="home" aria-label="Hero">
+  <!-- Production: replace .hero-bg with <video autoplay muted loop playsinline
+       aria-label="Bella B Creates — background showreel" + prefers-reduced-motion pause -->
+  <div class="hero-bg" role="img" aria-label="Bella B Creates — video background placeholder"></div>
+
+  <div class="hero-content">
+    <div class="container">
+      <div class="hero-bento-grid">
+
+        <!-- Left column: headline + CTAs + showreel -->
+        <div class="hero-text-col">
+          <span class="hero-eyebrow">UGC Creator &amp; Event Producer</span>
+
+          <!-- Playfair Display serif — Treatment C typographic signature -->
+          <h1 class="hero-headline">Bella B Creates</h1>
+          <p class="hero-subheadline">UGC &nbsp;•&nbsp; Travel &nbsp;•&nbsp; Events &nbsp;•&nbsp; Lifestyle</p>
+          <p class="hero-body">Authentic content that helps brands connect, engage, and convert.</p>
+
+          <div class="hero-actions">
+            <a href="#portfolio" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 0.9375rem;">View Work</a>
+            <a href="#contact" class="btn btn-ghost" style="padding: 1rem 2rem; font-size: 0.9375rem;">Book Project</a>
+          </div>
+
+          <!-- Showreel CTA — elevated to inline element, not corner badge -->
+          <a href="#home" class="hero-showreel-inline" aria-label="Watch Bella's showreel">
+            <div class="play-ring-lg" aria-hidden="true">
+              <!-- Inline SVG play icon (no emoji) -->
+              <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M1 1.5L13 8L1 14.5V1.5Z" fill="rgba(255,255,255,0.80)" stroke="none"/>
+              </svg>
+            </div>
+            <span class="showreel-label">Watch Showreel</span>
+          </a>
+        </div>
+
+        <!-- Right column: video poster bento card -->
+        <div class="hero-video-col" aria-hidden="true">
+          <div class="hero-video-card">
+            <!-- CSS placeholder — production: <video> poster or thumbnail image -->
+            <div class="hero-video-placeholder"></div>
+            <div class="hero-video-overlay-text">
+              <div class="hero-play-btn" aria-hidden="true">
+                <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1.5L15 9L1 16.5V1.5Z" fill="#333333"/>
+                </svg>
+              </div>
+              <p class="hero-video-caption">Showreel — Play to watch</p>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /hero-bento-grid -->
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     §2 STATS BAND — two-register bento
+     ============================================================ -->
+<section class="stats-band" id="stats" aria-label="At a glance — credentials and performance">
+  <div class="container">
+
+    <!-- Register 1: Contextual / bio stats -->
+    <div class="stats-register" aria-label="About Bella">
+      <div class="stats-register-label">Background</div>
+      <div class="stats-grid-bio">
+
+        <div class="stat-item">
+          <div class="stat-value">10+ Years</div>
+          <div class="stat-label">Producing Events &amp; Lifestyle Projects</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-value">Colorado + Texas</div>
+          <div class="stat-label">Based In</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-value">Travel &bull; Hospitality &bull; Lifestyle</div>
+          <div class="stat-label">Industries</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-value">Nationwide – International</div>
+          <div class="stat-label">Available</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="stats-divider" aria-hidden="true"></div>
+
+    <!-- Register 2: Performance metrics — Playfair Display italic for editorial impact -->
+    <div class="stats-register" aria-label="Performance metrics">
+      <div class="stats-register-label">Results</div>
+      <div class="stats-grid-metrics">
+
+        <div class="stat-item">
+          <div class="stat-value--metric">00+</div>
+          <div class="stat-label">Brands Served</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-value--metric">00M+</div>
+          <div class="stat-label">Views Generated</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-value--metric">00+</div>
+          <div class="stat-label">Events Produced</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-value--metric">00+</div>
+          <div class="stat-label">Pieces of Content</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     §3 FEATURED PORTFOLIO — bento grid
+     ============================================================ -->
+<section class="portfolio-section" id="portfolio">
+  <div class="container">
+
+    <div class="portfolio-header">
+      <span class="section-label">Featured Work</span>
+      <h2 class="section-heading">Content That Performs</h2>
+      <p class="section-body">Video-first creative across the categories brands trust Bella to lead.</p>
+    </div>
+
+    <!-- Filter chips — data-driven, rendered by JS -->
+    <div class="filter-row" id="filter-row" role="group" aria-label="Filter by category"></div>
+
+    <!-- Bento portfolio grid — rendered by JS -->
+    <div class="portfolio-bento-grid" id="portfolio-grid"></div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     §4 BRAND LOGOS — bento card islands
+     ============================================================ -->
+<section class="brand-logos-section" id="brands" aria-label="Trusted by">
+  <div class="container">
+    <div class="brand-logos-header">
+      <span class="section-label" style="display: block; text-align: center;">Trusted By</span>
+      <p class="brand-logos-subtext">Brands and events that have partnered with Bella for campaigns, events, and content.</p>
+    </div>
+    <div class="logo-bento-strip">
+      <div class="logo-bento-item"><span class="logo-placeholder">Marriott</span></div>
+      <div class="logo-bento-item"><span class="logo-placeholder">Visit Denver</span></div>
+      <div class="logo-bento-item"><span class="logo-placeholder">SXSW</span></div>
+      <div class="logo-bento-item"><span class="logo-placeholder">The Knot</span></div>
+      <div class="logo-bento-item"><span class="logo-placeholder">Colorado Tourism</span></div>
+      <div class="logo-bento-item"><span class="logo-placeholder">Lumen Field</span></div>
+      <div class="logo-bento-item"><span class="logo-placeholder">Sunrun</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     §5 TESTIMONIALS — blush section, bento cards with rose accent
+     ============================================================ -->
+<section class="testimonials-section" id="testimonials" aria-label="What clients say">
+  <div class="container">
+
+    <div class="testimonials-header">
+      <span class="section-label" style="display: block; text-align: center;">Client Stories</span>
+      <h2 class="section-heading" style="text-align: center; margin: 0 auto var(--space-3);">What Brands Say</h2>
+    </div>
+
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card">
+        <div class="quote-mark" aria-hidden="true">&ldquo;</div>
+        <blockquote class="quote-text">
+          Working with Bella was one of the smoothest brand collaborations we've had. She understood our event brand immediately, arrived prepared with a shot list, and delivered content that felt genuinely on-location — not staged. We used the footage across three campaigns.
+        </blockquote>
+        <div class="quote-attribution">
+          <div class="attribution-avatar" aria-hidden="true">SM</div>
+          <div>
+            <div class="attribution-name">Sarah M.</div>
+            <div class="attribution-title">Director of Marketing, Live Events Co.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="quote-mark" aria-hidden="true">&ldquo;</div>
+        <blockquote class="quote-text">
+          Bella brought both the creative eye and the event logistics know-how — which you rarely get from a single person. She's photographed our retreats for two years running because she understands what the brand needs before we even brief her.
+        </blockquote>
+        <div class="quote-attribution">
+          <div class="attribution-avatar" aria-hidden="true">RC</div>
+          <div>
+            <div class="attribution-name">Rachel C.</div>
+            <div class="attribution-title">Brand Manager, Wellness Collective</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     §6 SERVICES — bento cards, last card featured
+     ============================================================ -->
+<section class="services-section" id="services" aria-label="Services">
+  <div class="container">
+
+    <div class="services-header">
+      <span class="section-label">What I Do</span>
+      <h2 class="section-heading">Services</h2>
+      <p class="section-body">Built for brands that want content with reach, range, and real production experience behind it.</p>
+    </div>
+
+    <!-- Services rendered by JS; last card gets featured class -->
+    <div class="services-bento-grid" id="services-grid"></div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     §7 PROCESS — bento step cards, powder blue accent
+     ============================================================ -->
+<section class="process-section" id="process" aria-label="How we work together">
+  <div class="container">
+
+    <div class="process-header">
+      <span class="section-label" style="display: block; text-align: center;">How We Work</span>
+      <h2 class="section-heading" style="text-align: center;">From Brief to Delivered</h2>
+      <p class="section-body" style="margin: 0 auto; text-align: center;">A clear, low-friction process so you always know where we are.</p>
+    </div>
+
+    <div class="process-steps" id="process-steps"></div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     §8 CONTACT — dark section, bento two-column split
+     ============================================================ -->
+<section class="contact-section" id="contact" aria-label="Get in touch">
+  <div class="container">
+    <div class="contact-bento-grid">
+
+      <!-- Left: headline + context + alt contact -->
+      <div class="contact-left">
+        <span class="section-label">Get in Touch</span>
+        <h2 class="contact-heading">Let's Work Together</h2>
+        <p class="contact-body">Tell me about your project — event, campaign, product launch, or retainer. I'll follow up within one business day.</p>
+        <p class="contact-alt">
+          Prefer email?
+          <a href="mailto:info@bbcre8s.com">info@bbcre8s.com</a>
+          &nbsp;&bull;&nbsp;
+          <a href="#" style="color: rgba(255,255,255,0.45);">Book a Call ↗</a>
+        </p>
+        <p class="contact-tagline">
+          "10+ years of events, travel, and brand work — brought to every project."
+        </p>
+      </div>
+
+      <!-- Right: form in white bento card -->
+      <div class="contact-right">
+        <div class="contact-form-card">
+          <p class="form-card-heading">Start a Conversation</p>
+          <form class="contact-form" action="mailto:info@bbcre8s.com" method="post" enctype="text/plain">
+            <div class="form-row">
+              <input type="text" name="name" placeholder="Your Name" class="form-input" autocomplete="name" required aria-label="Your name">
+              <input type="email" name="email" placeholder="Email Address" class="form-input" autocomplete="email" required aria-label="Email address">
+            </div>
+            <input type="text" name="company" placeholder="Brand / Company (optional)" class="form-input" autocomplete="organization" aria-label="Brand or company">
+            <textarea name="message" placeholder="What are you working on?" class="form-input" rows="4" required aria-label="Project details"></textarea>
+            <button type="submit" class="btn btn-primary" style="align-self: flex-end; padding: 1rem 2.25rem; font-size: 0.9375rem;">Send Message</button>
+          </form>
+        </div>
+      </div>
+
+    </div><!-- /contact-bento-grid -->
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-logo">bb<span>cre8s</span></span>
+      <ul class="footer-links">
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <p class="footer-copy">&copy; 2026 Bella B Creates. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ============================================================
+     DRAFT RIBBON
+     ============================================================ -->
+<div class="draft-ribbon" role="note" aria-label="Draft notice">
+  <span class="draft-badge">Draft</span>
+  <span class="draft-note">DRAFT — design comp for CEO review, not for publication — Treatment C (Editorial Bento, ui-ux-pro-max informed) — INI-059 — 2026-06-13</span>
+</div>
+
+
+<!-- ============================================================
+     DATA-DRIVEN RENDERING
+     Mirrors Astro Content Collections model.
+     In production: arrays rendered server-side from Zod schemas.
+     ============================================================ -->
+<script>
+/* ------------------------------------------------------------------
+   CONTENT DATA — same content as Treatment A (comparable)
+   ------------------------------------------------------------------ */
+
+const categories = [
+  { id: "all",       label: "All",        order: 0 },
+  { id: "travel",    label: "Travel",     order: 1 },
+  { id: "events",    label: "Events",     order: 2 },
+  { id: "lifestyle", label: "Lifestyle",  order: 3 },
+  { id: "wellness",  label: "Wellness",   order: 4 },
+  { id: "tech",      label: "Technology", order: 5 },
+];
+
+const portfolio = [
+  { id: "p1", title: "Destination Discovery — Telluride",     category: "travel",    caption: "Brand travel content for a Colorado mountain resort campaign.",     thumbClass: "thumb-travel",    wide: true,  order: 1 },
+  { id: "p2", title: "Festival Opener — Dome Stage",          category: "events",    caption: "Full event coverage for a 5,000-person outdoor music festival.",    thumbClass: "thumb-events",    wide: true,  order: 2 },
+  { id: "p3", title: "Morning Wellness Routine",              category: "lifestyle", caption: "Lifestyle integration for a wellness supplement brand.",            thumbClass: "thumb-lifestyle", wide: false, order: 3 },
+  { id: "p4", title: "Hotel Check-in Experience",             category: "travel",    caption: "UGC travel series for a boutique hospitality group.",              thumbClass: "thumb-travel",    wide: false, order: 4 },
+  { id: "p5", title: "Product Unboxing — Skincare Launch",    category: "wellness",  caption: "UGC product video series for a skincare brand launch.",            thumbClass: "thumb-wellness",  wide: false, order: 5 },
+  { id: "p6", title: "Tech Setup Tour — Creator Edition",     category: "tech",      caption: "Organic creator tech walkthrough for a consumer electronics brand.",thumbClass: "thumb-tech",      wide: false, order: 6 },
+  { id: "p7", title: "Private Event — Corporate Retreat",     category: "events",    caption: "Event documentation for an executive leadership retreat.",          thumbClass: "thumb-events",    wide: false, order: 7 },
+  { id: "p8", title: "Golden Hour at Mesa Verde",             category: "lifestyle", caption: "Travel lifestyle content for a tourism board campaign.",            thumbClass: "thumb-lifestyle", wide: false, order: 8 },
+];
+
+const services = [
+  { id: "s1", name: "UGC Videos",          desc: "Short-form, platform-native video content built for organic reach and paid amplification.", featured: false },
+  { id: "s2", name: "Product Photography", desc: "Clean, editorial product images and lifestyle stills optimized for e-commerce and social.",  featured: false },
+  { id: "s3", name: "Event Coverage",      desc: "Full-event content capture — photo and video — from a producer who understands the logistics.", featured: false },
+  { id: "s4", name: "Travel Content",      desc: "On-location content creation for hospitality brands, tourism boards, and destination marketing.", featured: false },
+  { id: "s5", name: "Monthly Retainers",   desc: "Ongoing content partnership for brands that need a consistent, reliable creative cadence. Priority scheduling, defined deliverables, real partnership.", featured: true },
+];
+
+const processSteps = [
+  { step: 1, name: "Discovery Call",    desc: "We align on your goals, brand voice, deliverables, and timeline before a single frame is captured." },
+  { step: 2, name: "Creative Strategy", desc: "I develop a shot list, content brief, and platform-specific direction tailored to your campaign." },
+  { step: 3, name: "Production",        desc: "On-location or studio capture — photo and video — handled with full event-production discipline." },
+  { step: 4, name: "Review",            desc: "You receive a first-look edit. One round of feedback is built into every engagement." },
+  { step: 5, name: "Delivery",          desc: "Final assets delivered in your preferred format, with file organization and usage notes included." },
+];
+
+
+/* ------------------------------------------------------------------
+   SVG ICONS — inline SVG, not emoji (skill pre-delivery checklist)
+   ------------------------------------------------------------------ */
+const serviceIcons = {
+  s1: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D9A5B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`,
+  s2: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D9A5B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`,
+  s3: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D9A5B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  s4: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D9A5B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+  s5: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D9A5B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+};
+
+const playIconSVG = `<svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M1 1L11 7L1 13V1Z" fill="#333333"/></svg>`;
+const playIconSVGLight = `<svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M1 1L11 7L1 13V1Z" fill="#FFFFFF"/></svg>`;
+
+
+/* ------------------------------------------------------------------
+   RENDER FUNCTIONS
+   ------------------------------------------------------------------ */
+
+// §3 — Portfolio bento filter + grid
+function buildPortfolio() {
+  const filterRow    = document.getElementById('filter-row');
+  const grid         = document.getElementById('portfolio-grid');
+  let   activeFilter = 'all';
+
+  // Filter chips
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'chip' + (cat.id === 'all' ? ' active' : '');
+    btn.textContent = cat.label;
+    btn.setAttribute('aria-pressed', cat.id === 'all' ? 'true' : 'false');
+    btn.addEventListener('click', () => {
+      activeFilter = cat.id;
+      document.querySelectorAll('.chip').forEach(c => {
+        c.classList.remove('active');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      renderTiles();
+    });
+    filterRow.appendChild(btn);
+  });
+
+  function renderTiles() {
+    grid.innerHTML = '';
+    const visible = portfolio
+      .filter(item => activeFilter === 'all' || item.category === activeFilter)
+      .sort((a, b) => a.order - b.order);
+
+    visible.forEach((item, index) => {
+      const tile = document.createElement('article');
+      // Wide tiles only when showing "all" and it's one of first two items
+      const isWide = activeFilter === 'all' && item.wide;
+      tile.className = 'portfolio-tile' + (isWide ? ' portfolio-tile--wide' : '');
+      tile.setAttribute('tabindex', '0');
+      tile.setAttribute('aria-label', item.title);
+      tile.innerHTML = `
+        <div class="tile-thumb">
+          <div class="tile-thumb-bg ${item.thumbClass}">
+            <div class="tile-play-icon" aria-hidden="true">${playIconSVGLight}</div>
+            <div class="tile-category-overlay">${categories.find(c => c.id === item.category)?.label || ''}</div>
+          </div>
+        </div>
+        <div class="tile-caption-bar">
+          <div class="tile-caption">${item.title}</div>
+        </div>
+      `;
+      grid.appendChild(tile);
+    });
+
+    if (visible.length === 0) {
+      const empty = document.createElement('p');
+      empty.style.cssText = 'grid-column: 1/-1; text-align: center; color: var(--ink-faint); padding: var(--space-6) 0; font-family: var(--font-body);';
+      empty.textContent = 'No work in this category yet.';
+      grid.appendChild(empty);
+    }
+  }
+
+  renderTiles();
+}
+
+// §6 — Services bento
+function buildServices() {
+  const grid = document.getElementById('services-grid');
+  services.forEach(service => {
+    const card = document.createElement('div');
+    card.className = 'service-card' + (service.featured ? ' service-card--featured' : '');
+    if (service.featured) {
+      card.innerHTML = `
+        <div class="service-icon-badge" aria-hidden="true">${serviceIcons[service.id] || ''}</div>
+        <div>
+          <h3 class="service-name">${service.name}</h3>
+          <p class="service-desc">${service.desc}</p>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="service-icon-badge" aria-hidden="true">${serviceIcons[service.id] || ''}</div>
+        <h3 class="service-name">${service.name}</h3>
+        <p class="service-desc">${service.desc}</p>
+      `;
+    }
+    grid.appendChild(card);
+  });
+}
+
+// §7 — Process bento steps
+function buildProcess() {
+  const container = document.getElementById('process-steps');
+  processSteps.forEach(step => {
+    const el = document.createElement('div');
+    el.className = 'process-step';
+    el.innerHTML = `
+      <div class="step-number" aria-hidden="true">${step.step}</div>
+      <h3 class="step-name">${step.name}</h3>
+      <p class="step-desc">${step.desc}</p>
+    `;
+    container.appendChild(el);
+  });
+}
+
+// Scroll nav active states (minimal, no deps)
+function initScrollNav() {
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks  = document.querySelectorAll('.nav-links a');
+  const observer  = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.style.color = link.getAttribute('href') === '#' + entry.target.id
+            ? 'var(--ink)'
+            : '';
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => observer.observe(s));
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+  buildPortfolio();
+  buildServices();
+  buildProcess();
+  initScrollNav();
+});
+</script>
+
+</body>
+</html>
