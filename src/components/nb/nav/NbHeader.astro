@@ -1,0 +1,58 @@
+---
+/*
+  Treatment B (neo-brutalist) site header.
+  Sticky white bar, thick bottom border, ≤900px hamburger panel.
+  Interactivity (open/close, Esc, backdrop, body-scroll lock, desktop reset)
+  is wired in TreatmentBLayout's bundled script via the ids below.
+*/
+interface NavItem { label: string; href: string; }
+
+const navItems: NavItem[] = [
+  { label: "Portfolio", href: "#portfolio" },
+  { label: "Services", href: "#services" },
+  { label: "Process", href: "#process" },
+  { label: "Contact", href: "#contact" },
+];
+const menuItems: NavItem[] = [...navItems, { label: "Links", href: "/links" }];
+---
+
+<nav class="site-nav" aria-label="Site navigation">
+  <div class="container">
+    <a href="#home" class="nav-logo">bb<span>cre8s</span></a>
+
+    <ul class="nav-links">
+      {navItems.map((item) => (
+        <li><a href={item.href}>{item.label}</a></li>
+      ))}
+    </ul>
+
+    <div class="nav-cta">
+      <a href="#portfolio" class="btn btn-outline">View Work</a>
+      <a href="#contact" class="btn btn-primary">Book Project</a>
+    </div>
+
+    <button
+      type="button"
+      class="nav-toggle"
+      id="nav-toggle"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+      aria-label="Open menu"
+    >
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <div class="nav-menu" id="nav-menu">
+    <ul class="nav-menu-links">
+      {menuItems.map((item) => (
+        <li><a href={item.href}>{item.label}</a></li>
+      ))}
+    </ul>
+    <div class="nav-menu-cta">
+      <a href="#portfolio" class="btn btn-outline">View Work</a>
+      <a href="#contact" class="btn btn-primary">Book Project</a>
+    </div>
+  </div>
+</nav>
+<div class="nav-backdrop" id="nav-backdrop" hidden></div>

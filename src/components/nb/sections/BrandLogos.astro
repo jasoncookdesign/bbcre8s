@@ -1,0 +1,33 @@
+---
+/*
+  §4 Brand logos ("Trusted By") — reads `brandLogos`, visible-only.
+  Every entry is visible:false today, so the whole section renders nothing —
+  honest, no fabricated logos. Flipping a logo to visible:true (and adding a
+  src) brings the section in, proving the data contract end to end.
+*/
+import { getCollection } from "astro:content";
+
+const logos = (await getCollection("brandLogos"))
+  .filter((l) => l.data.visible)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+{logos.length > 0 && (
+  <section class="brand-logos-section" id="brands" aria-label="Brands">
+    <div class="container">
+      <div class="brand-logos-header">
+        <h2 class="section-heading">Trusted By</h2>
+        <p class="brand-logos-subtext">Brands that have partnered with Bella for campaigns, events, and content.</p>
+      </div>
+      <div class="logo-strip">
+        {logos.map((logo) => (
+          <div class="logo-item">
+            {logo.data.src
+              ? <img src={logo.data.src} alt={logo.data.name} />
+              : <span class="logo-placeholder">{logo.data.name}</span>}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

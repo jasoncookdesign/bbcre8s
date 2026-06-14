@@ -1,0 +1,98 @@
+---
+/*
+  §3 Featured portfolio — reads `categories` (filter chips) + `portfolio`
+  (9:16 reels). Category references on each reel resolve to a category entry;
+  an unknown category would have failed the build at Phase 2.5.
+
+  Server-renders the visible reels (sorted by order); the layout script wires
+  the filter chips (show/hide + re-flag the first visible tile as featured)
+  and the reel-modal open on tap/Enter/Space. Media is placeholder until the
+  client swaps real reels into src/data/portfolio.json.
+*/
+import { getCollection } from "astro:content";
+
+const categories = (await getCollection("categories"))
+  .filter((c) => c.data.visible)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const reels = (await getCollection("portfolio"))
+  .filter((p) => p.data.visible)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// id -> label, for resolving each reel's category reference + chip labels.
+const catLabel = new Map(categories.map((c) => [c.id, c.data.label]));
+
+// Branded 9:16 placeholder palette per category (bg/fg hex, no '#').
+const palette: Record<string, [string, string]> = {
+  travel: ["4A7B95", "F5F0E8"],
+  events: ["6B4D5F", "F5E5EA"],
+  lifestyle: ["5A7B6A", "F0F5EE"],
+  wellness: ["805868", "F5E5EA"],
+  technology: ["3B5A7A", "E8F0F5"],
+};
+
+function posterFor(categoryId: string, title: string): string {
+  const [bg, fg] = palette[categoryId] ?? ["333333", "F5E5EA"];
+  return `https://placehold.co/1080x1920/${bg}/${fg}?text=${encodeURIComponent(title)}`;
+}
+
+const tiles = reels.map((reel) => {
+  const categoryId = reel.data.category.id;
+  return {
+    id: reel.id,
+    title: reel.data.title,
+    categoryId,
+    categoryLabel: catLabel.get(categoryId) ?? categoryId,
+    thumbClass: `thumb-${categoryId}`,
+    poster: reel.data.poster ?? posterFor(categoryId, reel.data.title),
+    provider: reel.data.video.provider,
+    videoId: reel.data.video.id,
+  };
+});
+---
+
+<section class="portfolio-section" id="portfolio" aria-label="Featured work">
+  <div class="container">
+    <div class="portfolio-header">
+      <span class="section-label">Featured Work</span>
+      <h2 class="section-heading">Content That Performs</h2>
+      <p class="section-body">Video-first creative across the categories brands trust Bella to lead.</p>
+    </div>
+
+    <div class="filter-row" id="filter-row" role="group" aria-label="Filter by category">
+      <button type="button" class="chip active" data-filter="all" aria-pressed="true">All</button>
+      {categories.map((cat) => (
+        <button type="button" class="chip" data-filter={cat.id} aria-pressed="false">{cat.data.label}</button>
+      ))}
+    </div>
+
+    <div class="portfolio-grid" id="portfolio-grid">
+      {tiles.map((tile, idx) => (
+        <article
+          class:list={["portfolio-tile", { featured: idx === 0 }]}
+          tabindex="0"
+          role="button"
+          aria-label={tile.title}
+          data-category={tile.categoryId}
+          data-category-label={tile.categoryLabel}
+          data-title={tile.title}
+          data-poster={tile.poster}
+          data-video-provider={tile.provider}
+          data-video-id={tile.videoId}
+        >
+          <div class="tile-thumb">
+            <div class:list={["tile-thumb-bg", tile.thumbClass]}>
+              <img src={tile.poster} alt={`${tile.title} — 9:16 reel`} loading="lazy" />
+              <div class="tile-play-icon" aria-hidden="true">▶</div>
+            </div>
+          </div>
+          <div class="tile-meta">
+            <div class="tile-category-chip">{tile.categoryLabel}</div>
+            <div class="tile-caption">{tile.title}</div>
+          </div>
+        </article>
+      ))}
+      <p class="portfolio-empty" hidden>No work in this category yet — check back soon.</p>
+    </div>
+  </div>
+</section>

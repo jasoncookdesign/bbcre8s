@@ -1,0 +1,65 @@
+---
+/*
+  Treatment B (neo-brutalist) footer. Charcoal, rose top border.
+  Social chips are placeholders until real profile URLs are supplied
+  (src/content/site.ts socialLinks are all visibility:"hidden" today).
+  "Privacy Policy" → /privacy and "Links" → /links are ported in Session 2
+  (3d supporting pages); they resolve on that cutover.
+*/
+import { intakeFallback } from "@content/site";
+
+const email = intakeFallback.email ?? "info@bbcre8s.com";
+
+const explore = [
+  { label: "Portfolio", href: "#portfolio" },
+  { label: "Services", href: "#services" },
+  { label: "Process", href: "#process" },
+  { label: "Work With Me", href: "#contact" },
+  { label: "Links", href: "/links" },
+];
+
+// Placeholder social labels — real hrefs land when the client supplies profiles.
+const socials = ["Instagram", "TikTok", "YouTube"];
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer" aria-label="Site footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand-col">
+        <span class="footer-logo">bb<span>cre8s</span></span>
+        <p class="footer-tag">
+          Video-first UGC and event content for brands that want to connect, engage,
+          and convert — backed by 10+ years of real event production.
+        </p>
+        <a class="footer-email" href={`mailto:${email}`}>{email}</a>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-col-title">Explore</p>
+        <ul class="footer-nav">
+          {explore.map((item) => (
+            <li><a href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-col-title">Follow</p>
+        <div class="footer-social">
+          {socials.map((name) => (
+            <a class="social-chip" href="#" aria-label={`${name} (link coming soon)`}>{name}</a>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; {year} Bella B Creates. All rights reserved.</p>
+      <nav class="footer-legal" aria-label="Legal">
+        <a href="/privacy">Privacy Policy</a>
+        <button type="button" class="link-reset" data-cookie-open>Cookie Settings</button>
+      </nav>
+    </div>
+  </div>
+</footer>

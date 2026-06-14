@@ -1,0 +1,54 @@
+---
+/*
+  §2 Stats band — reads `home.stats`.
+  Register 1 (bioStats) always renders. Register 2 (metrics) renders ONLY if
+  the client has supplied real figures — it's empty today, so no divider and
+  no fabricated numbers appear. Adding entries to home.json metrics brings the
+  register in automatically.
+*/
+import { getEntry } from "astro:content";
+
+const home = await getEntry("home", "main");
+const stats = home!.data.stats;
+const bioStats = stats.bioStats;
+const metrics = stats.metrics ?? [];
+const hasMetrics = metrics.length > 0;
+---
+
+<section class="stats-band" id="stats" aria-label="At a glance">
+  <div class="container">
+    <div class="stats-section-header">
+      <span class="section-label">At a Glance</span>
+    </div>
+
+    <p class="stats-register-label">Background</p>
+    <div class="stats-grid">
+      {bioStats.map((stat) => (
+        <div class="stat-card">
+          <div class="stat-value">{stat.value}</div>
+          <div class="stat-label">{stat.label}</div>
+          {stat.value.includes("10+") && (
+            <div class="stat-sticker" aria-hidden="true">
+              <span class="sticker sticker-neg7">10+ YRS</span>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+
+    {hasMetrics && (
+      <Fragment>
+        <hr class="stats-divider" aria-hidden="true" />
+        <p class="stats-register-label">Performance</p>
+        <div class="stats-grid">
+          {metrics.map((m) => (
+            <div class="metric-card">
+              <div class="metric-value">{m.value}</div>
+              <div class="metric-label">{m.label}</div>
+            </div>
+          ))}
+        </div>
+      </Fragment>
+    )}
+  </div>
+</section>

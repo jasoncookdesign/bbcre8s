@@ -1,0 +1,38 @@
+---
+/*
+  §7 Process — reads `process`, sorted by order. Square step numbers with a
+  dashed rose connector. Step number is the 1-based position in the sorted
+  list (the data carries no explicit number).
+*/
+import { getCollection } from "astro:content";
+
+const steps = (await getCollection("process")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="process-section" id="process" aria-label="How we work together">
+  <div class="container">
+    <div class="process-header">
+      <span class="section-label">How We Work</span>
+      <h2 class="section-heading">From Brief to Delivered</h2>
+      <p class="section-body" style="margin: 0 auto;">
+        A clear, low-friction process so you always know where we are.
+      </p>
+    </div>
+
+    <div class="process-steps">
+      {steps.map((step, idx) => (
+        <div class="process-step">
+          <div class="step-number" aria-hidden="true">{idx + 1}</div>
+          <h3 class="step-name">{step.data.title}</h3>
+          <p class="step-desc">{step.data.detail}</p>
+        </div>
+      ))}
+    </div>
+
+    <div style="display:flex; justify-content:flex-end; margin-top:var(--space-5); padding-right: var(--space-3);" aria-hidden="true">
+      <a href="#contact" tabindex="-1" aria-hidden="true">
+        <span class="sticker sticker-pos4" style="font-size:0.75rem; padding:0.5rem 1rem;">Book Now →</span>
+      </a>
+    </div>
+  </div>
+</section>

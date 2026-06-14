@@ -1,0 +1,71 @@
+---
+/*
+  §1 Hero — reads the `home` singleton (home.hero).
+  Desktop: 9:16 framed reel (right). Mobile: full-bleed poster under a dark
+  cover. "Watch Showreel" + the frame open the reel modal (wired in the
+  layout script). A real hero reel arrives via home.json `hero.reel`
+  ({provider,id,caption}); until then this is a branded poster placeholder.
+*/
+import { getEntry } from "astro:content";
+
+const home = await getEntry("home", "main");
+const hero = home!.data.hero;
+
+const heroPoster = "https://placehold.co/1080x1920/1a0f14/D9A5B3?text=Hero+Reel+%E2%80%94+9%3A16";
+const mobilePoster = "https://placehold.co/1080x1920/2d1520/D9A5B3?text=Bella+B";
+
+// Optional real reel reference from the data contract.
+const reel = hero.reel;
+const showreelData = reel
+  ? { "data-video-provider": reel.provider, "data-video-id": reel.id, "data-poster": heroPoster }
+  : { "data-poster": heroPoster };
+---
+
+<section class="hero" id="home" aria-label="Hero">
+  <img class="hero-bg-media" src={mobilePoster} alt="" aria-hidden="true" />
+  <div class="hero-bg" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-eyebrow">{hero.eyebrow}</div>
+          <h1 class="hero-headline">{hero.title}</h1>
+          <p class="hero-subheadline">{hero.subhead}</p>
+          <p class="hero-body">{hero.outcome}</p>
+          <div class="hero-actions">
+            <a href={hero.primaryCta.href} class="btn btn-primary" style="font-size: 0.9rem; padding: 1rem 2rem;">
+              {hero.primaryCta.label}
+            </a>
+            <a href={hero.secondaryCta.href} class="btn btn-ghost" style="font-size: 0.9rem; padding: 1rem 2rem;">
+              {hero.secondaryCta.label}
+            </a>
+          </div>
+
+          <a
+            href="#portfolio"
+            id="showreel-trigger"
+            class="hero-showreel-wrap"
+            aria-label={hero.showreelLabel}
+            {...showreelData}
+          >
+            <div class="showreel-badge" aria-hidden="true">▶</div>
+            <span class="showreel-label">{hero.showreelLabel}</span>
+          </a>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-frame" {...showreelData}>
+            <div class="hero-frame-media-clip">
+              <img src={heroPoster} alt="" />
+            </div>
+            <span class="hero-frame-tag">9:16 · 1080×1920</span>
+            <div class="hero-sticker-wrap">
+              <span class="sticker sticker-neg7">10+ YRS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

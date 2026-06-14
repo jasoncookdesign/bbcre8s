@@ -1,0 +1,112 @@
+---
+/*
+  §8 Contact — dusty rose. Reads the contact email from src/content/site.ts.
+  The form is an INERT placeholder this session: client-side accessible
+  validation runs, but submit is prevented (Session 2 wires the Web3Forms
+  access key + success redirect). The booking module shows the cal.com embed
+  inside the neo-brutalist frame as a static representation; Session 2 mounts
+  the live cal.com inline embed (brandColor only) once the event link exists.
+*/
+import { intakeFallback } from "@content/site";
+
+const email = intakeFallback.email ?? "info@bbcre8s.com";
+---
+
+<section class="contact-section" id="contact" aria-label="Contact">
+  <div class="container">
+    <div class="contact-inner">
+      <h2 class="contact-heading">Let's Work Together</h2>
+      <p class="contact-body">
+        Tell me about your project — event, campaign, product launch, or retainer.
+        I'll follow up within one business day.
+      </p>
+
+      <!-- INERT until Session 2: the layout script prevents submit and runs
+           accessible validation. Web3Forms action + thank-you redirect land in 3c. -->
+      <form class="contact-form" id="contact-form" novalidate>
+        <div class="form-row">
+          <div class="form-field">
+            <input type="text" name="name" placeholder="Your Name" class="form-input" autocomplete="name" aria-describedby="err-name" required />
+            <span class="form-error" id="err-name" role="alert">Please enter your name.</span>
+          </div>
+          <div class="form-field">
+            <input type="email" name="email" placeholder="Email Address" class="form-input" autocomplete="email" aria-describedby="err-email" required />
+            <span class="form-error" id="err-email" role="alert">Enter a valid email so Bella can reply.</span>
+          </div>
+        </div>
+        <div class="form-field">
+          <input type="text" name="company" placeholder="Brand / Company (optional)" class="form-input" autocomplete="organization" />
+        </div>
+        <div class="form-field">
+          <textarea name="message" placeholder="What are you working on?" class="form-input" rows="4" aria-describedby="err-message" required></textarea>
+          <span class="form-error" id="err-message" role="alert">Tell me a little about your project.</span>
+        </div>
+        <button type="submit" class="btn btn-primary-inv" style="align-self: flex-end; padding: 1rem 2.25rem; font-size: 0.9rem;">
+          Send Message
+        </button>
+      </form>
+
+      <div class="contact-divider">Or reach me directly</div>
+      <div class="contact-channels">
+        <a class="contact-channel" href={`mailto:${email}`}>
+          <span class="contact-channel-label">Email</span>
+          <span class="contact-channel-value">{email}</span>
+        </a>
+        <button type="button" class="contact-channel" id="book-toggle" aria-expanded="false" aria-controls="book">
+          <span class="contact-channel-label">Book a Call <span id="book-arrow" aria-hidden="true">↓</span></span>
+          <span class="contact-channel-value">Pick a time</span>
+        </button>
+      </div>
+
+      <!-- Booking — cal.com inline embed, brand-framed. Collapsed by default.
+           Static representation this session; live embed mounts in Session 2. -->
+      <div class="book-collapse" id="book" data-open="false">
+        <div class="book-collapse-inner">
+          <div class="book-module">
+            <div class="book-head">
+              <span class="book-head-title">Book a Call</span>
+              <span class="book-head-powered">Powered by cal.com</span>
+            </div>
+            <div class="book-body">
+              <span class="embed-tag">Embed preview · cal.com (live embed wired in Session 2)</span>
+              <div class="cal-embed" aria-label="cal.com booking widget (representation)">
+                <div class="cal-side">
+                  <div class="cal-host">
+                    <span class="cal-host-avatar" aria-hidden="true"></span>
+                    <span class="cal-host-name">Bella B</span>
+                  </div>
+                  <div class="cal-event-title">Intro Call</div>
+                  <div class="cal-meta">🕐 30 min</div>
+                  <div class="cal-meta">📹 Google Meet</div>
+                  <p class="cal-desc">A quick call to talk through your project — goals, timeline, and how I can help. No prep needed.</p>
+                </div>
+                <div class="cal-main">
+                  <div>
+                    <div class="cal-cal-head">
+                      <span class="cal-month">June 2026</span>
+                      <span class="cal-navbtns" aria-hidden="true">‹ ›</span>
+                    </div>
+                    <div class="cal-dow" aria-hidden="true"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+                    <div class="cal-days" aria-hidden="true">
+                      <span class="cal-day muted">26</span><span class="cal-day muted">27</span><span class="cal-day muted">28</span><span class="cal-day muted">29</span><span class="cal-day muted">30</span><span class="cal-day muted">31</span><span class="cal-day avail">1</span>
+                      <span class="cal-day avail">2</span><span class="cal-day avail">3</span><span class="cal-day">4</span><span class="cal-day avail">5</span><span class="cal-day avail">6</span><span class="cal-day muted">7</span><span class="cal-day muted">8</span>
+                      <span class="cal-day avail">9</span><span class="cal-day avail">10</span><span class="cal-day avail">11</span><span class="cal-day avail">12</span><span class="cal-day sel">13</span><span class="cal-day muted">14</span><span class="cal-day muted">15</span>
+                      <span class="cal-day avail">16</span><span class="cal-day avail">17</span><span class="cal-day avail">18</span><span class="cal-day avail">19</span><span class="cal-day avail">20</span><span class="cal-day muted">21</span><span class="cal-day muted">22</span>
+                    </div>
+                  </div>
+                  <div class="cal-times">
+                    <span class="cal-times-label">Sat 13 Jun</span>
+                    <span class="cal-slot">9:00 am</span>
+                    <span class="cal-slot primary">10:30 am</span>
+                    <span class="cal-slot">1:00 pm</span>
+                    <span class="cal-slot">3:30 pm</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

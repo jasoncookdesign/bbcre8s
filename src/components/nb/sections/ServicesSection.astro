@@ -1,0 +1,42 @@
+---
+/*
+  §6 Services — reads `services`, visible-only, sorted by order.
+  The icon token on each service maps to a decorative glyph in the square
+  block (aria-hidden); unknown tokens fall back to a neutral mark.
+*/
+import { getCollection } from "astro:content";
+
+const services = (await getCollection("services"))
+  .filter((s) => s.data.visible)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const iconGlyph: Record<string, string> = {
+  video: "🎬",
+  camera: "📷",
+  calendar: "🎪",
+  plane: "✈️",
+  repeat: "📅",
+};
+---
+
+<section class="services-section" id="services" aria-label="Services">
+  <div class="container">
+    <div class="services-header">
+      <span class="section-label">What I Do</span>
+      <h2 class="section-heading">Services</h2>
+      <p class="section-body">
+        Built for brands that want content with reach, range, and real production experience behind it.
+      </p>
+    </div>
+
+    <div class="services-grid">
+      {services.map((service) => (
+        <div class="service-card">
+          <div class="service-icon" aria-hidden="true">{iconGlyph[service.data.icon ?? ""] ?? "✦"}</div>
+          <h3 class="service-name">{service.data.title}</h3>
+          <p class="service-desc">{service.data.blurb}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

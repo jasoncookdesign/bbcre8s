@@ -1,0 +1,368 @@
+---
+/*
+  TreatmentBLayout — INI-059 Phase 3 (neo-brutalist one-page shell).
+  Standalone layout for the staged Treatment B page (/v2). Does NOT reuse
+  the legacy BaseLayout (which loads legacy tokens/global.css); the legacy
+  layout stays intact until the Session 2 cutover.
+
+  Fonts load from Google Fonts (matching the client-approved mockup) for this
+  staged Session 1 build — keeps `npm ci` green with no new dependency.
+  SESSION 2 (pre-root-cutover) item: switch to self-hosted Space Grotesk +
+  Manrope (Fontsource or src/assets/fonts/) to satisfy the design system's
+  not-CDN-coupled preference; that change requires a lockfile update.
+  Includes the page-level reel modal + cookie banner singletons and the
+  bundled, key-free interactivity (filters, modal, hamburger, booking toggle,
+  consent, contact validation). Booking/form/analytics stay inert until
+  Session 2 wires the cal.com link / Web3Forms key / GA4 id.
+*/
+import "@styles/nb-tokens.css";
+import "@styles/nb-base.css";
+import NbHeader from "@components/nb/nav/NbHeader.astro";
+import NbFooter from "@components/nb/nav/NbFooter.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  pathname: string;
+}
+
+const siteUrl = import.meta.env.SITE ?? "https://bbcre8s.com";
+const {
+  title = "Bella B Creates — UGC · Travel · Events · Lifestyle",
+  description = "Authentic, video-first UGC and event content that helps brands connect, engage, and convert — backed by 10+ years of real event production.",
+  pathname,
+} = Astro.props;
+
+const canonicalUrl = new URL(pathname, siteUrl).toString();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#FFFFFF" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Display: Space Grotesk · Body: Manrope (Session 2: move to self-hosted) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Staged preview path — not for indexing until the Session 2 root cutover. -->
+    <meta name="robots" content="noindex, nofollow" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Bella B Creates" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <NbHeader />
+    <main id="main-content">
+      <slot />
+    </main>
+    <NbFooter />
+
+    <!-- Reel modal player (singleton) -->
+    <div class="reel-modal" id="reel-modal" hidden role="dialog" aria-modal="true" aria-label="Portfolio reel player">
+      <div class="reel-modal-backdrop" data-reel-close></div>
+      <div class="reel-modal-frame" role="document">
+        <button type="button" class="reel-close" data-reel-close aria-label="Close player">✕</button>
+        <div class="reel-stage" id="reel-stage"></div>
+        <div class="reel-caption">
+          <span class="reel-caption-chip" id="reel-cat"></span>
+          <span class="reel-caption-title" id="reel-title"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cookie consent (GA loads only after Accept — wired in Session 2) -->
+    <aside class="cookie-banner" id="cookie-banner" role="region" aria-label="Cookie consent" hidden>
+      <p class="cookie-title">Cookies, the honest kind.</p>
+      <p class="cookie-text">
+        We use analytics to understand how the site is used. Nothing loads until you say so.
+        See the <a href="/privacy">Privacy Policy</a> for details.
+      </p>
+      <div class="cookie-actions">
+        <button type="button" class="btn btn-primary" data-cookie-accept>Accept</button>
+        <button type="button" class="btn btn-outline" data-cookie-decline>Decline</button>
+      </div>
+    </aside>
+
+    <script>
+      // ---- Key-free interactivity for the Treatment B one-pager ----
+      // Sections render server-side from the content collections; this only
+      // wires behaviour onto elements already in the DOM.
+
+      // §3 Portfolio filter chips — show/hide tiles; re-flag the first
+      // visible tile as featured (rose shadow), matching the mockup.
+      function initPortfolioFilter(): void {
+        const row = document.getElementById("filter-row");
+        const grid = document.getElementById("portfolio-grid");
+        if (!row || !grid) return;
+        const tiles = Array.from(grid.querySelectorAll<HTMLElement>(".portfolio-tile"));
+        const chips = Array.from(row.querySelectorAll<HTMLButtonElement>(".chip"));
+
+        const apply = (filter: string): void => {
+          let firstShown: HTMLElement | null = null;
+          tiles.forEach((tile) => {
+            const match = filter === "all" || tile.dataset.category === filter;
+            tile.hidden = !match;
+            tile.classList.remove("featured");
+            if (match && !firstShown) firstShown = tile;
+          });
+          if (firstShown) firstShown.classList.add("featured");
+
+          const empty = grid.querySelector<HTMLElement>(".portfolio-empty");
+          if (empty) empty.hidden = !!firstShown;
+        };
+
+        chips.forEach((chip) => {
+          chip.addEventListener("click", () => {
+            chips.forEach((c) => {
+              c.classList.remove("active");
+              c.setAttribute("aria-pressed", "false");
+            });
+            chip.classList.add("active");
+            chip.setAttribute("aria-pressed", "true");
+            apply(chip.dataset.filter ?? "all");
+          });
+        });
+      }
+
+      // ---- Reel modal player ----
+      let reelOpener: HTMLElement | null = null;
+      const reelModal = document.getElementById("reel-modal");
+      const reelStage = document.getElementById("reel-stage");
+
+      function openReel(d: { title: string; category: string; provider?: string; videoId?: string; poster?: string }): void {
+        if (!reelModal || !reelStage) return;
+        reelOpener = document.activeElement as HTMLElement;
+        const titleEl = document.getElementById("reel-title");
+        const catEl = document.getElementById("reel-cat");
+        if (titleEl) titleEl.textContent = d.title;
+        if (catEl) catEl.textContent = d.category;
+
+        if (d.provider === "youtube" && d.videoId) {
+          reelStage.innerHTML =
+            `<iframe src="https://www.youtube-nocookie.com/embed/${d.videoId}?autoplay=1&rel=0&playsinline=1" ` +
+            `title="${d.title}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+        } else if (d.provider === "mp4" && d.videoId) {
+          reelStage.innerHTML =
+            `<video controls playsinline autoplay ${d.poster ? `poster="${d.poster}"` : ""}>` +
+            `<source src="${d.videoId}" type="video/mp4"></video>`;
+        } else if (d.poster) {
+          // Placeholder / poster-only (e.g. a showreel with no reel uploaded yet).
+          reelStage.innerHTML = `<img class="reel-poster" src="${d.poster}" alt="${d.title}">`;
+        } else {
+          reelStage.innerHTML = "";
+        }
+
+        reelModal.hidden = false;
+        document.body.style.overflow = "hidden";
+        const closeBtn = reelModal.querySelector<HTMLButtonElement>(".reel-close");
+        closeBtn?.focus();
+      }
+
+      function closeReel(): void {
+        if (!reelModal || !reelStage) return;
+        reelModal.hidden = true;
+        reelStage.innerHTML = ""; // stop playback by tearing down the player
+        document.body.style.overflow = "";
+        reelOpener?.focus?.();
+      }
+
+      function initReel(): void {
+        if (!reelModal) return;
+        reelModal.querySelectorAll("[data-reel-close]").forEach((el) =>
+          el.addEventListener("click", closeReel)
+        );
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !reelModal.hidden) closeReel();
+        });
+
+        // Portfolio tiles
+        document.querySelectorAll<HTMLElement>(".portfolio-tile").forEach((tile) => {
+          const open = (): void =>
+            openReel({
+              title: tile.dataset.title ?? "",
+              category: tile.dataset.categoryLabel ?? "",
+              provider: tile.dataset.videoProvider,
+              videoId: tile.dataset.videoId,
+              poster: tile.dataset.poster,
+            });
+          tile.addEventListener("click", open);
+          tile.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              open();
+            }
+          });
+        });
+
+        // Hero showreel — opens the modal. Poster-only until a real reel is added.
+        const showreel = document.getElementById("showreel-trigger");
+        const heroFrame = document.querySelector<HTMLElement>(".hero-frame");
+        const openShowreel = (e?: Event): void => {
+          if (e) e.preventDefault();
+          const src = showreel ?? heroFrame;
+          openReel({
+            title: "Bella B — Showreel",
+            category: "Showreel",
+            provider: src?.dataset?.videoProvider,
+            videoId: src?.dataset?.videoId,
+            poster: src?.dataset?.poster,
+          });
+        };
+        showreel?.addEventListener("click", openShowreel);
+        heroFrame?.addEventListener("click", openShowreel);
+      }
+
+      // ---- Cookie consent (GA gated; wired in Session 2) ----
+      function initConsent(): void {
+        const banner = document.getElementById("cookie-banner");
+        if (!banner) return;
+        const get = (): string | null => {
+          try { return localStorage.getItem("bb-consent"); } catch { return null; }
+        };
+        const set = (v: string): void => {
+          try { localStorage.setItem("bb-consent", v); } catch { /* ignore */ }
+        };
+        const loadAnalytics = (): void => {
+          // Session 2: inject GA4 (gtag) here, only on consent.
+        };
+        const consent = get();
+        if (consent === "accepted") { loadAnalytics(); return; }
+        if (consent !== "declined") banner.hidden = false;
+
+        document.querySelector("[data-cookie-accept]")?.addEventListener("click", () => {
+          set("accepted"); banner.hidden = true; loadAnalytics();
+        });
+        document.querySelector("[data-cookie-decline]")?.addEventListener("click", () => {
+          set("declined"); banner.hidden = true;
+        });
+        document.querySelector("[data-cookie-open]")?.addEventListener("click", () => {
+          banner.hidden = false;
+        });
+      }
+
+      // ---- Book-a-Call: expand the cal.com module inline + smooth-scroll ----
+      function initBooking(): void {
+        const toggle = document.getElementById("book-toggle");
+        const collapse = document.getElementById("book");
+        const arrow = document.getElementById("book-arrow");
+        if (!toggle || !collapse) return;
+        toggle.addEventListener("click", () => {
+          const open = collapse.getAttribute("data-open") === "true";
+          collapse.setAttribute("data-open", String(!open));
+          toggle.setAttribute("aria-expanded", String(!open));
+          if (arrow) arrow.textContent = open ? "↓" : "↑";
+          if (!open) setTimeout(() => collapse.scrollIntoView({ behavior: "smooth", block: "center" }), 80);
+        });
+      }
+
+      // ---- Contact form: accessible client-side validation (inert submit) ----
+      function initContactForm(): void {
+        const form = document.getElementById("contact-form") as HTMLFormElement | null;
+        if (!form) return;
+        const rules: Array<[string, (v: string) => boolean]> = [
+          ["name", (v) => v.trim().length > 0],
+          ["email", (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())],
+          ["message", (v) => v.trim().length > 0],
+        ];
+        form.addEventListener("submit", (e) => {
+          // Session 2 wires the Web3Forms action; until then, never actually submit.
+          e.preventDefault();
+          let firstBad: HTMLElement | null = null;
+          rules.forEach(([name, ok]) => {
+            const input = form.elements.namedItem(name) as HTMLInputElement | null;
+            if (!input) return;
+            const field = input.closest(".form-field");
+            const bad = !ok(input.value);
+            field?.classList.toggle("has-error", bad);
+            input.setAttribute("aria-invalid", bad ? "true" : "false");
+            if (bad && !firstBad) firstBad = input;
+          });
+          firstBad?.focus();
+        });
+        form.querySelectorAll<HTMLElement>(".form-input").forEach((input) => {
+          input.addEventListener("input", () => {
+            const field = input.closest(".form-field");
+            if (field?.classList.contains("has-error")) {
+              field.classList.remove("has-error");
+              input.setAttribute("aria-invalid", "false");
+            }
+          });
+        });
+      }
+
+      // ---- Mobile nav (≤900px hamburger) ----
+      function initNav(): void {
+        const toggle = document.getElementById("nav-toggle");
+        const menu = document.getElementById("nav-menu");
+        const backdrop = document.getElementById("nav-backdrop");
+        if (!toggle || !menu) return;
+        const setOpen = (open: boolean): void => {
+          toggle.setAttribute("aria-expanded", String(open));
+          toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+          menu.classList.toggle("is-open", open);
+          if (backdrop) backdrop.hidden = !open;
+          document.body.style.overflow = open ? "hidden" : "";
+        };
+        toggle.addEventListener("click", () => setOpen(toggle.getAttribute("aria-expanded") !== "true"));
+        backdrop?.addEventListener("click", () => setOpen(false));
+        menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
+        document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
+        const desktop = window.matchMedia("(min-width: 901px)");
+        const onDesktop = (): void => { if (desktop.matches) setOpen(false); };
+        desktop.addEventListener("change", onDesktop);
+      }
+
+      // ---- Scroll-spy nav active state ----
+      function initScrollNav(): void {
+        const sections = document.querySelectorAll<HTMLElement>("section[id]");
+        const links = document.querySelectorAll<HTMLAnchorElement>(".nav-links a");
+        if (!sections.length || !links.length) return;
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                links.forEach((link) => {
+                  link.style.color = link.getAttribute("href") === "#" + entry.target.id ? "var(--ink)" : "";
+                });
+              }
+            });
+          },
+          { threshold: 0.4 }
+        );
+        sections.forEach((s) => observer.observe(s));
+      }
+
+      function init(): void {
+        initPortfolioFilter();
+        initReel();
+        initConsent();
+        initBooking();
+        initContactForm();
+        initNav();
+        initScrollNav();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+      } else {
+        init();
+      }
+    </script>
+  </body>
+</html>

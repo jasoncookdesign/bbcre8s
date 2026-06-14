@@ -1,0 +1,74 @@
+/* ============================================================
+   bbcre8s — Treatment B (Neo-Brutalist) DESIGN TOKENS
+   INI-059 Phase 3. Single source of truth for the visual system;
+   maps 1:1 to knowledge/clients/bella-b-creates/design-system.md §2.
+   Imported once by TreatmentBLayout.astro (with nb-base.css).
+   Kept separate from the legacy src/styles/tokens.css (untouched
+   until the Session 2 legacy cutover).
+   ============================================================ */
+:root {
+  /* ── Brand palette ── */
+  --bg:               #FFFFFF;
+  --bg-strong:        #F2F2F2;
+  --accent:           #D9A5B3;       /* Dusty Rose — primary accent */
+  --accent-strong:    #C48F9C;       /* hover / active rose */
+  --accent-blush:     #F5E5EA;       /* Blush */
+  --accent-blue:      #A8C6DF;       /* Powder Blue */
+  --accent-blue-tint: #D6E8F2;       /* Powder Blue light — stats band bg */
+  --nb-charcoal:      #333333;       /* the structural "black" */
+  --ink:              #333333;
+  --ink-soft:         #555555;
+  --ink-faint:        #888888;
+  --ink-on-dark:      #FFFFFF;
+  --ink-soft-on-dark: rgba(255, 255, 255, 0.70);
+  --success:          #1D7F5F;
+  --error:            #B23A48;       /* brand-aligned error red */
+
+  /* ── Typography — Space Grotesk display, Manrope body (self-hosted via Fontsource) ── */
+  --font-display: "Space Grotesk", "Archivo Black", "Helvetica Neue", sans-serif;
+  --font-body:    "Manrope", "Helvetica Neue", "Segoe UI", sans-serif;
+
+  --text-display: clamp(3.5rem, 8vw, 6rem);
+  --text-h1:      clamp(2.25rem, 5vw, 3.5rem);
+  --text-h2:      clamp(1.75rem, 3vw, 2.25rem);
+  --text-h3:      1.5rem;
+  --text-h4:      1.125rem;
+  --text-body:    1rem;
+  --text-small:   0.875rem;
+  --text-micro:   0.75rem;
+
+  /* ── Spacing ── */
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+  --space-7: 4rem;
+  --space-8: 5.5rem;
+
+  /* ── Radius — near-flat; chips rectangular ── */
+  --radius-sm:  4px;
+  --radius-md:  6px;
+  --radius-pill: 4px;
+
+  /* ── Hard shadow system (zero-blur, offset, solid) ── */
+  --shadow-hard:      6px 6px 0 var(--nb-charcoal);
+  --shadow-hard-sm:   4px 4px 0 var(--nb-charcoal);
+  --shadow-hard-rose: 6px 6px 0 var(--accent);
+  --shadow-hard-blue: 6px 6px 0 var(--accent-blue);
+  --shadow-hard-lg:   8px 8px 0 var(--nb-charcoal);
+
+  /* ── Border system ── */
+  --border-neo:        2.5px solid var(--nb-charcoal);
+  --border-neo-thick:  3.5px solid var(--nb-charcoal);
+  --border-neo-accent: 2.5px solid var(--accent);
+  --border-neo-blue:   2.5px solid var(--accent-blue);
+  --border-neo-white:  2.5px solid rgba(255, 255, 255, 0.60);
+
+  /* ── Layout ── */
+  --content-max:    72rem;
+  --content-narrow: 54rem;
+  --header-height:  4.75rem;
+  --transition:     150ms ease;
+}

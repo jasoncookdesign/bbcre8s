@@ -1,0 +1,48 @@
+---
+/*
+  §5 Testimonials — reads `testimonials`, visible-only.
+  Both seed entries are visible:false (placeholder copy), so the section
+  renders nothing until a real, approved quote is set visible:true. No
+  fabricated social proof appears in the staged build.
+*/
+import { getCollection } from "astro:content";
+
+const items = (await getCollection("testimonials"))
+  .filter((t) => t.data.visible)
+  .sort((a, b) => a.data.order - b.data.order);
+
+function initials(attribution: string): string {
+  return attribution
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("");
+}
+---
+
+{items.length > 0 && (
+  <section class="testimonials-section" id="testimonials" aria-label="What clients say">
+    <div class="container">
+      <div class="testimonials-header">
+        <span class="section-label">Client Stories</span>
+        <h2 class="section-heading" style="margin: 0 auto var(--space-3);">What Brands Say</h2>
+      </div>
+
+      <div class="testimonials-grid">
+        {items.map((item) => (
+          <div class="testimonial-card">
+            <div class="quote-mark" aria-hidden="true">&ldquo;</div>
+            <blockquote class="quote-text">{item.data.quote}</blockquote>
+            <div class="quote-attribution">
+              <div class="attribution-avatar" aria-hidden="true">{initials(item.data.attribution)}</div>
+              <div>
+                <div class="attribution-name">{item.data.attribution}</div>
+                {item.data.context && <div class="attribution-title">{item.data.context}</div>}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
