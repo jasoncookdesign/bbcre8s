@@ -1,0 +1,247 @@
+# ============================================================================
+# Sveltia CMS — bbcre8s content editor   [INI-068 Phase 1]
+# ============================================================================
+# Maps every INI-059 Phase 2.5 Content Collection to an editor interface.
+# One CMS collection per editable surface; field types mirror the Zod schemas
+# in src/content.config.ts.
+#
+# Auth backend: GitHub via sveltia-cms-auth (Cloudflare Workers, free tier).
+# Replace SVELTIA_CMS_AUTH_URL_PLACEHOLDER with the Workers deployment URL
+# after Cloudflare setup.
+#
+# Build + deploy: edits commit to `main`; the existing deploy-pages.yml
+# GitHub Action rebuilds and redeploys to GitHub Pages automatically.
+#
+# Data layout:
+#   home singleton  → src/data/home.json          (files collection)
+#   all others      → src/data/<collection>/*.json (folder collections)
+#                     one file per entry; filename = entry ID
+# ============================================================================
+
+backend:
+  name: github
+  repo: jasoncookdesign/bbcre8s
+  branch: main
+  # Replace with the Cloudflare Workers URL after auth setup.
+  base_url: SVELTIA_CMS_AUTH_URL_PLACEHOLDER
+
+# Media files live in the repo alongside source so Astro can process them.
+media_folder: src/assets
+public_folder: /src/assets
+
+publish_mode: simple
+
+collections:
+
+  # --------------------------------------------------------------------------
+  # §1 + §2  Hero & Stats band  (singleton)
+  # Source: src/data/home.json  →  { "main": { hero: {...}, stats: {...} } }
+  # --------------------------------------------------------------------------
+  - name: home
+    label: "Hero & Stats"
+    description: "The top of the page — your headline, subheadline, CTAs, and bio numbers."
+    files:
+      - name: main
+        label: "Hero & Stats"
+        file: src/data/home.json
+        fields:
+          - label: "Hero & Stats"
+            name: main
+            widget: object
+            fields:
+              - label: "Hero section"
+                name: hero
+                widget: object
+                fields:
+                  - { label: "Eyebrow (tag line)", name: eyebrow, widget: string }
+                  - { label: "Page title", name: title, widget: string }
+                  - { label: "Subhead", name: subhead, widget: string }
+                  - { label: "Outcome statement", name: outcome, widget: string }
+                  - label: "Primary button"
+                    name: primaryCta
+                    widget: object
+                    fields:
+                      - { label: "Button text", name: label, widget: string }
+                      - { label: "Link (e.g. #portfolio)", name: href, widget: string }
+                  - label: "Secondary button"
+                    name: secondaryCta
+                    widget: object
+                    fields:
+                      - { label: "Button text", name: label, widget: string }
+                      - { label: "Link (e.g. #contact)", name: href, widget: string }
+                  - { label: "Showreel button text", name: showreelLabel, widget: string }
+              - label: "Stats section"
+                name: stats
+                widget: object
+                fields:
+                  - label: "Bio stats (the four 'about you' numbers)"
+                    name: bioStats
+                    widget: list
+                    fields:
+                      - { label: "Label", name: label, widget: string, hint: "e.g. Based In" }
+                      - { label: "Value", name: value, widget: string, hint: "e.g. Colorado + Texas" }
+                  - label: "Performance metrics (leave empty until you have real numbers)"
+                    name: metrics
+                    widget: list
+                    required: false
+                    fields:
+                      - { label: "Label", name: label, widget: string, hint: "e.g. Views Generated" }
+                      - { label: "Value", name: value, widget: string, hint: "e.g. 2M+" }
+
+  # --------------------------------------------------------------------------
+  # §3  Portfolio categories  (filter chips — Bella's #1 priority)
+  # Source: src/data/categories/*.json  (one file per category)
+  # Filename = category ID (e.g. travel.json → id "travel").
+  # Add a category: click "New Category". Remove: delete the entry.
+  # Reorder: change the `order` field (lower = first; steps of 10 recommended).
+  # IMPORTANT: Don't rename or delete a category that still has reels — the
+  # build will fail until those reels are reassigned.
+  # --------------------------------------------------------------------------
+  - name: categories
+    label: "Portfolio Categories"
+    label_singular: "Category"
+    description: "The filter chips above your portfolio reels. Add, remove, or reorder freely. Don't delete a category that still has reels assigned to it."
+    folder: src/data/categories
+    extension: json
+    format: json
+    identifier_field: label
+    slug: "{{label | slugify}}"
+    create: true
+    delete: true
+    fields:
+      - { label: "Label (shown on the filter chip)", name: label, widget: string }
+      - { label: "Summary (short description of this category)", name: summary, widget: string }
+      - { label: "Anchor ID (same as the slug, usually)", name: anchorId, widget: string, hint: "Matches the slug. Set once and don't change — reels reference this." }
+      - { label: "Order (lower = first; use steps of 10)", name: order, widget: number, value_type: int }
+      - { label: "Visible", name: visible, widget: boolean, default: true }
+
+  # --------------------------------------------------------------------------
+  # §3  Portfolio reels
+  # Source: src/data/portfolio/*.json  (one file per reel)
+  # `category` must match an existing category's anchor ID.
+  # --------------------------------------------------------------------------
+  - name: portfolio
+    label: "Portfolio Reels"
+    label_singular: "Reel"
+    description: "Your portfolio videos. Each reel belongs to one category. Add YouTube videos by ID (the part after ?v= in the URL)."
+    folder: src/data/portfolio
+    extension: json
+    format: json
+    identifier_field: title
+    slug: "{{title | slugify}}"
+    create: true
+    delete: true
+    fields:
+      - { label: "Title", name: title, widget: string }
+      - { label: "Category (enter the category's anchor ID, e.g. travel)", name: category, widget: string, hint: "Must match an existing category anchor ID exactly." }
+      - label: "Video"
+        name: video
+        widget: object
+        fields:
+          - label: "Provider"
+            name: provider
+            widget: select
+            options: ["youtube", "vimeo", "mp4"]
+            default: "youtube"
+          - { label: "Video ID (YouTube: the ?v= value in the URL)", name: id, widget: string }
+          - { label: "Caption (shown in the player)", name: caption, widget: string }
+      - { label: "Poster image (optional — filename in src/assets/)", name: poster, widget: string, required: false }
+      - { label: "Order (lower = first)", name: order, widget: number, value_type: int }
+      - { label: "Featured (shows in the top featured row)", name: featured, widget: boolean, default: false }
+      - { label: "Featured order (if featured — lower = first)", name: featuredOrder, widget: number, value_type: int, required: false }
+      - label: "Status"
+        name: status
+        widget: select
+        options:
+          - { label: "Placeholder (real video not yet added)", value: placeholder }
+          - { label: "Ready (live video)", value: ready }
+        default: placeholder
+      - { label: "Visible", name: visible, widget: boolean, default: true }
+
+  # --------------------------------------------------------------------------
+  # §4  Brand logos ("Trusted By")
+  # Source: src/data/brandLogos/*.json
+  # Keep visible: false until you have the brand's permission to show their logo.
+  # --------------------------------------------------------------------------
+  - name: brandLogos
+    label: "Brand Logos"
+    label_singular: "Brand Logo"
+    description: "The 'Trusted By' section. Keep visible: false until you have permission to display each brand's logo."
+    folder: src/data/brandLogos
+    extension: json
+    format: json
+    identifier_field: name
+    slug: "{{name | slugify}}"
+    create: true
+    delete: true
+    fields:
+      - { label: "Brand name (also used as image alt text)", name: name, widget: string }
+      - { label: "Logo image (filename in src/assets/)", name: src, widget: string, required: false }
+      - { label: "Brand website URL (optional)", name: url, widget: string, required: false }
+      - { label: "Order", name: order, widget: number, value_type: int }
+      - { label: "Visible", name: visible, widget: boolean, default: false, hint: "Only turn on once you have the brand's permission." }
+
+  # --------------------------------------------------------------------------
+  # §5  Testimonials
+  # Source: src/data/testimonials/*.json
+  # --------------------------------------------------------------------------
+  - name: testimonials
+    label: "Testimonials"
+    label_singular: "Testimonial"
+    description: "Client quotes. Keep visible: false on any placeholder — only switch on once the quote is real and approved by the person you're quoting."
+    folder: src/data/testimonials
+    extension: json
+    format: json
+    identifier_field: attribution
+    slug: "{{attribution | slugify}}"
+    create: true
+    delete: true
+    fields:
+      - { label: "Quote", name: quote, widget: text }
+      - { label: "Name / Attribution", name: attribution, widget: string }
+      - { label: "Context (role, brand, or campaign — optional)", name: context, widget: string, required: false }
+      - { label: "Star rating (1–5, optional)", name: rating, widget: number, value_type: int, min: 1, max: 5, required: false }
+      - { label: "Order", name: order, widget: number, value_type: int }
+      - { label: "Visible", name: visible, widget: boolean, default: false }
+
+  # --------------------------------------------------------------------------
+  # §6  Services
+  # Source: src/data/services/*.json
+  # --------------------------------------------------------------------------
+  - name: services
+    label: "Services"
+    label_singular: "Service"
+    description: "What you offer. Edit titles and descriptions, or add and remove services."
+    folder: src/data/services
+    extension: json
+    format: json
+    identifier_field: title
+    slug: "{{title | slugify}}"
+    create: true
+    delete: true
+    fields:
+      - { label: "Title", name: title, widget: string }
+      - { label: "Description", name: blurb, widget: text }
+      - { label: "Icon token (optional)", name: icon, widget: string, required: false }
+      - { label: "Order", name: order, widget: number, value_type: int }
+      - { label: "Visible", name: visible, widget: boolean, default: true }
+
+  # --------------------------------------------------------------------------
+  # §7  Process steps
+  # Source: src/data/process/*.json
+  # --------------------------------------------------------------------------
+  - name: process
+    label: "Process Steps"
+    label_singular: "Process Step"
+    description: "Your workflow — the steps you walk clients through. Edit, reorder, or add steps."
+    folder: src/data/process
+    extension: json
+    format: json
+    identifier_field: title
+    slug: "{{title | slugify}}"
+    create: true
+    delete: true
+    fields:
+      - { label: "Step title", name: title, widget: string }
+      - { label: "Description", name: detail, widget: text }
+      - { label: "Order", name: order, widget: number, value_type: int }

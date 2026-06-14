@@ -7,41 +7,47 @@ invalid (a missing field, a typo'd category, the wrong kind of value), the build
 **fails on purpose** and the live site stays on its last good version. You can't
 silently break it.
 
-> A simple editing tool (INI-068, Sveltia CMS) will be layered on top of these
-> files later so you can edit them in a friendly screen instead of by hand. The
-> files below are the durable source of truth either way.
+> **Sveltia CMS (INI-068)** is layered on top of these files — you can edit them
+> through the friendly editing interface at `bbcre8s.com/admin` instead of by
+> hand. The files below are the durable source of truth either way.
 
-## The files
+## File layout
 
-| File | Site section | What it controls |
+Most sections use **one JSON file per entry** inside a named subfolder. Adding
+an item means adding a file; removing one means deleting the file. The filename
+becomes the item's ID (e.g. `categories/travel.json` → the Travel category).
+
+| Folder / File | Site section | Notes |
 |---|---|---|
-| `home.json` | Hero + Stats band | Headline, subhead, buttons; the four "Based In / Industries / Experience / Available" stats; performance metrics |
-| `categories.json` | Portfolio filters | The portfolio category chips (Travel, Events, Lifestyle, Wellness, Technology) |
-| `portfolio.json` | Featured portfolio | The reels, their captions, and which category each belongs to |
-| `brandLogos.json` | Brand logos | The "Trusted By" logo strip |
-| `testimonials.json` | Testimonials | Client and brand quotes |
-| `services.json` | Services | The service cards |
-| `process.json` | Process | The numbered "how we work" steps |
+| `home.json` | Hero + Stats | Singleton — one file, edited directly |
+| `categories/` | Portfolio filter chips | One `.json` per category |
+| `portfolio/` | Portfolio reels | One `.json` per reel |
+| `brandLogos/` | "Trusted By" logos | One `.json` per brand |
+| `testimonials/` | Testimonials | One `.json` per quote |
+| `services/` | Services | One `.json` per service |
+| `process/` | Process steps | One `.json` per step |
 
 ## Rules that apply everywhere
 
-- **`order`** sets the position within a section (lowest first). Leave gaps
+- **`order`** sets the position within a section (lowest = first). Leave gaps
   (10, 20, 30…) so you can slot something in between later without renumbering.
 - **`visible`** (`true` / `false`) shows or hides an item without deleting it.
   Testimonials and brand logos start `false` — flip to `true` once they're real
   and approved.
-- **`id`** must be unique within a file and is best left alone once set.
+- The filename is the item's **ID** (e.g. `categories/travel.json` → ID `travel`).
+  Portfolio reels reference a category by its ID — rename a category file and the
+  build breaks until you update every reel that pointed to it.
 - Keep the quotes `"like this"` and the commas exactly as shown. Every value in
   quotes is text; `true`/`false` and numbers have no quotes.
 
 ## Categories (the easy-to-change part)
 
-`categories.json` is built to be reordered, renamed, added to, and removed from.
-To rename a category, change its `label`. To reorder, change `order`. To add one,
-copy an existing block, give it a new `id` and `anchorId`, and set its `order`.
-**If you remove a category, first move any portfolio items that point to it to a
-different `category`** — a reel pointing at a category that no longer exists will
-stop the build (by design).
+Each category is its own file inside `categories/`. To rename a category, change
+its `label` (the display text) — but leave the **filename** alone since portfolio
+reels reference the filename as the category ID. To reorder, change `order`. To
+add a category, create a new `.json` file (or use the CMS). **If you remove a
+category file, first reassign any portfolio reels that point to it** — a reel
+pointing at a missing category stops the build (by design).
 
 ## Media convention (important)
 
@@ -62,7 +68,7 @@ The site does **not** host large video files. Follow this convention:
 
 ## After you edit
 
-Commit and push the changed file to `main`. A GitHub Action rebuilds the site
+Commit and push the changed file(s) to `main`. A GitHub Action rebuilds the site
 and redeploys it automatically — no separate build step on your side. If the
 Action shows a red ✗, the edit was invalid; open it to see which file and field,
 fix it, and push again. The live site is untouched until a build passes.
