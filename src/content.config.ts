@@ -19,18 +19,22 @@
   every collection through these schemas and abort on the first violation.
 
   Sections (one-page site, see knowledge/clients/bella-b-creates/page-inventory):
-    1 Hero + 2 Stats band  -> `home` singleton
-    3 Featured portfolio   -> `categories` (filters) + `portfolio` (reels)
-    4 Brand logos          -> `brandLogos`
-    5 Testimonials         -> `testimonials`
-    6 Services             -> `services`
-    7 Process              -> `process`
+    1 Hero + 2 Stats band  -> `home` singleton           (file loader — single JSON object)
+    3 Featured portfolio   -> `categories` + `portfolio`  (glob loader — one JSON file per entry)
+    4 Brand logos          -> `brandLogos`                (glob loader — one JSON file per entry)
+    5 Testimonials         -> `testimonials`              (glob loader — one JSON file per entry)
+    6 Services             -> `services`                  (glob loader — one JSON file per entry)
+    7 Process              -> `process`                   (glob loader — one JSON file per entry)
     (8 Contact is config in src/content/site.ts, not a per-item collection)
+
+  INI-068 note: array collections use one-file-per-entry so Sveltia CMS `folder`
+  collections work natively. Entry `id` = filename slug (e.g. categories/travel.json
+  → id="travel"). Schemas below do NOT declare `id:` for glob collections.
   ============================================================================
 */
 
 import { defineCollection, reference, z } from "astro:content";
-import { file } from "astro/loaders";
+import { file, glob } from "astro/loaders";
 
 /* ---------------------------------------------------------------------------
    Shared building blocks
@@ -104,12 +108,10 @@ const home = defineCollection({
    Data: src/data/categories.json (array; each item needs an `id`)
 --------------------------------------------------------------------------- */
 const categories = defineCollection({
-  loader: file("src/data/categories.json"),
+  loader: glob({ pattern: "src/data/categories/*.json", base: "." }),
   schema: z
     .object({
-      // `id` is supplied by the file() loader from each entry's id field and
-      // is kept in the data, so it must be declared for .strict() to accept it.
-      id: z.string(),
+      // `id` comes from the filename slug via glob() — not a data field.
       label: z.string().min(1), // shown on the filter chip
       summary: z.string().min(1), // short line describing the category
       anchorId: z.string().min(1), // stable in-page anchor / filter key
@@ -127,10 +129,9 @@ const categories = defineCollection({
    that doesn't exist).
 --------------------------------------------------------------------------- */
 const portfolio = defineCollection({
-  loader: file("src/data/portfolio.json"),
+  loader: glob({ pattern: "src/data/portfolio/*.json", base: "." }),
   schema: z
     .object({
-      id: z.string(),
       title: z.string().min(1),
       category: reference("categories"),
       video,
@@ -149,10 +150,9 @@ const portfolio = defineCollection({
    Data: src/data/brandLogos.json
 --------------------------------------------------------------------------- */
 const brandLogos = defineCollection({
-  loader: file("src/data/brandLogos.json"),
+  loader: glob({ pattern: "src/data/brandLogos/*.json", base: "." }),
   schema: z
     .object({
-      id: z.string(),
       name: z.string().min(1), // brand name (also the logo alt text)
       src: z.string().optional(), // in-repo logo asset path; wordmark fallback if omitted
       url: z.string().url().optional(),
@@ -167,10 +167,9 @@ const brandLogos = defineCollection({
    Data: src/data/testimonials.json
 --------------------------------------------------------------------------- */
 const testimonials = defineCollection({
-  loader: file("src/data/testimonials.json"),
+  loader: glob({ pattern: "src/data/testimonials/*.json", base: "." }),
   schema: z
     .object({
-      id: z.string(),
       quote: z.string().min(1),
       attribution: z.string().min(1),
       context: z.string().optional(), // role / brand / campaign
@@ -188,10 +187,9 @@ const testimonials = defineCollection({
    Data: src/data/services.json
 --------------------------------------------------------------------------- */
 const services = defineCollection({
-  loader: file("src/data/services.json"),
+  loader: glob({ pattern: "src/data/services/*.json", base: "." }),
   schema: z
     .object({
-      id: z.string(),
       title: z.string().min(1),
       blurb: z.string().min(1),
       icon: z.string().optional(), // icon token / in-repo asset for the square block
@@ -206,10 +204,9 @@ const services = defineCollection({
    Data: src/data/process.json
 --------------------------------------------------------------------------- */
 const process = defineCollection({
-  loader: file("src/data/process.json"),
+  loader: glob({ pattern: "src/data/process/*.json", base: "." }),
   schema: z
     .object({
-      id: z.string(),
       title: z.string().min(1),
       detail: z.string().min(1),
       order: z.number().int()
