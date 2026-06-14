@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ugc-videos",
+    "title": "UGC Videos",
+    "blurb": "Scroll-stopping, conversion-focused short-form built for paid social and organic.",
+    "icon": "video",
+    "order": 10,
+    "visible": true
+  },
+  {
+    "id": "product-photography",
+    "title": "Product Photography",
+    "blurb": "Clean, on-brand stills that make products look premium and ready to sell.",
+    "icon": "camera",
+    "order": 20,
+    "visible": true
+  },
+  {
+    "id": "event-coverage",
+    "title": "Event Coverage",
+    "blurb": "Full event capture from someone who also produces them — logistics included.",
+    "icon": "calendar",
+    "order": 30,
+    "visible": true
+  },
+  {
+    "id": "travel-content",
+    "title": "Travel Content",
+    "blurb": "On-location destination and hospitality content, shot nationwide and abroad.",
+    "icon": "plane",
+    "order": 40,
+    "visible": true
+  },
+  {
+    "id": "monthly-retainers",
+    "title": "Monthly Retainers",
+    "blurb": "Ongoing content partnerships for brands that need a steady creative cadence.",
+    "icon": "repeat",
+    "order": 50,
+    "visible": true
+  }
+]

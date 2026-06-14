@@ -1,0 +1,22 @@
+{
+  "main": {
+    "hero": {
+      "eyebrow": "UGC Creator · Event Producer · Travel · Lifestyle",
+      "title": "Bella B Creates",
+      "subhead": "UGC • Travel • Events • Lifestyle",
+      "outcome": "Authentic content that helps brands connect, engage, and convert.",
+      "primaryCta": { "label": "View Work", "href": "#portfolio" },
+      "secondaryCta": { "label": "Book Project", "href": "#contact" },
+      "showreelLabel": "Watch Showreel"
+    },
+    "stats": {
+      "bioStats": [
+        { "label": "Based In", "value": "Colorado + Texas" },
+        { "label": "Industries", "value": "Travel • Hospitality • Lifestyle" },
+        { "label": "Experience", "value": "10+ Years Producing Events & Lifestyle Projects" },
+        { "label": "Available", "value": "Nationwide — International" }
+      ],
+      "metrics": []
+    }
+  }
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "client-review-1",
+    "quote": "The content felt native to social right away. It told the story fast and still felt like a real, human recommendation.",
+    "attribution": "Client review",
+    "context": "Placeholder — replace with a real, approved quote before setting visible: true.",
+    "rating": 5,
+    "order": 10,
+    "visible": false
+  },
+  {
+    "id": "brand-review-2",
+    "quote": "Strong on camera, clean edit, and the brand message landed in the first few seconds.",
+    "attribution": "Brand feedback",
+    "context": "Placeholder — add real approval-proof text before publishing.",
+    "rating": 5,
+    "order": 20,
+    "visible": false
+  }
+]
