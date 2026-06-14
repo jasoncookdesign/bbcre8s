@@ -239,7 +239,18 @@ const canonicalUrl = new URL(pathname, siteUrl).toString();
           try { localStorage.setItem("bb-consent", v); } catch { /* ignore */ }
         };
         const loadAnalytics = (): void => {
-          // Session 2: inject GA4 (gtag) here, only on consent.
+          // GA4 — injected only after cookie consent (Session 2, 2026-06-14).
+          const GA_ID = "G-DQ7LYR6NF1";
+          if (document.getElementById("gtag-script")) return; // guard double-load
+          const s = document.createElement("script");
+          s.id = "gtag-script";
+          s.async = true;
+          s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+          document.head.appendChild(s);
+          (window as any).dataLayer = (window as any).dataLayer || [];
+          const gtag = (...args: any[]): void => { (window as any).dataLayer.push(args); };
+          gtag("js", new Date());
+          gtag("config", GA_ID, { anonymize_ip: true });
         };
         const consent = get();
         if (consent === "accepted") { loadAnalytics(); return; }
@@ -271,7 +282,7 @@ const canonicalUrl = new URL(pathname, siteUrl).toString();
         });
       }
 
-      // ---- Contact form: accessible client-side validation (inert submit) ----
+      // ---- Contact form: client-side validation; native submit to Web3Forms on pass ----
       function initContactForm(): void {
         const form = document.getElementById("contact-form") as HTMLFormElement | null;
         if (!form) return;
@@ -281,8 +292,6 @@ const canonicalUrl = new URL(pathname, siteUrl).toString();
           ["message", (v) => v.trim().length > 0],
         ];
         form.addEventListener("submit", (e) => {
-          // Session 2 wires the Web3Forms action; until then, never actually submit.
-          e.preventDefault();
           let firstBad: HTMLElement | null = null;
           rules.forEach(([name, ok]) => {
             const input = form.elements.namedItem(name) as HTMLInputElement | null;
@@ -293,7 +302,12 @@ const canonicalUrl = new URL(pathname, siteUrl).toString();
             input.setAttribute("aria-invalid", bad ? "true" : "false");
             if (bad && !firstBad) firstBad = input;
           });
-          firstBad?.focus();
+          if (firstBad) {
+            // Validation failed — block submit and focus the first bad field.
+            e.preventDefault();
+            firstBad.focus();
+          }
+          // Validation passed — allow native POST to Web3Forms.
         });
         form.querySelectorAll<HTMLElement>(".form-input").forEach((input) => {
           input.addEventListener("input", () => {
