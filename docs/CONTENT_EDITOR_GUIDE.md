@@ -1,140 +1,97 @@
 # Content Editor Guide
 
-This site is designed to be updated by editing a few small content files. No CMS is required.
+All site content is managed through **Sveltia CMS** — no code editing required.
 
-## The Main Files You Will Update
+## Getting Started
 
-- src/content/portfolio.ts — add, hide, feature, or reorder portfolio videos
-- src/content/home.ts — control the hero reel slot and switch from simulated preview to a real video later
-- src/content/services.ts — update package names, deliverables, and order
-- src/content/site.ts — update Fiverr and Upwork links, social links, Link Hub destinations, and the direct intake fallback
-- public/media/portfolio/ — add new poster images or thumbnails
+1. Go to **https://bbcre8s.com/admin**
+2. Log in with your GitHub account (use the same account that has access to the `jasoncookdesign/bbcre8s` repository)
+3. Make your changes — they save as commits directly to the repo
+4. The site rebuilds automatically within about 1 minute
 
-## Typical Update Flow
+---
 
-1. Add or replace the poster image in public/media/portfolio.
-2. Open the matching content file in src/content.
-3. Duplicate a similar item and edit the text values.
-4. Save the file and preview the site locally if needed.
-5. If the update looks right, keep the new entry public.
+## What You Can Edit
 
-## How to Add a New Portfolio Video
+### Hero & Stats (Home)
+Controls the top of the page: your eyebrow tagline, headline, subhead, outcome statement, CTA button labels, and the stats band (based-in, industries, experience, availability). Also controls the showreel YouTube video ID.
 
-Open src/content/portfolio.ts and find the portfolioItems list.
+### Portfolio
+One entry per video clip. Each entry has:
+- **title** — clip title shown in the grid
+- **category** — must match one of your category entries (e.g. `travel`, `events`, `lifestyle`)
+- **video** — YouTube video ID and a caption
+- **order** — controls sort position (lower numbers appear first; use steps of 10)
+- **visible** — show or hide this clip on the live site
+- **featured** / **featuredOrder** — promotes the clip to the featured section at the top; `featuredOrder` controls which position (1 = first)
+- **status** — `placeholder` while the clip is stand-in content; update to reflect real work when ready
 
-To add a new video:
-- duplicate an existing item that looks similar
-- give it a new id
-- update the title and slug
-- set status to placeholder, draft, or ready
-- choose mediaType as local, youtube, or vimeo
-- paste the video URL into videoUrl
-- optionally add embedUrl if you need a custom embed source
-- point poster to the correct image in public/media/portfolio
-- update duration, description, goal, and style
-- choose the correct useCase group
-- set visibility to public
-- choose a sortOrder value such as 90, 100, or 110
+### Services
+One entry per service offering. Each has a title, blurb, icon, order, and visible flag.
 
-## Content State Rules
+### Testimonials
+Client quotes. Each has a quote, attribution, and a visible flag. Set `visible: false` to keep a quote in the system without showing it yet.
 
-Use these states consistently:
-- placeholder — visible for layout validation, but not treated as proof on high-trust homepage sections
-- draft — partially prepared content that can stay visible in the portfolio without being promoted as final proof
-- ready — approved for featured placement and trust surfaces
+### Brand Logos
+Logos shown in the brand strip. Each has a name, order, and visible flag.
 
-Only ready items can populate homepage featured proof or ready-testimonial areas.
+### Process
+How-I-work steps shown in the process section.
 
-## How to Mark an Item as Featured
+---
 
-In src/content/portfolio.ts:
-- set featured to true
-- set featuredOrder to a small number like 1, 2, 3, or 4
-- make sure status is set to ready if you want it to appear in homepage proof sections
+## Common Tasks
 
-Lower featuredOrder numbers appear first.
+### Add a new portfolio clip
+1. Open **Portfolio** in the CMS sidebar
+2. Click **New entry**
+3. Fill in all fields — paste the YouTube video ID (the part after `?v=` in the URL)
+4. Set `visible: true` when ready to publish
+5. Save — the site rebuilds in ~1 minute
 
-If an item should no longer be featured, remove featured or set it to false.
+### Feature a clip on the homepage
+- Set `featured: true` and assign a `featuredOrder` (1–4)
+- Only `visible: true` entries will actually appear
 
-## How to Assign a Use-Case Group
+### Hide a clip without deleting it
+- Set `visible: false`
+- The entry stays in the CMS and can be re-enabled any time
 
-Use one of these exact labels:
-- Paid Ads
-- Product Demos
-- Lifestyle Integrations
-- Tech Walkthroughs
+### Reorder clips
+- Change the `order` value on each entry
+- Lower numbers appear first
+- Use steps of 10 (10, 20, 30…) so it's easy to insert something between two items later
 
-The useCase value controls which section the clip appears in on the portfolio page.
+### Replace a placeholder clip
+- Open the entry in Portfolio
+- Update the video ID, title, and caption with the real content
+- Change `status` from `placeholder` to reflect the real work
 
-## How to Control Sort Order
+### Update your booking or contact links
+These are configured in `src/content/site.ts` in the repository — not editable in the CMS. Ask your developer to update Fiverr, Upwork, cal.com, or social links there.
 
-Use the sortOrder number on any portfolio item, service package, or link.
+---
 
-Recommended rule:
-- leave gaps between numbers
-- use 10, 20, 30, 40 instead of 1, 2, 3, 4
+## Content Rules
 
-This makes reordering easier later.
+- Every entry needs a unique filename/ID — the CMS handles this automatically
+- `order` values control display order; keep gaps between them (10, 20, 30)
+- `visible: false` hides an entry from the live site without deleting it
+- Invalid content (missing required field, wrong type) will fail the build — the live site stays on its last good version until the issue is fixed
+- Media files (images, videos) are served via YouTube — no file uploads are needed for video content
 
-## How to Hide or Remove Outdated Work
+---
 
-For portfolio items and services:
-- set visibility to hidden if you want to keep the content in the file but remove it from the live site
-- delete the object only if you no longer need it at all
+## Uploading Media
 
-Use hidden for temporary removals.
+Images and other media can be uploaded directly in the CMS using the **Media** tab. Files land in `src/assets/` in the repository and are available to reference in content entries.
 
-## How to Update Service Packages
+Keep images lightweight — optimize before uploading. The site is designed around YouTube for video, so direct video file uploads are not needed.
 
-Open src/content/services.ts.
+---
 
-You can:
-- change the package headline
-- update who the package is best for
-- change turnaround time
-- add or remove deliverables
-- reorder packages with sortOrder
-- hide a package with visibility: hidden
+## If Something Looks Wrong
 
-## How to Update Fiverr and Upwork Links
-
-Open src/content/site.ts and update the href values in platformLinks.
-
-These links automatically power:
-- the main hire buttons
-- the sticky hire bar
-- the footer actions
-- the Link Hub page
-
-## How to Add Future Platforms to the Link Hub
-
-Open src/content/site.ts.
-
-You can add:
-- another platform to platformLinks if it should act like a main hiring destination
-- another profile to socialLinks if it is mainly for social proof
-- another item to futureHubLinks for optional destinations such as a media kit or booking page
-
-Duplicate a similar item and update:
-- id
-- label
-- description
-- href if needed
-- sortOrder
-- visibility
-
-## Content Conventions to Follow
-
-- Keep titles short and scannable
-- Keep descriptions practical and buyer-facing
-- Use unique ids for every item
-- Keep poster images lightweight and clear on mobile
-- Avoid long paragraphs in package or portfolio descriptions
-- Keep spelling and capitalization consistent across similar items
-
-## Safe Editing Tips
-
-- Change one item at a time
-- Save after each change
-- If you are unsure, duplicate a similar entry instead of writing from scratch
-- Use visibility: hidden instead of deleting content you may want later
+- Check that `visible` is set to `true` on the entry
+- Check that a required field isn't blank — a missing field will cause the build to fail
+- Check the **Actions** tab in the GitHub repository (`https://github.com/jasoncookdesign/bbcre8s/actions`) to see if a recent build failed and why
