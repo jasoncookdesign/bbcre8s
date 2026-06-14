@@ -1,0 +1,66 @@
+[
+  {
+    "id": "travel-resort-reel",
+    "title": "Resort Stay Destination Reel",
+    "category": "travel",
+    "video": { "provider": "youtube", "id": "aqz-KE-bpKQ", "caption": "Placeholder reel — swap for Bella's real travel clip (YouTube id)." },
+    "order": 10,
+    "featured": true,
+    "featuredOrder": 1,
+    "status": "placeholder",
+    "visible": true
+  },
+  {
+    "id": "travel-hospitality-tour",
+    "title": "Boutique Hotel Walkthrough",
+    "category": "travel",
+    "video": { "provider": "youtube", "id": "aqz-KE-bpKQ", "caption": "Placeholder reel — hospitality property tour." },
+    "order": 20,
+    "featured": false,
+    "status": "placeholder",
+    "visible": true
+  },
+  {
+    "id": "events-activation-recap",
+    "title": "Brand Activation Recap",
+    "category": "events",
+    "video": { "provider": "youtube", "id": "aqz-KE-bpKQ", "caption": "Placeholder reel — produced event activation recap." },
+    "order": 30,
+    "featured": true,
+    "featuredOrder": 2,
+    "status": "placeholder",
+    "visible": true
+  },
+  {
+    "id": "lifestyle-daily-integration",
+    "title": "Daily Routine Product Blend",
+    "category": "lifestyle",
+    "video": { "provider": "youtube", "id": "aqz-KE-bpKQ", "caption": "Placeholder reel — social-native lifestyle integration." },
+    "order": 40,
+    "featured": true,
+    "featuredOrder": 3,
+    "status": "placeholder",
+    "visible": true
+  },
+  {
+    "id": "wellness-routine-feature",
+    "title": "Wellness Routine Feature",
+    "category": "wellness",
+    "video": { "provider": "youtube", "id": "aqz-KE-bpKQ", "caption": "Placeholder reel — wellness brand storytelling." },
+    "order": 50,
+    "featured": false,
+    "status": "placeholder",
+    "visible": true
+  },
+  {
+    "id": "technology-product-demo",
+    "title": "Smart Product Demo",
+    "category": "technology",
+    "video": { "provider": "youtube", "id": "aqz-KE-bpKQ", "caption": "Placeholder reel — tech product demo / walkthrough." },
+    "order": 60,
+    "featured": true,
+    "featuredOrder": 4,
+    "status": "placeholder",
+    "visible": true
+  }
+]

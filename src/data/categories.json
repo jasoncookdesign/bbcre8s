@@ -1,0 +1,42 @@
+[
+  {
+    "id": "travel",
+    "label": "Travel",
+    "summary": "Destination, hospitality, and on-location brand content.",
+    "anchorId": "travel",
+    "order": 10,
+    "visible": true
+  },
+  {
+    "id": "events",
+    "label": "Events",
+    "summary": "Event coverage and produced activations — the rare event-production edge.",
+    "anchorId": "events",
+    "order": 20,
+    "visible": true
+  },
+  {
+    "id": "lifestyle",
+    "label": "Lifestyle",
+    "summary": "Everyday, social-native content that blends products into real moments.",
+    "anchorId": "lifestyle",
+    "order": 30,
+    "visible": true
+  },
+  {
+    "id": "wellness",
+    "label": "Wellness",
+    "summary": "Health, fitness, and wellness brand storytelling.",
+    "anchorId": "wellness",
+    "order": 40,
+    "visible": true
+  },
+  {
+    "id": "technology",
+    "label": "Technology",
+    "summary": "Product demos and walkthroughs for modern tech brands.",
+    "anchorId": "technology",
+    "order": 50,
+    "visible": true
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "discovery-call",
+    "title": "Discovery Call",
+    "detail": "We talk through your product, audience, goals, and the platforms you need to win on.",
+    "order": 10
+  },
+  {
+    "id": "creative-strategy",
+    "title": "Creative Strategy",
+    "detail": "I shape the hooks, angles, and shot list around the buying moment you're after.",
+    "order": 20
+  },
+  {
+    "id": "production",
+    "title": "Production",
+    "detail": "On-camera delivery and capture — drawing on real event-production experience.",
+    "order": 30
+  },
+  {
+    "id": "review",
+    "title": "Review",
+    "detail": "You review the edit and request adjustments through a clear, low-friction round.",
+    "order": 40
+  },
+  {
+    "id": "delivery",
+    "title": "Delivery",
+    "detail": "You get polished, platform-ready assets sized for launch, testing, and reuse.",
+    "order": 50
+  }
+]

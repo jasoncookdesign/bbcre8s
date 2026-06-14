@@ -1,0 +1,36 @@
+name: Validate content build
+
+# Pre-merge gate. Runs the full build (which validates every content
+# collection against its Zod schema in src/content.config.ts) on pull requests
+# WITHOUT deploying. An invalid content edit fails here, before it can reach the
+# live site. Deployment on push to main is handled separately by deploy-pages.yml.
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    env:
+      SITE_URL: https://bbcre8s.com
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (validates content collections)
+        run: npm run build
