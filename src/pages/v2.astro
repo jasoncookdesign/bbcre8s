@@ -1,35 +1,20 @@
 ---
 /*
-  /v2 — INI-059 Phase 3, Session 1 staged preview of the Treatment B
-  (neo-brutalist) one-page redesign. Renders entirely from the Phase 2.5
-  content collections. Lives at a staged path (CEO decision: stage, don't cut
-  the root) — the placeholder root index.astro is untouched; Session 2 cuts
-  the root over as a deliberate launch step.
-
-  Section color-block order (no two adjacent backgrounds share a family):
-  Hero(dark) → Stats(powder blue) → Portfolio(white) → Brand logos(charcoal)
-  → Testimonials(blush) → Services(soft gray) → Process(white) →
-  Contact(dusty rose) → Footer(charcoal). Brand logos + testimonials hide
-  while their data is visible:false — honest empty-state, no fabricated proof.
+  /v2 — INI-059 Phase 3 staged preview path (redirects to root since 2026-06-14).
+  Root cutover completed; index.astro is now the NB one-pager.
+  Redirect exists to avoid breaking links from the CEO's preview session.
 */
-import TreatmentBLayout from "@layouts/TreatmentBLayout.astro";
-import HeroSection from "@components/nb/sections/HeroSection.astro";
-import StatsBand from "@components/nb/sections/StatsBand.astro";
-import PortfolioSection from "@components/nb/sections/PortfolioSection.astro";
-import BrandLogos from "@components/nb/sections/BrandLogos.astro";
-import Testimonials from "@components/nb/sections/Testimonials.astro";
-import ServicesSection from "@components/nb/sections/ServicesSection.astro";
-import ProcessSection from "@components/nb/sections/ProcessSection.astro";
-import ContactSection from "@components/nb/sections/ContactSection.astro";
 ---
-
-<TreatmentBLayout pathname="/v2">
-  <HeroSection />
-  <StatsBand />
-  <PortfolioSection />
-  <BrandLogos />
-  <Testimonials />
-  <ServicesSection />
-  <ProcessSection />
-  <ContactSection />
-</TreatmentBLayout>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content="0;url=/" />
+    <link rel="canonical" href="https://bbcre8s.com/" />
+    <title>Redirecting…</title>
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body>
+    <p>Redirecting to <a href="/">bbcre8s.com</a>…</p>
+  </body>
+</html>

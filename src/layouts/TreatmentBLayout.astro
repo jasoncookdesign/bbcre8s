@@ -1,19 +1,10 @@
 ---
 /*
   TreatmentBLayout — INI-059 Phase 3 (neo-brutalist one-page shell).
-  Standalone layout for the staged Treatment B page (/v2). Does NOT reuse
-  the legacy BaseLayout (which loads legacy tokens/global.css); the legacy
-  layout stays intact until the Session 2 cutover.
-
-  Fonts load from Google Fonts (matching the client-approved mockup) for this
-  staged Session 1 build — keeps `npm ci` green with no new dependency.
-  SESSION 2 (pre-root-cutover) item: switch to self-hosted Space Grotesk +
-  Manrope (Fontsource or src/assets/fonts/) to satisfy the design system's
-  not-CDN-coupled preference; that change requires a lockfile update.
-  Includes the page-level reel modal + cookie banner singletons and the
-  bundled, key-free interactivity (filters, modal, hamburger, booking toggle,
-  consent, contact validation). Booking/form/analytics stay inert until
-  Session 2 wires the cal.com link / Web3Forms key / GA4 id.
+  Session 2 cutover (2026-06-14): now the canonical layout for bbcre8s.com.
+  Accepts `indexable` prop — false (default) emits noindex (for /v2 remnant
+  and supporting pages); true emits standard index/follow for the root.
+  Fonts: Google Fonts (Space Grotesk + Manrope) kept per CEO decision.
 */
 import "@styles/nb-tokens.css";
 import "@styles/nb-base.css";
@@ -24,6 +15,7 @@ interface Props {
   title?: string;
   description?: string;
   pathname: string;
+  indexable?: boolean;
 }
 
 const siteUrl = import.meta.env.SITE ?? "https://bbcre8s.com";
@@ -31,6 +23,7 @@ const {
   title = "Bella B Creates — UGC · Travel · Events · Lifestyle",
   description = "Authentic, video-first UGC and event content that helps brands connect, engage, and convert — backed by 10+ years of real event production.",
   pathname,
+  indexable = false,
 } = Astro.props;
 
 const canonicalUrl = new URL(pathname, siteUrl).toString();
@@ -52,8 +45,7 @@ const canonicalUrl = new URL(pathname, siteUrl).toString();
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <!-- Staged preview path — not for indexing until the Session 2 root cutover. -->
-    <meta name="robots" content="noindex, nofollow" />
+    <meta name="robots" content={indexable ? "index, follow" : "noindex, nofollow"} />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Bella B Creates" />

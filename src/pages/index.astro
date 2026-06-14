@@ -1,24 +1,32 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
-import AudienceFit from "@components/sections/AudienceFit.astro";
-import TrustLayer from "@components/sections/TrustLayer.astro";
-import UseCasePreviewGrid from "@components/sections/UseCasePreviewGrid.astro";
-import HeroVideo from "@components/sections/HeroVideo.astro";
-import FeaturedWorkGrid from "@components/sections/FeaturedWorkGrid.astro";
-import ServicesSnapshot from "@components/sections/ServicesSnapshot.astro";
-import CTAHire from "@components/sections/CTAHire.astro";
+/*
+  / — INI-059 Phase 3, Session 2 root cutover (2026-06-14).
+  Treatment B (neo-brutalist) one-pager is now the canonical home page.
+  Renders entirely from the Phase 2.5 content collections (src/data/*.json).
+
+  Section color-block order:
+  Hero(dark) → Stats(powder blue) → Portfolio(white) → Brand logos(charcoal)
+  → Testimonials(blush) → Services(soft gray) → Process(white) →
+  Contact(dusty rose) → Footer(charcoal).
+*/
+import TreatmentBLayout from "@layouts/TreatmentBLayout.astro";
+import HeroSection from "@components/nb/sections/HeroSection.astro";
+import StatsBand from "@components/nb/sections/StatsBand.astro";
+import PortfolioSection from "@components/nb/sections/PortfolioSection.astro";
+import BrandLogos from "@components/nb/sections/BrandLogos.astro";
+import Testimonials from "@components/nb/sections/Testimonials.astro";
+import ServicesSection from "@components/nb/sections/ServicesSection.astro";
+import ProcessSection from "@components/nb/sections/ProcessSection.astro";
+import ContactSection from "@components/nb/sections/ContactSection.astro";
 ---
 
-<BaseLayout
-  title="bbcre8s UGC | Video-First UGC Portfolio"
-  description="Premium, conversion-aware UGC for Shopify brands, Amazon sellers, SaaS teams, and modern product businesses."
-  pathname={Astro.url.pathname}
->
-  <HeroVideo />
-  <FeaturedWorkGrid />
-  <AudienceFit />
-  <UseCasePreviewGrid />
-  <ServicesSnapshot />
-  <TrustLayer />
-  <CTAHire />
-</BaseLayout>
+<TreatmentBLayout pathname="/" indexable={true}>
+  <HeroSection />
+  <StatsBand />
+  <PortfolioSection />
+  <BrandLogos />
+  <Testimonials />
+  <ServicesSection />
+  <ProcessSection />
+  <ContactSection />
+</TreatmentBLayout>
