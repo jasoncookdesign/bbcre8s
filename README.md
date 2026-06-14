@@ -1,41 +1,49 @@
-# bbcre8s UGC Portfolio Foundation
+# bbcre8s — Bella B Creates
 
-A lightweight Astro foundation for a high-conversion, video-first portfolio site.
+A video-first UGC portfolio site built on Astro and deployed to GitHub Pages.
 
-## Why this architecture
+## Stack
 
-- Astro keeps runtime overhead low for a mostly content-driven marketing site.
-- Route pages are thin and composed from reusable sections.
-- Structured content lives in TypeScript files for easy manual curation.
-- No CMS/database/admin complexity at this stage.
+- **Astro** — static site generator
+- **Sveltia CMS** — browser-based content editor at `/admin` (GitHub auth via Cloudflare Workers)
+- **GitHub Actions** — auto-rebuilds and redeploys on every commit to `main`
+- **Web3Forms** — contact form submissions
+- **cal.com** — booking embed
+- **Google Analytics 4** — traffic analytics (cookie-gated)
 
 ## Folder structure
 
-- src/pages/: route-level pages
-- src/layouts/: shared page shell
-- src/components/: reusable UI blocks
-  - nav/: site header and footer
-  - portfolio/: portfolio-specific card
-  - sections/: reusable page sections (hero, featured work, CTA, etc.)
-- src/content/: typed content and curation controls
-- src/styles/: design tokens and global styles
-- public/media/: manually managed media assets
+- `src/pages/` — route-level pages (index, links, privacy, thank-you, 404, 500)
+- `src/layouts/` — shared page shell
+- `src/components/nb/` — UI components for the neo-brutalist design
+- `src/content/` — Astro Content Collections schema (`content.config.ts`)
+- `src/data/` — content files edited via Sveltia CMS
+  - `home.json` — hero, stats, and section copy
+  - `portfolio/` — one JSON file per portfolio item
+  - `services/` — one JSON file per service offering
+  - `testimonials.json` — client testimonials
+  - `categories.json` — portfolio filter categories
+  - `brandLogos/` — brand partner logos
+  - `process/` — how-I-work steps
+- `src/styles/` — design tokens and global styles
+- `public/media/` — media assets (replace placeholders with real content via Sveltia)
+- `public/admin/` — Sveltia CMS configuration
+- `docs/` — editor guides for content updates
 
-## Manual curation workflow
+## Editing content
 
-- Add/edit portfolio entries in src/content/portfolio.ts
-- Set featured items with the featured boolean
-- Control portfolio ordering with sortOrder values
-- Add/edit package details in src/content/services.ts
-- Update Fiverr, Upwork, and Link Hub destinations in src/content/site.ts
-- Use the editor docs in docs/CONTENT_EDITOR_GUIDE.md and docs/QUICK_UPDATE_CHECKLIST.md for step-by-step updates
+All content is managed through Sveltia CMS at `https://bbcre8s.com/admin`. Log in with your GitHub account. Changes commit directly to `main` and the site rebuilds automatically within ~1 minute.
+
+For step-by-step instructions see `docs/CONTENT_EDITOR_GUIDE.md` and `docs/QUICK_UPDATE_CHECKLIST.md`.
 
 ## Run locally
 
-1. npm install
-2. npm run dev
+```
+npm install
+npm run dev
+```
 
 ## Notes
 
-- Current media assets are placeholders and should be replaced with real optimized images/videos.
-- Off-site conversion links are centralized in src/content/site.ts.
+- Media assets in `public/media/` are placeholders — replace with real images and videos via the CMS or direct commit.
+- Off-site links (Fiverr, Upwork, Link Hub) are managed in `src/data/` via the CMS.
