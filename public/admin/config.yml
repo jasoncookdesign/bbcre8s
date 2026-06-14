@@ -22,8 +22,7 @@ backend:
   name: github
   repo: jasoncookdesign/bbcre8s
   branch: main
-  # Replace with the Cloudflare Workers URL after auth setup.
-  base_url: SVELTIA_CMS_AUTH_URL_PLACEHOLDER
+  base_url: https://bbcre8s-cms-auth.bbcre8s4ugc.workers.dev
 
 # Media files live in the repo alongside source so Astro can process them.
 media_folder: src/assets
