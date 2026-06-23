@@ -7,7 +7,7 @@ invalid (a missing field, a typo'd category, the wrong kind of value), the build
 **fails on purpose** and the live site stays on its last good version. You can't
 silently break it.
 
-> **Sveltia CMS (INI-068)** is layered on top of these files — you can edit them
+> **Sveltia CMS** is layered on top of these files — you can edit them
 > through the friendly editing interface at `bbcre8s.com/admin` instead of by
 > hand. The files below are the durable source of truth either way.
 
