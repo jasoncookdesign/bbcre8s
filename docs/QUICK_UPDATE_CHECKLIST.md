@@ -18,7 +18,7 @@ Go to **https://bbcre8s.com/admin** → log in with GitHub → make changes → 
 
 - [ ] Open the entry in **Portfolio**
 - [ ] Update the YouTube video ID, title, and caption
-- [ ] Update `status` to reflect real content
+- [ ] Set `status` to `ready`
 - [ ] Confirm `visible: true`
 
 ---

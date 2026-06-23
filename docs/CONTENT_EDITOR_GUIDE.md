@@ -65,7 +65,7 @@ How-I-work steps shown in the process section.
 ### Replace a placeholder clip
 - Open the entry in Portfolio
 - Update the video ID, title, and caption with the real content
-- Change `status` from `placeholder` to reflect the real work
+- Change `status` from `placeholder` to `ready`
 
 ### Update your booking or contact links
 These are configured in `src/content/site.ts` in the repository — not editable in the CMS. Ask your developer to update Fiverr, Upwork, cal.com, or social links there.
