@@ -1,7 +1,7 @@
 # ============================================================================
-# Sveltia CMS — bbcre8s content editor   [INI-068 Phase 1]
+# Sveltia CMS — bbcre8s content editor
 # ============================================================================
-# Maps every INI-059 Phase 2.5 Content Collection to an editor interface.
+# Maps every Content Collection to an editor interface.
 # One CMS collection per editable surface; field types mirror the Zod schemas
 # in src/content.config.ts.
 #
