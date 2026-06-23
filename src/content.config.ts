@@ -1,6 +1,6 @@
 /*
   ============================================================================
-  bbcre8s — Content Collections (data contract)   [INI-059 Phase 2.5]
+  bbcre8s — Content Collections (data contract)
   ============================================================================
   This file is the single source of truth for the SHAPE of every
   client-editable surface on bbcre8s.com. The actual CONTENT lives in the
@@ -12,7 +12,7 @@
   - Invalid content (missing field, wrong type, unknown category) FAILS the
     build with a readable error. A non-developer can't silently break the
     live site — a bad edit stops at CI, the site stays on its last good build.
-  - The editing TOOL (INI-068, Sveltia CMS) is layered on top of this
+  - The editing TOOL (Sveltia CMS) is layered on top of this
     contract later. The contract is the durable asset; the tool is swappable.
 
   Mechanism: Astro 5 Content Layer. `astro build` (and `astro sync`) load
@@ -27,7 +27,7 @@
     7 Process              -> `process`                   (glob loader — one JSON file per entry)
     (8 Contact is config in src/content/site.ts, not a per-item collection)
 
-  INI-068 note: array collections use one-file-per-entry so Sveltia CMS `folder`
+  Note: array collections use one-file-per-entry so Sveltia CMS `folder`
   collections work natively. Entry `id` = filename slug (e.g. categories/travel.json
   → id="travel"). Schemas below do NOT declare `id:` for glob collections.
   ============================================================================
