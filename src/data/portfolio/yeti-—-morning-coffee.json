@@ -1,0 +1,15 @@
+{
+  "title": "YETI — Morning Coffee",
+  "category": "lifestyle",
+  "video": {
+    "provider": "youtube",
+    "id": "VdiXFbcXoIA",
+    "caption": "Product demo — YETI morning coffee."
+  },
+  "poster": "",
+  "order": 70,
+  "featured": false,
+  "featuredOrder": null,
+  "status": "ready",
+  "visible": true
+}
