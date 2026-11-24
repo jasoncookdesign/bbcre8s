@@ -1,1 +1,15 @@
-{ "title": "Wellness Routine Feature", "category": "wellness", "video": { "provider": "youtube", "id": "aqz-KE-bpKQ", "caption": "Placeholder reel — wellness brand storytelling." }, "order": 50, "featured": false, "status": "placeholder", "visible": true }
+{
+  "title": "Wellness Routine Feature",
+  "category": "wellness",
+  "video": {
+    "provider": "youtube",
+    "id": "aqz-KE-bpKQ",
+    "caption": "Placeholder reel — wellness brand storytelling."
+  },
+  "poster": "",
+  "order": 50,
+  "featured": false,
+  "featuredOrder": null,
+  "status": "placeholder",
+  "visible": false
+}
