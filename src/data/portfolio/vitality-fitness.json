@@ -1,0 +1,15 @@
+{
+  "title": "Vitality Fitness",
+  "category": "wellness",
+  "video": {
+    "provider": "youtube",
+    "id": "BmD-c6QJYXI",
+    "caption": "Wellness feature — Vitality Fitness."
+  },
+  "poster": "",
+  "order": 90,
+  "featured": false,
+  "featuredOrder": null,
+  "status": "ready",
+  "visible": true
+}
