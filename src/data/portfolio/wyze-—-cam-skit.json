@@ -1,0 +1,15 @@
+{
+  "title": "WYZE — Cam Skit",
+  "category": "technology",
+  "video": {
+    "provider": "youtube",
+    "id": "L7lf_jqi220",
+    "caption": "Smart home skit — WYZE Cam."
+  },
+  "poster": "",
+  "order": 80,
+  "featured": false,
+  "featuredOrder": null,
+  "status": "ready",
+  "visible": true
+}
