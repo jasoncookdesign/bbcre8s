@@ -14,7 +14,7 @@ const socialIcon: Record<string, string> = { instagram: "📸", tiktok: "🎵", 
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#F5E5EA" />
+<meta name="theme-color" content="#F6DEE0" />
 <meta name="robots" content="noindex, nofollow" />
 <title>Links · bbcre8s</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,8 +22,8 @@ const socialIcon: Record<string, string> = { instagram: "📸", tiktok: "🎵", 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style is:global>
 :root{
-  --bg:#FFFFFF;--accent:#D9A5B3;--accent-strong:#C48F9C;--accent-blush:#F5E5EA;--accent-blue:#A8C6DF;
-  --nb-charcoal:#333333;--ink:#333333;--ink-soft:#555555;--ink-faint:#888888;--ink-on-dark:#FFFFFF;
+  --bg:#FFFBF7;--accent:#7A2238;--accent-strong:#5E1A2C;--accent-blush:#F6DEE0;--accent-blue:#C6A15B;--accent-contrast:#FBEEE6;--accent-on-dark:#E3ACB4;
+  --nb-charcoal:#333333;--ink:#3A202B;--ink-soft:#6E4A52;--ink-faint:#9A7E84;--ink-on-dark:#FFFFFF;
   --font-display:"Space Grotesk","Archivo Black","Helvetica Neue",sans-serif;--font-body:"Manrope","Helvetica Neue","Segoe UI",sans-serif;
   --text-h1:clamp(2.25rem,5vw,3.5rem);--text-h3:1.5rem;--text-h4:1.125rem;--text-body:1rem;--text-small:0.875rem;--text-micro:0.75rem;
   --space-1:0.5rem;--space-2:0.75rem;--space-3:1rem;--space-4:1.5rem;--space-5:2rem;--space-6:3rem;--space-7:4rem;--radius-sm:4px;
@@ -51,13 +51,14 @@ img{display:block;max-width:100%;}
 .bio-link:hover{transform:translate(-4px,-4px);box-shadow:10px 10px 0 var(--accent);}
 .bio-link .ico{width:1.6rem;text-align:center;flex-shrink:0;font-size:1.2rem;}
 .bio-link .arrow{margin-left:auto;color:var(--ink-faint);font-weight:700;}
-.bio-link.primary{background:var(--accent);}
+.bio-link.primary{background:var(--accent);color:var(--accent-contrast);}
+.bio-link.primary .arrow{color:var(--accent-contrast);}
 .bio-link.primary:hover{box-shadow:10px 10px 0 var(--nb-charcoal);}
 @media (prefers-reduced-motion:reduce){.bio-link:hover,.bio-fullsite:hover{transform:none;box-shadow:var(--shadow-hard);}}
 .bio-footer{background:var(--nb-charcoal);color:var(--ink-on-dark);border-top:3.5px solid var(--accent);padding:var(--space-4);text-align:center;}
 .bio-footer-legal{display:flex;flex-wrap:wrap;gap:var(--space-4);justify-content:center;margin-bottom:var(--space-2);}
 .bio-footer-legal a,.bio-footer-legal button{font-family:var(--font-body);font-size:var(--text-micro);font-weight:600;color:rgba(255,255,255,0.72);background:none;border:none;cursor:pointer;padding:0;}
-.bio-footer-legal a:hover,.bio-footer-legal button:hover{color:var(--accent);}
+.bio-footer-legal a:hover,.bio-footer-legal button:hover{color:var(--accent-on-dark);}
 .bio-copy{font-family:var(--font-body);font-size:var(--text-micro);color:rgba(255,255,255,0.4);}
 .cookie-banner{position:fixed;left:var(--space-3);right:var(--space-3);bottom:var(--space-3);z-index:800;max-width:34rem;margin:0 auto;background:var(--bg);border:var(--border-neo-thick);box-shadow:6px 6px 0 var(--nb-charcoal);padding:var(--space-4);}
 .cookie-banner[hidden]{display:none;}
@@ -66,7 +67,7 @@ img{display:block;max-width:100%;}
 .cookie-text a{font-weight:700;color:var(--nb-charcoal);text-decoration:underline;}
 .cookie-actions{display:flex;gap:var(--space-2);}
 .cookie-actions button{flex:1;font-family:var(--font-body);font-weight:700;font-size:var(--text-micro);letter-spacing:0.06em;text-transform:uppercase;padding:0.7rem 1rem;border-radius:var(--radius-sm);cursor:pointer;}
-.cb-accept{background:var(--accent);color:var(--nb-charcoal);border:var(--border-neo);box-shadow:var(--shadow-hard-sm);}
+.cb-accept{background:var(--accent);color:var(--accent-contrast);border:var(--border-neo);box-shadow:var(--shadow-hard-sm);}
 .cb-decline{background:#fff;color:var(--nb-charcoal);border:var(--border-neo);box-shadow:var(--shadow-hard-sm);}
 :focus-visible{outline:3px solid var(--accent-blue);outline-offset:3px;}
 </style>
