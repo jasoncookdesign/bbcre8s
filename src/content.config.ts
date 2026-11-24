@@ -35,6 +35,7 @@
 
 import { defineCollection, reference, z } from "astro:content";
 import { file, glob } from "astro/loaders";
+import { optionalInt } from "./content/schema";
 
 /* ---------------------------------------------------------------------------
    Shared building blocks
@@ -139,7 +140,7 @@ const portfolio = defineCollection({
       poster: z.string().optional(), // in-repo image path; falls back if omitted
       order: z.number().int(),
       featured: z.boolean().default(false),
-      featuredOrder: z.number().int().optional(),
+      featuredOrder: optionalInt(), // the CMS saves an empty field as null
       status: z.enum(["placeholder", "ready"]).default("placeholder"),
       visible: z.boolean().default(true)
     })
@@ -174,7 +175,7 @@ const testimonials = defineCollection({
       quote: z.string().min(1),
       attribution: z.string().min(1),
       context: z.string().optional(), // role / brand / campaign
-      rating: z.number().int().min(1).max(5).optional(),
+      rating: optionalInt((n) => n.min(1).max(5)),
       order: z.number().int(),
       // Hidden by default: a placeholder testimonial must be explicitly turned
       // on once a real, approved quote replaces it.
