@@ -1,0 +1,15 @@
+{
+  "title": "BOLA Grills — Grill in Use",
+  "category": "lifestyle",
+  "video": {
+    "provider": "youtube",
+    "id": "hKSYu87CiwQ",
+    "caption": "Product demo — BOLA Grills in use."
+  },
+  "poster": "",
+  "order": 110,
+  "featured": false,
+  "featuredOrder": null,
+  "status": "ready",
+  "visible": true
+}
