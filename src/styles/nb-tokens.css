@@ -8,17 +8,19 @@
    ============================================================ */
 :root {
   /* ── Brand palette ── */
-  --bg:               #FFFFFF;
-  --bg-strong:        #F2F2F2;
-  --accent:           #D9A5B3;       /* Dusty Rose — primary accent */
-  --accent-strong:    #C48F9C;       /* hover / active rose */
-  --accent-blush:     #F5E5EA;       /* Blush */
-  --accent-blue:      #A8C6DF;       /* Powder Blue */
-  --accent-blue-tint: #D6E8F2;       /* Powder Blue light — stats band bg */
+  --bg:               #FFFBF7;
+  --bg-strong:        #F7EAE4;
+  --accent:           #7A2238;       /* Bordeaux — primary accent */
+  --accent-strong:    #5E1A2C;       /* hover / active bordeaux */
+  --accent-blush:     #F6DEE0;       /* Blush */
+  --accent-blue:      #C6A15B;       /* Gold — decorative only */
+  --accent-blue-tint: #F0E4CC;       /* Gold tint — stats band bg */
   --nb-charcoal:      #333333;       /* the structural "black" */
-  --ink:              #333333;
-  --ink-soft:         #555555;
-  --ink-faint:        #888888;
+  --ink:              #3A202B;
+  --ink-soft:         #6E4A52;
+  --ink-faint:        #9A7E84;
+  --accent-contrast:  #FBEEE6;       /* text on --accent backgrounds */
+  --accent-on-dark:   #E3ACB4;       /* accent-coloured text on dark surfaces (blush) */
   --ink-on-dark:      #FFFFFF;
   --ink-soft-on-dark: rgba(255, 255, 255, 0.70);
   --success:          #1D7F5F;
