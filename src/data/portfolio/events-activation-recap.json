@@ -1,1 +1,15 @@
-{ "title": "Brand Activation Recap", "category": "events", "video": { "provider": "youtube", "id": "aqz-KE-bpKQ", "caption": "Placeholder reel — produced event activation recap." }, "order": 30, "featured": true, "featuredOrder": 2, "status": "placeholder", "visible": true }
+{
+  "title": "Brand Activation Recap",
+  "category": "events",
+  "video": {
+    "provider": "youtube",
+    "id": "aqz-KE-bpKQ",
+    "caption": "Placeholder reel — produced event activation recap."
+  },
+  "poster": "",
+  "order": 30,
+  "featured": true,
+  "featuredOrder": 2,
+  "status": "placeholder",
+  "visible": false
+}
