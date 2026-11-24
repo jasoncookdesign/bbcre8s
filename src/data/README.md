@@ -58,12 +58,13 @@ The site does **not** host large video files. Follow this convention:
   `video` block as `{ "provider": "youtube", "id": "<that id>", "caption": "…" }`.
   Storing the *id* (not a full link) means we can switch video hosts later
   without re-editing every item.
-- **Images and logos → in the repo.** Add image files under `src/assets/` and
-  reference them by path (e.g. `poster`, brand-logo `src`). Name them clearly.
+- **Images and logos → in the repo.** Add image files under `public/media/` (the
+  CMS uploads to `public/media/uploads/`) and reference them by their site path,
+  e.g. `/media/uploads/logo.png` (`poster`, brand-logo `src`). Name them clearly.
 - **Hero background video → one small in-repo MP4.** The only video file kept in
   the repo is the optional hero loop. Keep it short and well-compressed (well
   under 100 MB; the whole site must stay under ~1 GB). Reference it with
-  `{ "provider": "mp4", "id": "<path under src/assets>", "caption": "…" }`.
+  `{ "provider": "mp4", "id": "<site path, e.g. /media/hero.mp4>", "caption": "…" }`.
 - `vimeo` is also supported as a provider if a clip lives there instead.
 
 ## After you edit

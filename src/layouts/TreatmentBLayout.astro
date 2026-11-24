@@ -208,6 +208,7 @@ const canonicalUrl = new URL(pathname, siteUrl).toString();
         const openShowreel = (e?: Event): void => {
           if (e) e.preventDefault();
           const src = showreel ?? heroFrame;
+          if (!src?.dataset?.videoId) return; // no showreel set: nothing to play
           openReel({
             title: "Bella B — Showreel",
             category: "Showreel",

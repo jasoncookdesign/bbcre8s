@@ -6,15 +6,18 @@ All site content is managed through **Sveltia CMS** — no code editing required
 
 1. Go to **https://bbcre8s.com/admin**
 2. Log in with your GitHub account (use the same account that has access to the `jasoncookdesign/bbcre8s` repository)
-3. Make your changes — they save as commits directly to the repo
-4. The site rebuilds automatically within about 1 minute
+3. Make your changes and click **Save** — each save opens a pull request for review
+4. Click **Publish Entry** in the editor (or find your change under **Editorial Workflow** in the top menu and click **Publish Entry** there)
+5. The site rebuilds automatically within about 1 minute
+
+A change goes live only after you click **Publish Entry**. If Sveltia asks whether to send the change for review, you can skip it — Publish Entry works at any stage. The site checks every change for mistakes first, so a bad edit can't break the live site.
 
 ---
 
 ## What You Can Edit
 
 ### Hero & Stats (Home)
-Controls the top of the page: your eyebrow tagline, headline, subhead, outcome statement, CTA button labels, and the stats band (based-in, industries, experience, availability). Also controls the showreel YouTube video ID.
+Controls the top of the page: your eyebrow tagline, headline, subhead, outcome statement, CTA button labels, and the stats band (based-in, industries, experience, availability). Also controls the showreel video: use the **Showreel video** group to set the provider, video ID, and caption. Leave it empty to show the placeholder.
 
 ### Portfolio
 One entry per video clip. Each entry has:
@@ -24,7 +27,7 @@ One entry per video clip. Each entry has:
 - **order** — controls sort position (lower numbers appear first; use steps of 10)
 - **visible** — show or hide this clip on the live site
 - **featured** / **featuredOrder** — promotes the clip to the featured section at the top; `featuredOrder` controls which position (1 = first)
-- **status** — `placeholder` while the clip is stand-in content; update to reflect real work when ready
+- **status** — `placeholder` while the clip is stand-in content; set to `ready` once it is a real YouTube video, and the tile shows that video's own thumbnail
 
 ### Services
 One entry per service offering. Each has a title, blurb, icon, order, and visible flag.
@@ -47,7 +50,7 @@ How-I-work steps shown in the process section.
 2. Click **New entry**
 3. Fill in all fields — paste the YouTube video ID (the part after `?v=` in the URL)
 4. Set `visible: true` when ready to publish
-5. Save — the site rebuilds in ~1 minute
+5. Save, then Publish Entry — the site rebuilds in ~1 minute
 
 ### Feature a clip on the homepage
 - Set `featured: true` and assign a `featuredOrder` (1–4)
@@ -84,7 +87,7 @@ These are configured in `src/content/site.ts` in the repository — not editable
 
 ## Uploading Media
 
-Images and other media can be uploaded directly in the CMS using the **Media** tab. Files land in `src/assets/` in the repository and are available to reference in content entries.
+Images and other media can be uploaded directly in the CMS using the **Media** tab. Files land in `public/media/uploads/` in the repository, and the poster and logo fields upload straight into that folder.
 
 Keep images lightweight — optimize before uploading. The site is designed around YouTube for video, so direct video file uploads are not needed.
 

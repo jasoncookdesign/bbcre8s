@@ -1,25 +1,25 @@
 ---
 /*
   Treatment B (neo-brutalist) footer. Charcoal, rose top border.
-  Social chips are placeholders until real profile URLs are supplied
-  (src/content/site.ts socialLinks are all visibility:"hidden" today).
+  Social chips come from socialLinks in src/content/site.ts.
   "Privacy Policy" → /privacy and "Links" → /links are ported in Session 2
   (3d supporting pages); they resolve on that cutover.
 */
-import { intakeFallback } from "@content/site";
+import { intakeFallback, getVisibleSocialLinks } from "@content/site";
 
 const email = intakeFallback.email ?? "info@bbcre8s.com";
 
+const base = Astro.url.pathname === "/" ? "" : "/";
+
 const explore = [
-  { label: "Portfolio", href: "#portfolio" },
-  { label: "Services", href: "#services" },
-  { label: "Process", href: "#process" },
-  { label: "Work With Me", href: "#contact" },
+  { label: "Portfolio", href: `${base}#portfolio` },
+  { label: "Services", href: `${base}#services` },
+  { label: "Process", href: `${base}#process` },
+  { label: "Work With Me", href: `${base}#contact` },
   { label: "Links", href: "/links" },
 ];
 
-// Placeholder social labels — real hrefs land when the client supplies profiles.
-const socials = ["Instagram", "TikTok", "YouTube"];
+const socials = getVisibleSocialLinks();
 const year = new Date().getFullYear();
 ---
 
@@ -47,8 +47,8 @@ const year = new Date().getFullYear();
       <div class="footer-col">
         <p class="footer-col-title">Follow</p>
         <div class="footer-social">
-          {socials.map((name) => (
-            <a class="social-chip" href="#" aria-label={`${name} (link coming soon)`}>{name}</a>
+          {socials.map((link) => (
+            <a class="social-chip" href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
           ))}
         </div>
       </div>

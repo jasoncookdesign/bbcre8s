@@ -5,20 +5,24 @@
   Interactivity (open/close, Esc, backdrop, body-scroll lock, desktop reset)
   is wired in TreatmentBLayout's bundled script via the ids below.
 */
+// On the home page, section links are in-page anchors; on every other page they point back to "/".
+const home = Astro.url.pathname === "/";
+const base = home ? "" : "/";
+
 interface NavItem { label: string; href: string; }
 
 const navItems: NavItem[] = [
-  { label: "Portfolio", href: "#portfolio" },
-  { label: "Services", href: "#services" },
-  { label: "Process", href: "#process" },
-  { label: "Contact", href: "#contact" },
+  { label: "Portfolio", href: `${base}#portfolio` },
+  { label: "Services", href: `${base}#services` },
+  { label: "Process", href: `${base}#process` },
+  { label: "Contact", href: `${base}#contact` },
 ];
 const menuItems: NavItem[] = [...navItems, { label: "Links", href: "/links" }];
 ---
 
 <nav class="site-nav" aria-label="Site navigation">
   <div class="container">
-    <a href="#home" class="nav-logo">bb<span>cre8s</span></a>
+    <a href={home ? "#home" : "/"} class="nav-logo">bb<span>cre8s</span></a>
 
     <ul class="nav-links">
       {navItems.map((item) => (
@@ -27,8 +31,8 @@ const menuItems: NavItem[] = [...navItems, { label: "Links", href: "/links" }];
     </ul>
 
     <div class="nav-cta">
-      <a href="#portfolio" class="btn btn-outline">View Work</a>
-      <a href="#contact" class="btn btn-primary">Book Project</a>
+      <a href={`${base}#portfolio`} class="btn btn-outline">View Work</a>
+      <a href={`${base}#contact`} class="btn btn-primary">Book Project</a>
     </div>
 
     <button
@@ -50,8 +54,8 @@ const menuItems: NavItem[] = [...navItems, { label: "Links", href: "/links" }];
       ))}
     </ul>
     <div class="nav-menu-cta">
-      <a href="#portfolio" class="btn btn-outline">View Work</a>
-      <a href="#contact" class="btn btn-primary">Book Project</a>
+      <a href={`${base}#portfolio`} class="btn btn-outline">View Work</a>
+      <a href={`${base}#contact`} class="btn btn-primary">Book Project</a>
     </div>
   </div>
 </nav>

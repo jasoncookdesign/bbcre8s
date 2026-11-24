@@ -9,8 +9,9 @@
 # Replace SVELTIA_CMS_AUTH_URL_PLACEHOLDER with the Workers deployment URL
 # after Cloudflare setup.
 #
-# Build + deploy: edits commit to `main`; the existing deploy-pages.yml
-# GitHub Action rebuilds and redeploys to GitHub Pages automatically.
+# Build + deploy: each save opens a pull request (editorial workflow). The
+# validate.yml check builds it; clicking Publish merges it into `main`, and
+# deploy-pages.yml rebuilds and redeploys to GitHub Pages automatically.
 #
 # Data layout:
 #   home singleton  → src/data/home.json          (files collection)
@@ -25,10 +26,10 @@ backend:
   base_url: https://bbcre8s-cms-auth.bbcre8s4ugc.workers.dev
 
 # Media files live in the repo alongside source so Astro can process them.
-media_folder: src/assets
-public_folder: /src/assets
+media_folder: public/media/uploads
+public_folder: /media/uploads
 
-publish_mode: simple
+publish_mode: editorial_workflow
 
 collections:
 
@@ -69,6 +70,14 @@ collections:
                       - { label: "Button text", name: label, widget: string }
                       - { label: "Link (e.g. #contact)", name: href, widget: string }
                   - { label: "Showreel button text", name: showreelLabel, widget: string }
+                  - label: "Showreel video (optional — plays from the hero)"
+                    name: reel
+                    widget: object
+                    required: false
+                    fields:
+                      - { label: "Provider", name: provider, widget: select, options: [youtube, vimeo, mp4] }
+                      - { label: "Video ID", name: id, widget: string, hint: "YouTube: just the code after ?v= or /shorts/ (e.g. VgwrQ4jMzHw)." }
+                      - { label: "Caption", name: caption, widget: string }
               - label: "Stats section"
                 name: stats
                 widget: object
@@ -144,7 +153,7 @@ collections:
             default: "youtube"
           - { label: "Video ID (YouTube: the ?v= value in the URL)", name: id, widget: string }
           - { label: "Caption (shown in the player)", name: caption, widget: string }
-      - { label: "Poster image (optional — filename in src/assets/)", name: poster, widget: string, required: false }
+      - { label: "Poster image (optional — upload or pick an image)", name: poster, widget: image, required: false }
       - { label: "Order (lower = first)", name: order, widget: number, value_type: int }
       - { label: "Featured (shows in the top featured row)", name: featured, widget: boolean, default: false }
       - { label: "Featured order (if featured — lower = first)", name: featuredOrder, widget: number, value_type: int, required: false }
@@ -175,7 +184,7 @@ collections:
     delete: true
     fields:
       - { label: "Brand name (also used as image alt text)", name: name, widget: string }
-      - { label: "Logo image (filename in src/assets/)", name: src, widget: string, required: false }
+      - { label: "Logo image (upload a PNG or SVG)", name: src, widget: image, required: false }
       - { label: "Brand website URL (optional)", name: url, widget: string, required: false }
       - { label: "Order", name: order, widget: number, value_type: int }
       - { label: "Visible", name: visible, widget: boolean, default: false, hint: "Only turn on once you have the brand's permission." }
