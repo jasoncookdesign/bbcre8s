@@ -8,8 +8,11 @@
   the filter chips (show/hide + re-flag the first visible tile as featured)
   and the reel-modal open on tap/Enter/Space. Media is placeholder until the
   client swaps real reels into src/data/portfolio.json.
+  A reel with status "ready" shows its own YouTube thumbnail; a placeholder
+  keeps the branded tile.
 */
 import { getCollection } from "astro:content";
+import { reelPoster } from "@content/video";
 
 const categories = (await getCollection("categories"))
   .filter((c) => c.data.visible)
@@ -38,13 +41,16 @@ function posterFor(categoryId: string, title: string): string {
 
 const tiles = reels.map((reel) => {
   const categoryId = reel.data.category.id;
+  if (!catLabel.has(categoryId)) {
+    throw new Error(`Portfolio reel "${reel.data.title}" uses category "${categoryId}", which is not a visible category. Fix the reel's Category field or restore the category.`);
+  }
   return {
     id: reel.id,
     title: reel.data.title,
     categoryId,
     categoryLabel: catLabel.get(categoryId) ?? categoryId,
     thumbClass: `thumb-${categoryId}`,
-    poster: reel.data.poster ?? posterFor(categoryId, reel.data.title),
+    poster: reelPoster(reel.data) ?? posterFor(categoryId, reel.data.title),
     provider: reel.data.video.provider,
     videoId: reel.data.video.id,
   };

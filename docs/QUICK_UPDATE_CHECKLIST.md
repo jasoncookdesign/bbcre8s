@@ -1,6 +1,6 @@
 # Quick Update Checklist
 
-Go to **https://bbcre8s.com/admin** → log in with GitHub → make changes → site rebuilds in ~1 minute.
+Go to **https://bbcre8s.com/admin** → log in with GitHub → make changes → Save → click **Publish Entry** → site rebuilds in ~1 minute.
 
 ---
 
@@ -18,7 +18,7 @@ Go to **https://bbcre8s.com/admin** → log in with GitHub → make changes → 
 
 - [ ] Open the entry in **Portfolio**
 - [ ] Update the YouTube video ID, title, and caption
-- [ ] Set `status` to `ready`
+- [ ] Set `status` to `ready` (the tile then shows the video's YouTube thumbnail)
 - [ ] Confirm `visible: true`
 
 ---
@@ -36,7 +36,7 @@ Go to **https://bbcre8s.com/admin** → log in with GitHub → make changes → 
 
 - [ ] Open the entry in **Portfolio**
 - [ ] Set `visible: false`
-- [ ] Save — clip disappears from the site but stays in the CMS
+- [ ] Save, then Publish Entry — clip disappears from the site but stays in the CMS
 
 ---
 

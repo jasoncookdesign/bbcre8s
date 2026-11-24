@@ -96,22 +96,25 @@ export const socialLinks: SocialLink[] = [
   {
     id: "instagram",
     label: "Instagram",
+    href: "https://www.instagram.com/bbcre8s/",
     description: "Short-form creator profile for behind-the-scenes clips and social proof.",
-    visibility: "hidden",
+    visibility: "public",
     sortOrder: 10
   },
   {
     id: "tiktok",
     label: "TikTok",
+    href: "https://www.tiktok.com/@bbcre8s",
     description: "Trend-native short-form destination for hooks, demos, and creator-tech content.",
-    visibility: "hidden",
+    visibility: "public",
     sortOrder: 20
   },
   {
     id: "youtube",
     label: "YouTube",
+    href: "https://www.youtube.com/@BBcre8s",
     description: "Longer demos, walkthroughs, and selected portfolio highlights.",
-    visibility: "hidden",
+    visibility: "public",
     sortOrder: 30
   }
 ];

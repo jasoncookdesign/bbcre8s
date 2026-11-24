@@ -108,7 +108,8 @@ const home = defineCollection({
    Data: src/data/categories.json (array; each item needs an `id`)
 --------------------------------------------------------------------------- */
 const categories = defineCollection({
-  loader: glob({ pattern: "src/data/categories/*.json", base: "." }),
+  // base is the folder itself so each id is the bare slug (e.g. "travel"), which is what reels reference.
+  loader: glob({ pattern: "*.json", base: "src/data/categories" }),
   schema: z
     .object({
       // `id` comes from the filename slug via glob() — not a data field.

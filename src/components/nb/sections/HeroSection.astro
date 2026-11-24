@@ -2,20 +2,25 @@
 /*
   §1 Hero — reads the `home` singleton (home.hero).
   Desktop: 9:16 framed reel (right). Mobile: full-bleed poster under a dark
-  cover. "Watch Showreel" + the frame open the reel modal (wired in the
-  layout script). A real hero reel arrives via home.json `hero.reel`
-  ({provider,id,caption}); until then this is a branded poster placeholder.
+  cover. The "Watch Showreel" button (shown only when a reel is set) and the frame open the
+  reel modal (wired in the layout script). A real hero reel arrives via home.json `hero.reel`
+  ({provider,id,caption}); until then the hero shows a plain dark image.
 */
 import { getEntry } from "astro:content";
+import { reelPoster } from "@content/video";
 
 const home = await getEntry("home", "main");
 const hero = home!.data.hero;
 
-const heroPoster = "https://placehold.co/1080x1920/1a0f14/D9A5B3?text=Hero+Reel+%E2%80%94+9%3A16";
-const mobilePoster = "https://placehold.co/1080x1920/2d1520/D9A5B3?text=Bella+B";
-
 // Optional real reel reference from the data contract.
 const reel = hero.reel;
+
+// A real YouTube showreel supplies its own thumbnail; otherwise show a plain
+// dark image, never a labelled placeholder.
+const blankPoster = "/media/brand/hero-blank.jpg";
+const realPoster = reel ? reelPoster({ video: reel }) : undefined;
+const heroPoster = realPoster ?? blankPoster;
+const mobilePoster = realPoster ?? blankPoster;
 const showreelData = reel
   ? { "data-video-provider": reel.provider, "data-video-id": reel.id, "data-poster": heroPoster }
   : { "data-poster": heroPoster };
@@ -42,16 +47,18 @@ const showreelData = reel
             </a>
           </div>
 
-          <a
-            href="#portfolio"
-            id="showreel-trigger"
-            class="hero-showreel-wrap"
-            aria-label={hero.showreelLabel}
-            {...showreelData}
-          >
-            <div class="showreel-badge" aria-hidden="true">▶</div>
-            <span class="showreel-label">{hero.showreelLabel}</span>
-          </a>
+          {reel && (
+            <a
+              href="#portfolio"
+              id="showreel-trigger"
+              class="hero-showreel-wrap"
+              aria-label={hero.showreelLabel}
+              {...showreelData}
+            >
+              <div class="showreel-badge" aria-hidden="true">▶</div>
+              <span class="showreel-label">{hero.showreelLabel}</span>
+            </a>
+          )}
         </div>
 
         <div class="hero-visual" aria-hidden="true">
@@ -59,7 +66,6 @@ const showreelData = reel
             <div class="hero-frame-media-clip">
               <img src={heroPoster} alt="" />
             </div>
-            <span class="hero-frame-tag">9:16 · 1080×1920</span>
             <div class="hero-sticker-wrap">
               <span class="sticker sticker-neg7">10+ YRS</span>
             </div>
